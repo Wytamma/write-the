@@ -32,8 +32,8 @@ Write-The offers the following AI-driven features:
 - Write-the Refactor: Receive refactoring suggestions, reduce code complexity, optimize performance, and fix bugs.
 
 ## Requirements
-Python 3.7 or higher
-OpenAI api key
+- Python 3.9 or higher  
+- OpenAI api key
 
 ## Usage
 To use Write-The, run the following commands:

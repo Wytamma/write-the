@@ -29,9 +29,9 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-Documentation = "https://github.com/unknown/write-the#readme"
-Issues = "https://github.com/unknown/write-the/issues"
-Source = "https://github.com/unknown/write-the"
+Documentation = "https://github.com/wytamma/write-the#readme"
+Issues = "https://github.com/wytamma/write-the/issues"
+Source = "https://github.com/wytamma/write-the"
 
 [project.scripts]
 write-the = "write_the.cli:app"

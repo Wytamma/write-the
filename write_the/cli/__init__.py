@@ -37,7 +37,7 @@ def docs(
     ),
 ):
     """
-    Write the docs!
+    Document and format your code!
     """
     if file.is_dir():
         files = list_python_files(file)
@@ -61,23 +61,14 @@ def docs(
 
 @app.command()
 def tests():
-    """
-    Load the portal gun
-    """
-    typer.echo("Loading portal gun")
+    raise NotImplementedError()
 
 
 @app.command()
 def refactor():
-    """
-    Load the portal gun
-    """
-    typer.echo("Loading portal gun")
+    raise NotImplementedError()
 
 
 @app.command()
 def optimise():
-    """
-    Load the portal gun
-    """
-    typer.echo("Loading portal gun")
+    raise NotImplementedError()
