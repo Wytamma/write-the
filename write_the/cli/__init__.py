@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: 2023-present wytamma <wytamma.wirth@me.com>
-#
-# SPDX-License-Identifier: MIT
 import typer
 from ..__about__ import __version__
 from ..docs import write_the_docs
@@ -20,37 +17,46 @@ def callback():
     """
 
 
-
 @app.command()
 def docs(
-        file: Path = typer.Argument(..., help="Path to the file to generate docs."),
-        inplace: bool = typer.Option(False, "--inplace", "-i", help="Replace the contents of the file."),
-        force: bool = typer.Option(False, "--force", "-f", help="Generate docstings even if they already exist."),
-        context: bool = typer.Option(False, "--context", "-c", help="Send context with nodes."),
-        nodes: List[str] = typer.Option(None, "--node", "-n", help="Generate docs for specific nodes (functions and classes)."),
-        
-    ):
+    file: Path = typer.Argument(..., help="Path to the file to generate docs."),
+    inplace: bool = typer.Option(
+        False, "--inplace", "-i", help="Replace the contents of the file."
+    ),
+    force: bool = typer.Option(
+        False, "--force", "-f", help="Generate docstings even if they already exist."
+    ),
+    context: bool = typer.Option(
+        False, "--context", "-c", help="Send context with nodes."
+    ),
+    nodes: List[str] = typer.Option(
+        None,
+        "--node",
+        "-n",
+        help="Generate docs for specific nodes (functions and classes).",
+    ),
+):
     """
     Write the docs!
     """
     if file.is_dir():
         files = list_python_files(file)
     else:
-        assert file.suffix == '.py'
+        assert file.suffix == ".py"
         files = [file]
     for file in files:
         if len(files) > 1:
-            typer.secho(file, fg='green')
-        result = write_the_docs(file, nodes=nodes, force=force, inplace=inplace, context=context)
+            typer.secho(file, fg="green")
+        result = write_the_docs(
+            file, nodes=nodes, force=force, inplace=inplace, context=context
+        )
         if inplace:
             with open(file, "w") as f:
                 f.writelines(result)
         else:
-            syntax = Syntax(result, 'python')
+            syntax = Syntax(result, "python")
             console = Console()
             console.print(syntax)
-
-    
 
 
 @app.command()
@@ -67,6 +73,7 @@ def refactor():
     Load the portal gun
     """
     typer.echo("Loading portal gun")
+
 
 @app.command()
 def optimise():
