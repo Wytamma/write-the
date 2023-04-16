@@ -1,6 +1,6 @@
 import typer
-from ..__about__ import __version__
-from ..docs import write_the_docs
+from write_the.__about__ import __version__
+from write_the.docs import write_the_docs
 from .utils import list_python_files
 from pathlib import Path
 from rich.console import Console
