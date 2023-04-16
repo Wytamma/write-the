@@ -4,7 +4,7 @@ repo_url: https://github.com/wytamma/write-the
 
 theme:
   name: "material"
-  homepage: https://github.com/wytamma/write-the
+  homepage: https://write-the.wytamma.com/
   # logo: images/logo.png
   # favicon: images/favicon.png
   palette: 
