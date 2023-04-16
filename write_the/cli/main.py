@@ -30,6 +30,9 @@ def docs(
     context: bool = typer.Option(
         False, "--context", "-c", help="Send context with nodes."
     ),
+    pretty: bool = typer.Option(
+        False, "--pretty", "-p", help="Syntax highlight the output."
+    ),
     nodes: List[str] = typer.Option(
         None,
         "--node",
@@ -54,11 +57,12 @@ def docs(
         if inplace:
             with open(file, "w") as f:
                 f.writelines(result)
-        else:
+        elif pretty:
             syntax = Syntax(result, "python")
             console = Console()
             console.print(syntax)
-
+        else:
+            typer.echo(result)
 
 @app.command()
 def mkdocs(
