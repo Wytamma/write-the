@@ -42,12 +42,15 @@ def write_the_mkdocs(code_dir: Path, readme: Path = None, project_name=None):
         with open(f"{reference_path}/{doc}.md", "w") as f:
             for ref in references[doc]:
                 f.write(ref + "\n\n")
-
     if readme:
         index_text = f"---\ntitle: Home\n---\n{readme.read_text()}"
         Path("./docs/index.md").write_text(index_text)
     if not Path("./mkdocs.yml").exists():
         Path("./mkdocs.yml").write_text(mkdocs)
+    action_path = Path(".github/workflows/mkdocs.yml")
+    if not action_path.exists():
+        action_path.parent.mkdir(parents=True, exist_ok=True)
+        action_path.write_text(action_template)
 
 
 mkdocs_template = """
@@ -75,4 +78,29 @@ theme:
 plugins:
 - search
 - mkdocstrings
+"""
+
+action_template = """
+name: mkdocs 
+on:
+  push:
+    branches:
+      - master 
+      - main
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - uses: actions/cache@v2
+        with:
+          key: ${{ github.ref }}
+          path: .cache
+      - run: pip install hatch
+      - run: hatch run mkdocs gh-deploy --force
 """
