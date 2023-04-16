@@ -26,6 +26,8 @@ dependencies = [
   "langchain",
   "black",
   "libcst",
+  "mkdocstrings[python]",
+  "mkdocs-material"
 ]
 dynamic = ["version"]
 

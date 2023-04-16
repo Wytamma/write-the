@@ -1,0 +1,25 @@
+
+site_name: write-the
+repo_url: https://github.com/wytamma/write-the
+
+theme:
+  name: "material"
+  homepage: https://github.com/wytamma/write-the
+  # logo: images/logo.png
+  # favicon: images/favicon.png
+  palette: 
+    - scheme: default
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - toc.follow
+    - content.action.edit
+
+plugins:
+- search
+- mkdocstrings
