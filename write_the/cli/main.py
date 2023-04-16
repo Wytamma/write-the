@@ -76,7 +76,7 @@ def mkdocs(
     )
 ):
     """
-    Generates mkdocs for a project and populate the API reference
+    Generates mkdocs for a project and the API reference
     """
     write_the_mkdocs(code_dir=code_dir, readme=readme)
 
