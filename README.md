@@ -5,6 +5,8 @@
 
 Write-The is an AI-powered code generation and refactoring tool that leverages GPT-4 to help developers automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
 
+![](images/multiply.png)
+
 -----
 
 **Table of Contents**
