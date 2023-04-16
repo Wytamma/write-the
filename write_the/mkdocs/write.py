@@ -22,7 +22,7 @@ def write_the_mkdocs(code_dir: Path, readme: Path = None, project_name=None):
     groups = [path.stem for path in code_dir.glob("*") if not path.stem.startswith("_")]
 
     if not project_name:
-        project_name = Path(os.getcwd()).name
+        project_name = code_dir.name
     mkdocs = mkdocs_template.format(project_name=project_name)
     references = defaultdict(list)
     for file in files:
@@ -30,7 +30,7 @@ def write_the_mkdocs(code_dir: Path, readme: Path = None, project_name=None):
             continue
         key = "index"
         for group in groups:
-            if group in str(file):
+            if f"{code_dir.name}/{group}/" in str(file) or f"{code_dir.name}/{group}." in str(file):
                 key = group
                 break
         module = str(file).rstrip(".py").replace("/", ".")  # breaks on windows?

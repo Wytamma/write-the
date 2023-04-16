@@ -14,7 +14,7 @@ app = typer.Typer()
 @app.callback()
 def callback():
     """
-    Use GPT to code without having to copy-paste.
+    AI-powered Code Generation and Refactoring Tool
     """
 
 
