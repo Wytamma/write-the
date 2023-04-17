@@ -13,7 +13,7 @@ AI-powered Documentation and Test Generation Tool
 
 Write-the is an AI-powered documentation and test generation tool that leverages GPTs to automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
 
-![](images/multiply.png)
+![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/multiply.png)
 
 -----
 
@@ -50,17 +50,23 @@ To use `write-the`, run the following commands:
 ```bash
 write-the docs [OPTIONS] [PATH_TO_SOURCE_CODE]
 ```
-Examples:
+
+![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/docs-help.png)
+
+Real-world examples:
 - [`write-the docs` to write the docs for the `write-the docs` command 🤖](https://github.com/Wytamma/write-the/blob/master/write_the/docs/write.py#L14)
 
 ### Mkdocs:
 ```bash
 write-the mkdocs [OPTIONS] [PATH_TO_SOURCE_CODE]
 ```
-Examples:
+
+![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/mkdocs-help.png)
+
+Real-world examples:
 - [`write-the docs` and `write-the mkdocs` to build documenation for `autoresearcher` 🤖](https://github.com/eimenhmdt/autoresearcher/pull/17)
 
-For detailed information on available options and parameters, refer to the official (`write-the` generated) documentation.
+For detailed information on available options and parameters, refer to the official (`write-the` generated) [documentation](https://write-the.wytamma.com/).
 
 ## Roadmap
 
