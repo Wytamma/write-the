@@ -1,12 +1,14 @@
 import typer
+import os
 from write_the.__about__ import __version__
 from write_the.docs import write_the_docs
 from write_the.mkdocs import write_the_mkdocs
-from ..utils import list_python_files
+from write_the.utils import list_python_files
 from pathlib import Path
 from rich.console import Console
 from rich.syntax import Syntax
 from typing import List, Optional
+from black import InvalidInput
 
 app = typer.Typer()
 
@@ -31,7 +33,7 @@ def docs(
         False, "--context", "-c", help="Send context with nodes."
     ),
     pretty: bool = typer.Option(
-        False, "--pretty", "-p", help="Syntax highlight the output."
+        False, "--pretty", "-p", help="Use Black to format the output."
     ),
     nodes: List[str] = typer.Option(
         None,
@@ -41,7 +43,7 @@ def docs(
     ),
 ):
     """
-    Document and format your code!
+    Document your code!
     """
     if file.is_dir():
         files = list_python_files(file)
@@ -52,7 +54,7 @@ def docs(
         if len(files) > 1:
             typer.secho(file, fg="green")
         result = write_the_docs(
-            file, nodes=nodes, force=force, inplace=inplace, context=context
+            file, nodes=nodes, force=force, inplace=inplace, context=context, pretty=pretty
         )
         if inplace:
             with open(file, "w") as f:

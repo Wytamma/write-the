@@ -12,7 +12,7 @@ from .chain import run
 
 
 def write_the_docs(
-    filename: Path, nodes=[], force=False, inplace=False, context=True
+    filename: Path, nodes=[], force=False, inplace=False, context=True, pretty=False
 ) -> str:
     """
     Generates docstrings for a given file.
@@ -40,8 +40,8 @@ def write_the_docs(
     """
     with open(filename, "r") as file:
         source_code = file.read()
-
-    source_code = format_str(source_code, mode=FileMode())
+    if pretty:
+        source_code = format_str(source_code, mode=FileMode())
     tree = cst.parse_module(source_code)
     extract_specific_nodes = False
 
@@ -52,30 +52,31 @@ def write_the_docs(
         nodes = get_node_names(tree, force)
     if not nodes:
         return source_code
-    remove_docstrings_tree = remove_docstrings(tree, nodes)
+    tree_without_docstrings = remove_docstrings(tree, nodes)
     if not context:
         if extract_specific_nodes:
-            extracted_nodes = extract_nodes_from_tree(remove_docstrings_tree, nodes)
+            extracted_nodes = extract_nodes_from_tree(tree_without_docstrings, nodes)
             processed_tree = nodes_to_tree(extracted_nodes)
         else:
             all_nodes = get_node_names(tree, False)
             nodes_to_remove = [n for n in all_nodes if n not in nodes]
             processed_tree = remove_nodes_from_tree(
-                remove_docstrings_tree, nodes_to_remove
+                tree_without_docstrings, nodes_to_remove
             )
         code = processed_tree.code
     else:
-        code = remove_docstrings_tree.code
+        code = tree_without_docstrings.code
     result = run(code=code, nodes=nodes)
     docstring_dict = {}
     for line in result.split("\n\n"):
         (node_name, docsting) = line.split(":", 1)
-        docstring_dict[node_name] = docsting + "\n\n"
-    modified_tree = remove_docstrings_tree.visit(DocstringAdder(docstring_dict, force))
+        docstring_dict[node_name] = docsting + "\n"
+    modified_tree = tree_without_docstrings.visit(DocstringAdder(docstring_dict, force))
 
     if not inplace and extract_specific_nodes:
         extracted_nodes = extract_nodes_from_tree(tree, nodes)
         modified_tree = nodes_to_tree(extracted_nodes)
 
-    modified_code = modified_tree.code
-    return format_str(modified_code, mode=FileMode())
+    if pretty:
+        return format_str(modified_tree.code, mode=FileMode())
+    return modified_tree.code
