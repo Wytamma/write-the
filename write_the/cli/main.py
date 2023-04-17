@@ -126,9 +126,11 @@ def tests(
     force: bool = typer.Option(
         False, "--force", "-f", help="Generate docstings even if they already exist."
     ),
-
     empty: bool = typer.Option(
         False, "--empty", "-e", help="Save empty files if a test creation fails. This will prevent write-the from regenerating failed test creations."
+    ),
+    gpt_4: bool = typer.Option(
+        False, "--gpt-4", help="Use GPT-4 to generate the tests (requires API will access)."
     ),
 ):
     """
@@ -159,7 +161,7 @@ def tests(
             failed = False
             progress.add_task(description=f"{file}", total=None)
             try:
-                result = write_the_tests(file)
+                result = write_the_tests(file, gpt_4=gpt_4)
             except InvalidInput:
                 failed = True
                 result = ""
