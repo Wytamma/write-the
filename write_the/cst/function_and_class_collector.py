@@ -37,7 +37,9 @@ class FunctionAndClassCollector(cst.CSTVisitor):
         self.current_class = node.name.value
         if not has_docstring(node) or self.force:
             self.classes.append(node.name.value)
-        super().visit_ClassDef(node)  # Call the superclass method to continue the visit
+        # self.visit_ClassDef(node)  # Call the superclass method to continue the visit
+
+    def leave_ClassDef(self, node: cst.ClassDef) -> None:
         self.current_class = None
 
 

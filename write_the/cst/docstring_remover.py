@@ -1,5 +1,5 @@
 import libcst as cst
-
+from .utils import remove_docstring
 
 class DocstringRemover(cst.CSTTransformer):
     def __init__(self, nodes):
@@ -22,7 +22,7 @@ class DocstringRemover(cst.CSTTransformer):
           cst.FunctionDef: The updated FunctionDef node with the docstring removed if it is in the list of nodes.
         """
         if original_node.name.value in self.nodes:
-            return self.remove_docstring(updated_node)
+            return remove_docstring(updated_node)
         return updated_node
 
     def leave_ClassDef(
@@ -37,26 +37,9 @@ class DocstringRemover(cst.CSTTransformer):
           cst.ClassDef: The updated ClassDef node with the docstring removed if it is in the list of nodes.
         """
         if original_node.name.value in self.nodes:
-            return self.remove_docstring(updated_node)
+            return remove_docstring(updated_node)
         return updated_node
 
-    def remove_docstring(self, node):
-        """
-        Removes the docstring from a node.
-        Args:
-          node (cst.CSTNode): The node to remove the docstring from.
-        Returns:
-          cst.CSTNode: The node with the docstring removed.
-        """
-        if not node.body.body:
-            return node
-        first_stmt = node.body.body[0]
-        if isinstance(first_stmt, cst.SimpleStatementLine):
-            stmt = first_stmt.body[0]
-            if isinstance(stmt, cst.Expr) and isinstance(stmt.value, cst.SimpleString):
-                new_body = node.body.with_changes(body=node.body.body[1:])
-                return node.with_changes(body=new_body)
-        return node
 
 
 def remove_docstrings(tree, nodes):

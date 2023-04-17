@@ -1,5 +1,5 @@
 import libcst as cst
-from .utils import has_docstring
+from .utils import has_docstring, remove_docstring
 import textwrap
 
 class DocstringAdder(cst.CSTTransformer):
@@ -21,6 +21,11 @@ class DocstringAdder(cst.CSTTransformer):
         """
         return self.add_docstring(updated_node)
 
+    def visit_ClassDef(
+            self, original_node: cst.ClassDef
+    ) -> None:
+        self.current_class = original_node.name.value
+
     def leave_ClassDef(
         self, original_node: cst.ClassDef, updated_node: cst.ClassDef
     ) -> cst.ClassDef:
@@ -32,18 +37,17 @@ class DocstringAdder(cst.CSTTransformer):
         Returns:
           cst.ClassDef: The updated CST node with a docstring added.
         """
-        self.current_class = original_node.name.value
-        updated_node = self.add_docstring(updated_node)
         self.current_class = None
+        updated_node = self.add_docstring(updated_node)
         return updated_node
 
     def add_docstring(self, node):
         """
         Adds a docstring to a CST node.
         Args:
-          node (cst.CSTNode): The CST node to add a docstring to.
+            node (cst.CSTNode): The CST node to add a docstring to.
         Returns:
-          cst.CSTNode: The updated CST node with a docstring added.
+            cst.CSTNode: The updated CST node with a docstring added.
         """
         key = (
             f"{self.current_class}.{node.name.value}"
@@ -51,11 +55,14 @@ class DocstringAdder(cst.CSTTransformer):
             else node.name.value
         )
         docstring = self.docstrings.get(key, None)
-
-        if docstring and (not has_docstring(node) or self.force):
+        if docstring and (self.force or not has_docstring(node)):
+            if self.force and has_docstring(node):
+                # Remove existing docstring
+                node = remove_docstring(node)
             dedented_docstring = textwrap.dedent(docstring)
             indented_docstring = textwrap.indent(dedented_docstring, '    ')
             new_docstring = cst.parse_statement(f'"""{indented_docstring}    """')
             body = node.body.with_changes(body=[new_docstring] + list(node.body.body))
             return node.with_changes(body=body)
+        
         return node
