@@ -63,7 +63,6 @@ write-the mkdocs [OPTIONS] [PATH_TO_SOURCE_CODE]
 Real-world examples:
 - [`write-the docs` and `write-the mkdocs` to build documenation for `autoresearcher` 🤖](https://github.com/eimenhmdt/autoresearcher/pull/17)
 
-
 ### Tests:
 ```bash
 write-the tests [OPTIONS] [PATH_TO_SOURCE_CODE]
