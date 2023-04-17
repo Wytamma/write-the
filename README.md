@@ -1,4 +1,6 @@
-# Write-The: AI-powered Code Generation and Refactoring Tool
+# :robot: write-the
+
+AI-powered Code Generation and Refactoring Tool
 
 [![PyPI - Version](https://img.shields.io/pypi/v/write-the.svg)](https://pypi.org/project/write-the)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/write-the.svg)](https://pypi.org/project/write-the)
@@ -7,7 +9,7 @@
 [![write-the - docs](https://badgen.net/badge/write-the/tests/green?icon=https://raw.githubusercontent.com/Wytamma/write-the/master/images/write-the-icon.svg)](https://write-the.wytamma.com/)
 
 
-Write-The is an AI-powered code generation and refactoring tool that leverages GPT-4 to help developers automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
+Write-The is an AI-powered code generation and refactoring tool that leverages GPTs to help developers automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
 
 ![](images/multiply.png)
 
@@ -25,44 +27,40 @@ Write-The is an AI-powered code generation and refactoring tool that leverages G
 
 
 ## Installation
-
 ```console
 pip install write-the
 ```
-
 ## Features
-Write-The offers the following AI-driven features:
 
+Write-The offers the following AI-driven features:
 - Write-the Docs: Automatically generate documentation for your codebase, including class and function descriptions, parameter explanations, and examples.
-- Write-the Tests: Create test cases for your code, ensuring thorough test coverage and better code quality.
-- Write-the Refactor: Receive refactoring suggestions, reduce code complexity, optimize performance, and fix bugs.
+- Write-the Tests: Create test cases for your code, ensuring thorough test coverage and better code quality (TBD).
+- Write-the Refactor: Receive refactoring suggestions, reduce code complexity, optimize performance, and fix bugs (TBD).
 
 ## Requirements
 - Python 3.9 or higher  
-- OpenAI api key
+- OpenAI API key
 
 ## Usage
 To use Write-The, run the following commands:
 
-Write-the Docs:
+### Docs:
 ```bash
 write-the docs [OPTIONS] [PATH_TO_SOURCE_CODE]
 ```
+Examples:
+- [`write-the docs` to write the docs for the `write-the docs` command :robot:](https://github.com/Wytamma/write-the/blob/master/write_the/docs/write.py#L14)
 
-Write-the Tests:
-
+### Mkdocs:
 ```bash
-write-the tests [OPTIONS] [PATH_TO_SOURCE_CODE]
+write-the mkdocs [OPTIONS] [PATH_TO_SOURCE_CODE]
 ```
+- [`write-the docs` and `write-the mkdocs` to build documenation for `autoresearcher` :robot:](https://github.com/eimenhmdt/autoresearcher/pull/17)
 
-Write-the Refactor:
-```bash
-write-the refactor [OPTIONS] [PATH_TO_SOURCE_CODE]
-```
-
-For detailed information on available options and parameters, refer to the official documentation.
+For detailed information on available options and parameters, refer to the official (`write-the` generated) documentation.
 
 ## Roadmap
+
 For a detailed project roadmap, including planned features, improvements, and milestones, please see our Project Timeline.
 
 ## Contributing
