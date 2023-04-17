@@ -55,6 +55,7 @@ Examples:
 ```bash
 write-the mkdocs [OPTIONS] [PATH_TO_SOURCE_CODE]
 ```
+Examples:
 - [`write-the docs` and `write-the mkdocs` to build documenation for `autoresearcher` :robot:](https://github.com/eimenhmdt/autoresearcher/pull/17)
 
 For detailed information on available options and parameters, refer to the official (`write-the` generated) documentation.
