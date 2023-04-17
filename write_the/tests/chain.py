@@ -5,10 +5,10 @@ from langchain.llms import OpenAI
 
 tests_template = """
 Please generate unit tests for the following code using the pytest framework. 
-Include fixtures where appropriate, and only return test code. 
+Include fixtures and parametrize function where appropriate, and only return test code. 
 The tests should cover all possible scenarios, including edge cases. 
 Include imports where required. Do not provide explanations or additional information. 
-Remember to import the code from {path} and fix any relative imports. 
+Remember to import the code from `{path}` and fix any relative imports. 
 Please generate pytest test functions for the following code:
 ```python
 {code}
