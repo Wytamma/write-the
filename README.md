@@ -9,7 +9,7 @@ AI-powered Code Generation and Refactoring Tool
 [![write-the - docs](https://badgen.net/badge/write-the/tests/green?icon=https://raw.githubusercontent.com/Wytamma/write-the/master/images/write-the-icon.svg)](https://write-the.wytamma.com/)
 
 
-Write-The is an AI-powered code generation and refactoring tool that leverages GPTs to help developers automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
+Write-the is an AI-powered code generation and refactoring tool that leverages GPTs to help developers automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
 
 ![](images/multiply.png)
 
@@ -32,7 +32,7 @@ pip install write-the
 ```
 ## Features
 
-Write-The offers the following AI-driven features:
+Write-the offers the following AI-driven features:
 - Write-the Docs: Automatically generate documentation for your codebase, including class and function descriptions, parameter explanations, and examples.
 - Write-the Tests: Create test cases for your code, ensuring thorough test coverage and better code quality (TBD).
 - Write-the Refactor: Receive refactoring suggestions, reduce code complexity, optimize performance, and fix bugs (TBD).
@@ -42,7 +42,7 @@ Write-The offers the following AI-driven features:
 - OpenAI API key
 
 ## Usage
-To use Write-The, run the following commands:
+To use `write-the`, run the following commands:
 
 ### Docs:
 ```bash
