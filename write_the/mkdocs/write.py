@@ -79,7 +79,7 @@ extra:
   social:
     - icon: fontawesome/solid/robot
       link: https://github.com/Wytamma/write-the
-      name: Generate with write-the
+      name: Generated with write-the
 
 plugins:
 - search

@@ -12,7 +12,7 @@ from .chain import run
 
 
 def write_the_docs(
-    filename: Path, nodes=[], force=False, inplace=False, context=True, pretty=False
+    filename: Path, nodes=[], force=False, save=False, context=True, pretty=False
 ) -> str:
     """
     Generates docstrings for a given file.
@@ -20,7 +20,7 @@ def write_the_docs(
       filename (Path): The path to the file to generate docstrings for.
       nodes (list): A list of nodes to generate docstrings for.
       force (bool): Whether to overwrite existing docstrings.
-      inplace (bool): Whether to generate docstrings in the same file.
+      save (bool): Whether to generate docstrings in the same file.
       context (bool): Whether to send context with the code (can improve docstings).
     Returns:
       str: The source code with the generated docstrings.
@@ -73,7 +73,7 @@ def write_the_docs(
         docstring_dict[node_name] = docsting + "\n"
     modified_tree = tree_without_docstrings.visit(DocstringAdder(docstring_dict, force))
 
-    if not inplace and extract_specific_nodes:
+    if not save and extract_specific_nodes:
         extracted_nodes = extract_nodes_from_tree(tree, nodes)
         modified_tree = nodes_to_tree(extracted_nodes)
 

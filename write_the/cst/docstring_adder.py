@@ -1,6 +1,6 @@
 import libcst as cst
 from .utils import has_docstring
-
+import textwrap
 
 class DocstringAdder(cst.CSTTransformer):
     def __init__(self, docstrings, force):
@@ -53,7 +53,9 @@ class DocstringAdder(cst.CSTTransformer):
         docstring = self.docstrings.get(key, None)
 
         if docstring and (not has_docstring(node) or self.force):
-            new_docstring = cst.parse_statement(f'"""{docstring}"""')
+            dedented_docstring = textwrap.dedent(docstring)
+            indented_docstring = textwrap.indent(dedented_docstring, '    ')
+            new_docstring = cst.parse_statement(f'"""{indented_docstring}    """')
             body = node.body.with_changes(body=[new_docstring] + list(node.body.body))
             return node.with_changes(body=body)
         return node
