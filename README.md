@@ -33,7 +33,7 @@ pip install write-the
 
 Write-the offers the following AI-driven features:
 - Write-the Docs: Automatically generate documentation for your codebase, including class and function descriptions, parameter explanations, and examples.
-- Write-the Tests: Create test cases for your code, ensuring thorough test coverage and better code quality (TBD).
+- Write-the Tests: Create test cases for your code, ensuring thorough test coverage and better code quality.
 - Write-the Refactor: Receive refactoring suggestions, reduce code complexity, optimize performance, and fix bugs (TBD).
 
 ## Requirements
@@ -62,6 +62,17 @@ write-the mkdocs [OPTIONS] [PATH_TO_SOURCE_CODE]
 
 Real-world examples:
 - [`write-the docs` and `write-the mkdocs` to build documenation for `autoresearcher` 🤖](https://github.com/eimenhmdt/autoresearcher/pull/17)
+
+
+### Tests:
+```bash
+write-the tests [OPTIONS] [PATH_TO_SOURCE_CODE]
+```
+
+![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/tests-help.png)
+
+Real-world examples:
+- [`write-the tests` to write tests for `write-the docs` 🤖](https://github.com/Wytamma/write-the/commit/6b6c8a08d7991e07e4972281c471f7842c04dda0)
 
 For detailed information on available options and parameters, refer to the official (`write-the` generated) [documentation](https://write-the.wytamma.com/).
 
