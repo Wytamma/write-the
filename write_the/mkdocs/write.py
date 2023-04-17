@@ -59,7 +59,7 @@ site_name: {project_name}
 
 theme:
   name: "material"
-  # homepage: https://github.com/wytamma/write-the
+  # homepage: https://write-the.wytamma.com
   # logo: assets/logo.png
   # favicon: images/favicon.png
   palette: 
@@ -101,6 +101,6 @@ jobs:
         with:
           key: ${{ github.ref }}
           path: .cache
-      - run: pip install hatch
-      - run: hatch run mkdocs gh-deploy --force
+      - run: pip install "mkdocstrings[python]" "mkdocs-material"
+      - run: mkdocs gh-deploy --force
 """
