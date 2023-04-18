@@ -16,6 +16,8 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+  icon:
+    logo: fontawesome/solid/robot
   features:
     - toc.follow
     - content.action.edit
