@@ -11,7 +11,7 @@ AI-powered Documentation and Test Generation Tool
 
 Write-the is an AI-powered documentation and test generation tool that leverages GPTs to automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
 
-![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/multiply.png)
+![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/multiply-docs-tests.png)
 
 -----
 
