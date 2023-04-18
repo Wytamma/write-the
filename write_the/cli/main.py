@@ -71,7 +71,7 @@ def docs(
                 result = write_the_docs(
                     file, nodes=nodes, force=force, save=save, context=context, pretty=pretty
                 )
-            except Exception as e:
+            except Exception as e:           
                 raise e
                 failed = True
             progress.stop()
@@ -100,12 +100,15 @@ def mkdocs(
     ),
     readme: Optional[Path] = typer.Option(
         None, help="Path to projects README (used to create index.md).", dir_okay=False
-    )
+    ),
+    out_dir: Optional[Path] = typer.Option(
+        None, "--out", "-o", help="Path to save output (docs/ and yaml). Defaults to current directory."
+    ),
 ):
     """
     Generate a mkdocs website for a project including the API reference.
     """
-    write_the_mkdocs(code_dir=code_dir, readme=readme)
+    write_the_mkdocs(code_dir=code_dir, readme=readme, out_dir=out_dir)
 
 
 @app.command()
@@ -124,7 +127,7 @@ def tests(
         False, "--group/--flat", "-g", help="Group the tests into folder or keep them flat."
     ),
     force: bool = typer.Option(
-        False, "--force", "-f", help="Generate docstings even if they already exist."
+        False, "--force", "-f", help="Generate tests even if they already exist."
     ),
     empty: bool = typer.Option(
         False, "--empty", "-e", help="Save empty files if a test creation fails. This will prevent write-the from regenerating failed test creations."

@@ -8,7 +8,7 @@ from write_the.cst.docstring_remover import remove_docstrings
 from write_the.cst.function_and_class_collector import get_node_names
 from write_the.cst.node_extractor import extract_nodes_from_tree
 from write_the.cst.node_remover import remove_nodes_from_tree
-from .chain import run
+from write_the.docs.chain import run
 
 
 def write_the_docs(
@@ -69,14 +69,16 @@ def write_the_docs(
     result = run(code=code, nodes=nodes)
     docstring_dict = {}
     for line in result.split("\n\n"):
+        line = line.strip()
+        if not line:
+            continue
         (node_name, docsting) = line.split(":", 1)
         docstring_dict[node_name] = docsting + "\n"
     modified_tree = tree_without_docstrings.visit(DocstringAdder(docstring_dict, force))
-
     if not save and extract_specific_nodes:
-        extracted_nodes = extract_nodes_from_tree(tree, nodes)
+        extracted_nodes = extract_nodes_from_tree(modified_tree, nodes)
         modified_tree = nodes_to_tree(extracted_nodes)
-
     if pretty:
+        
         return format_str(modified_tree.code, mode=FileMode())
     return modified_tree.code

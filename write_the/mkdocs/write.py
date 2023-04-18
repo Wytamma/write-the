@@ -4,17 +4,20 @@ from collections import defaultdict
 from write_the.utils import list_python_files
 
 
-def write_the_mkdocs(code_dir: Path, readme: Path = None, project_name=None):
+def write_the_mkdocs(code_dir: Path, readme: Path = None, out_dir: Path = Path('.'), project_name=None):
     """
-    Generates a mkdocs.yml file and reference files for a project.
+    Generates a mkdocs project from a directory of python files.
     Args:
-      readme (Path): Path to the project's README.
-      code_dir (Path): Path to the project's code directory.
-      project_name (str, optional): Name of the project. Defaults to the name of the current working directory.
-      force (bool, optional): If True, overwrite existing mkdocs.yml and index.md files. Defaults to False.
+      code_dir (Path): The directory containing the python files.
+      readme (Path, optional): The readme file to include in the project. Defaults to None.
+      out_dir (Path, optional): The directory to write the project to. Defaults to the current directory.
+      project_name (str, optional): The name of the project. Defaults to the name of the code_dir.
     Notes:
-      If `project_name` is not provided, the name of the current working directory is used.
-      If `force` is False, existing mkdocs.yml and index.md files will not be overwritten.
+      If readme is not provided, the project will not have a home page.
+      If project_name is not provided, the project will be named after the code_dir.
+    Side Effects:
+      Creates a mkdocs project in the out_dir.
+      Creates a .github/workflows/mkdocs.yml file in the out_dir.
     Returns:
       None
     """
@@ -35,8 +38,8 @@ def write_the_mkdocs(code_dir: Path, readme: Path = None, project_name=None):
                 break
         module = str(file).rstrip(".py").replace("/", ".")  # breaks on windows?
         references[key].append(f"::: {module}")
-
-    reference_path = Path("./docs/reference/")
+    docs_dir = out_dir / 'docs'
+    reference_path = docs_dir / "reference"
     reference_path.mkdir(parents=True, exist_ok=True)
     for doc in references:
         with open(f"{reference_path}/{doc}.md", "w") as f:
@@ -44,10 +47,10 @@ def write_the_mkdocs(code_dir: Path, readme: Path = None, project_name=None):
                 f.write(ref + "\n\n")
     if readme:
         index_text = f"---\ntitle: Home\n---\n{readme.read_text()}"
-        Path("./docs/index.md").write_text(index_text)
-    if not Path("./mkdocs.yml").exists():
-        Path("./mkdocs.yml").write_text(mkdocs)
-    action_path = Path(".github/workflows/mkdocs.yml")
+        (docs_dir / "index.md").write_text(index_text)
+    if not (out_dir / "mkdocs.yml").exists():
+        (out_dir / "mkdocs.yml").write_text(mkdocs)
+    action_path = out_dir / ".github" / "workflows" / "mkdocs.yml"
     if not action_path.exists():
         action_path.parent.mkdir(parents=True, exist_ok=True)
         action_path.write_text(action_template)
