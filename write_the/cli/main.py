@@ -101,8 +101,8 @@ def mkdocs(
     readme: Optional[Path] = typer.Option(
         None, help="Path to projects README (used to create index.md).", dir_okay=False
     ),
-    out_dir: Optional[Path] = typer.Option(
-        None, "--out", "-o", help="Path to save output (docs/ and yaml). Defaults to current directory."
+    out_dir: Path = typer.Option(
+        Path('.'), "--out", "-o", help="Path to save output (docs/ and yaml). Defaults to current directory."
     ),
 ):
     """
