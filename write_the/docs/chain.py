@@ -1,17 +1,34 @@
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
-import unittest.mock as mock
 
 
 docs_template = """
-Write Google style docstrings for the following code, using the multi-line format with a description and examples. 
-The first lines describe the code. Include parameter type definitions where possible, and specify any exceptions raised and side effects of the function. 
-For functions with multiple return values or ambiguous behaviour, provide clear guidelines for documenting the behaviour. 
-Please refer to the Google style guide for more information. Any notes should be include in the `Notes:` section of the docstring. Only return the docstring its self. 
-Return each docstring on a single line with the name of the function/class as the key and the docstring as the value. Separate each result by a newline. 
-If the function is a method return the name in the format Class.method. The Class docstrings should contain Description and Attributes. 
-Each result should be separated by multiple newlines. \n---\nEXAMPLE\n---\n\ndef add(a, b): \n    return a + b \nHere are formatted docstrings for only add:\n\nadd:\n  Sums 2 numbers.\n  Args:\n    a (int): The first number to add.\n    b (int): The second number to add.\n  Returns:\n    int: The sum of `a` and `b`.\n  Examples:\n    >>> add(1, 2)\n    3\n\n\n\n---\nCODE\n---\n{code}\nHere are formatted docstrings for only {nodes}:\n"""
+Provide Google style docstrings for the given code. 
+Include description, parameter types, exceptions, side effects, and examples. 
+For detailed instructions, refer to the Google style guide. 
+Return only the docstrings, with function/class names as keys. 
+Use the Class.method format for methods. Separate results by newlines.
+
+Example:
+def add(a, b):
+  return a + b
+Formatted docstrings for add:
+add:
+  Sums 2 numbers.
+  Args:
+    a (int): The first number to add.
+    b (int): The second number to add.
+  Returns:
+    int: The sum of a and b.
+  Examples:
+    >>> add(1, 2)
+    3
+
+Code:
+{code}
+Formatted docstrings for {nodes}:
+"""
 
 def run(code, nodes: list) -> str:
     """
@@ -29,7 +46,7 @@ def run(code, nodes: list) -> str:
           input_variables (list): A list of input variables for the prompt.
           template (str): The template for the prompt.'
     """
-    llm = OpenAI(temperature=0, max_tokens=2000)
+    llm = OpenAI(temperature=0, max_tokens=-1)
     docs_prompt = PromptTemplate(input_variables=["code", "nodes"], template=docs_template)
     docs_chain = LLMChain(llm=llm, prompt=docs_prompt)
     nodes = ",".join(nodes)
