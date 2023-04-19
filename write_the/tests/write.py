@@ -22,5 +22,5 @@ def write_the_tests(
         source_code = file.read()
     source_code = format_str(source_code, mode=FileMode())
     result = run(code=source_code, path=filename, gpt_4=gpt_4)
-    code = result.strip().lstrip("```python").lstrip("```").rstrip("```")
+    code = result.strip().lstrip("Test Code:\n```python").lstrip("```python").lstrip("```").rstrip("```")
     return format_str(code, mode=FileMode())

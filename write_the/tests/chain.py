@@ -4,19 +4,19 @@ from langchain.llms import OpenAI
 
 
 tests_template = """
-Please generate unit tests for the following code using the pytest framework. 
-Include fixtures and parametrize function where appropriate, and only return test code. 
-The tests should cover all possible scenarios, including edge cases. 
-Include imports where required. Do not provide explanations or additional information. 
-Remember to import the code from `{path}` and fix any relative imports. 
-Please generate pytest test functions for the following code:
+Generate pytest unit tests for the code below, covering all possible scenarios and edge cases. 
+Use fixtures and parametrize when appropriate. 
+Import the code from {path} and adjust any relative imports. 
+Return only the test code.
+
+Code:
 ```python
 {code}
 ```
 """
 docs_prompt = PromptTemplate(input_variables=["code", "path"], template=tests_template)
 
-def run(code, path, temperature=0, max_tokens=2000, gpt_4=False) -> str:
+def run(code, path, temperature=0, max_tokens=-1, gpt_4=False) -> str:
     """
     Generates unit tests for a given code snippet using the pytest framework.
     Args:
