@@ -1,0 +1,1057 @@
+write-the ❯ hatch run write-the tests write_the/cst -p
+
+Test Code:
+```python
+import pytest
+
+from write_the.cst.function_and_class_collector import FunctionAndClassCollector, get_node_names
+from write_the.cst.utils import has_docstring
+
+@pytest.fixture
+def tree():
+    return cst.parse_module("""
+def foo():
+    pass
+
+class Bar:
+    pass
+
+def baz():
+    pass
+
+class Qux:
+    pass
+""")
+
+@pytest.fixture
+def tree_with_docstrings():
+    return cst.parse_module("""
+def foo():
+    \"\"\"Docstring for foo\"\"\"
+    pass
+
+class Bar:
+    \"\"\"Docstring for Bar\"\"\"
+    pass
+
+def baz():
+    \"\"\"Docstring for baz\"\"\"
+    pass
+
+class Qux:
+    \"\"\"Docstring for Qux\"\"\"
+    pass
+""")
+
+def test_FunctionAndClassCollector_init():
+    collector = FunctionAndClassCollector(True)
+    assert collector.functions == []
+    assert collector.classes == []
+    assert collector.current_class is None
+    assert collector.force is True
+
+def test_FunctionAndClassCollector_visit_FunctionDef(tree):
+    collector = FunctionAndClassCollector(True)
+    tree.visit(collector)
+    assert collector.functions == ["foo", "baz"]
+
+def test_FunctionAndClassCollector_visit_ClassDef(tree):
+    collector = FunctionAndClassCollector(True)
+    tree.visit(collector)
+    assert collector.classes == ["Bar", "Qux"]
+
+def test_FunctionAndClassCollector_leave_ClassDef(tree):
+    collector = FunctionAndClassCollector(True)
+    tree.visit(collector)
+    assert collector.current_class is None
+
+def test_get_node_names_force_true(tree):
+    names = get_node_names(tree, True)
+    assert names == ["foo", "Bar", "baz", "Qux"]
+
+def test_get_node_names_force_false(tree_with_docstrings):
+    names = get_node_names(tree_with_docstrings, False)
+    assert names == []
+
+def test_has_docstring():
+    node = cst.parse_module("""
+def foo():
+    \"\"\"Docstring for foo\"\"\"
+    pass
+""")
+    assert has_docstring(node.body[0]) is True
+✅ write_the/cst/function_and_class_collector.py
+import pytest                                                                                                                                             
+                                                                                                                                                          
+from write_the.cst.function_and_class_collector import (                                                                                                  
+    FunctionAndClassCollector,                                                                                                                            
+    get_node_names,                                                                                                                                       
+)                                                                                                                                                         
+from write_the.cst.utils import has_docstring                                                                                                             
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def tree():                                                                                                                                               
+    return cst.parse_module(                                                                                                                              
+        """                                                                                                                                               
+def foo():                                                                                                                                                
+    pass                                                                                                                                                  
+                                                                                                                                                          
+class Bar:                                                                                                                                                
+    pass                                                                                                                                                  
+                                                                                                                                                          
+def baz():                                                                                                                                                
+    pass                                                                                                                                                  
+                                                                                                                                                          
+class Qux:                                                                                                                                                
+    pass                                                                                                                                                  
+"""                                                                                                                                                       
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def tree_with_docstrings():                                                                                                                               
+    return cst.parse_module(                                                                                                                              
+        """                                                                                                                                               
+def foo():                                                                                                                                                
+    \"\"\"Docstring for foo\"\"\"                                                                                                                         
+    pass                                                                                                                                                  
+                                                                                                                                                          
+class Bar:                                                                                                                                                
+    \"\"\"Docstring for Bar\"\"\"                                                                                                                         
+    pass                                                                                                                                                  
+                                                                                                                                                          
+def baz():                                                                                                                                                
+    \"\"\"Docstring for baz\"\"\"                                                                                                                         
+    pass                                                                                                                                                  
+                                                                                                                                                          
+class Qux:                                                                                                                                                
+    \"\"\"Docstring for Qux\"\"\"                                                                                                                         
+    pass                                                                                                                                                  
+"""                                                                                                                                                       
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+def test_FunctionAndClassCollector_init():                                                                                                                
+    collector = FunctionAndClassCollector(True)                                                                                                           
+    assert collector.functions == []                                                                                                                      
+    assert collector.classes == []                                                                                                                        
+    assert collector.current_class is None                                                                                                                
+    assert collector.force is True                                                                                                                        
+                                                                                                                                                          
+                                                                                                                                                          
+def test_FunctionAndClassCollector_visit_FunctionDef(tree):                                                                                               
+    collector = FunctionAndClassCollector(True)                                                                                                           
+    tree.visit(collector)                                                                                                                                 
+    assert collector.functions == ["foo", "baz"]                                                                                                          
+                                                                                                                                                          
+                                                                                                                                                          
+def test_FunctionAndClassCollector_visit_ClassDef(tree):                                                                                                  
+    collector = FunctionAndClassCollector(True)                                                                                                           
+    tree.visit(collector)                                                                                                                                 
+    assert collector.classes == ["Bar", "Qux"]                                                                                                            
+                                                                                                                                                          
+                                                                                                                                                          
+def test_FunctionAndClassCollector_leave_ClassDef(tree):                                                                                                  
+    collector = FunctionAndClassCollector(True)                                                                                                           
+    tree.visit(collector)                                                                                                                                 
+    assert collector.current_class is None                                                                                                                
+                                                                                                                                                          
+                                                                                                                                                          
+def test_get_node_names_force_true(tree):                                                                                                                 
+    names = get_node_names(tree, True)                                                                                                                    
+    assert names == ["foo", "Bar", "baz", "Qux"]                                                                                                          
+                                                                                                                                                          
+                                                                                                                                                          
+def test_get_node_names_force_false(tree_with_docstrings):                                                                                                
+    names = get_node_names(tree_with_docstrings, False)                                                                                                   
+    assert names == []                                                                                                                                    
+                                                                                                                                                          
+                                                                                                                                                          
+def test_has_docstring():                                                                                                                                 
+    node = cst.parse_module(                                                                                                                              
+        """                                                                                                                                               
+def foo():                                                                                                                                                
+    \"\"\"Docstring for foo\"\"\"                                                                                                                         
+    pass                                                                                                                                                  
+"""                                                                                                                                                       
+    )                                                                                                                                                     
+    assert has_docstring(node.body[0]) is True                                                                                                            
+                                                                                                                                                          
+
+Test Code:
+```python
+import pytest
+
+from write_the.cst.docstring_adder import DocstringAdder
+from write_the.cst.utils import has_docstring, remove_docstring
+
+@pytest.fixture
+def docstrings():
+    return {
+        "function_name": "This is a docstring for a function.",
+        "ClassName.method_name": "This is a docstring for a method."
+    }
+
+@pytest.fixture
+def force():
+    return False
+
+@pytest.fixture
+def function_def_node():
+    return cst.FunctionDef(
+        name=cst.Name("function_name"),
+        params=cst.Parameters(),
+        body=cst.Suite([cst.Pass()])
+    )
+
+@pytest.fixture
+def class_def_node():
+    return cst.ClassDef(
+        name=cst.Name("ClassName"),
+        body=cst.Suite([
+            cst.FunctionDef(
+                name=cst.Name("method_name"),
+                params=cst.Parameters(),
+                body=cst.Suite([cst.Pass()])
+            )
+        ])
+    )
+
+def test_leave_function_def_with_no_docstring(docstrings, force, function_def_node):
+    # given
+    docstring_adder = DocstringAdder(docstrings, force)
+    # when
+    updated_node = docstring_adder.leave_FunctionDef(function_def_node, function_def_node)
+    # then
+    assert has_docstring(updated_node)
+    assert updated_node.body.body[0].value.strip() == docstrings["function_name"]
+
+def test_leave_function_def_with_existing_docstring(docstrings, force, function_def_node):
+    # given
+    docstring_adder = DocstringAdder(docstrings, force)
+    existing_docstring = cst.parse_statement('"""This is an existing docstring."""')
+    updated_node = function_def_node.with_changes(body=[existing_docstring] + list(function_def_node.body.body))
+    # when
+    updated_node = docstring_adder.leave_FunctionDef(function_def_node, updated_node)
+    # then
+    assert has_docstring(updated_node)
+    assert updated_node.body.body[0].value.strip() == docstrings["function_name"]
+
+def test_leave_function_def_with_existing_docstring_and_force_true(docstrings, function_def_node):
+    # given
+    force = True
+    docstring_adder = DocstringAdder(docstrings, force)
+    existing_docstring = cst.parse_statement('"""This is an existing docstring."""')
+    updated_node = function_def_node.with_changes(body=[existing_docstring] + list(function_def_node.body.body))
+    # when
+    updated_node = docstring_adder.leave_FunctionDef(function_def_node, updated_node)
+    # then
+    assert has_docstring(updated_node)
+    assert updated_node.body.body[0].value.strip() == docstrings["function_name"]
+
+def test_leave_class_def_with_no_docstring(docstrings, force, class_def_node):
+    # given
+    docstring_adder = DocstringAdder(docstrings, force)
+    # when
+    updated_node = docstring_adder.leave_ClassDef(class_def_node, class_def_node)
+    # then
+    assert has_docstring(updated_node)
+    assert updated_node.body.body[0].value.strip() == docstrings["ClassName.method_name"]
+
+def test_leave_class_def_with_existing_docstring(docstrings, force, class_def_node):
+    # given
+    docstring_adder = DocstringAdder(docstrings, force)
+    existing_docstring = cst.parse_statement('"""This is an existing docstring."""')
+    updated_node = class_def_node.with_changes(body=[existing_docstring] + list(class_def_node.body.body))
+    # when
+    updated_node = docstring_adder.leave_ClassDef(class_def_node, updated_node)
+    # then
+    assert has_docstring(updated_node)
+    assert updated_node.body.body[0].value.strip() == docstrings["ClassName.method_name"]
+
+def test_leave_class_def_with_existing_docstring_and_force_true(docstrings, class_def_node):
+    # given
+    force = True
+    docstring_adder = DocstringAdder(docstrings, force)
+    existing_docstring = cst.parse_statement('"""This is an existing docstring."""')
+    updated_node = class_def_node.with_changes(body=[existing_docstring] + list(class_def_node.body.body))
+    # when
+    updated_node = docstring_adder.leave_ClassDef(class_def_node, updated_node)
+    # then
+    assert has_docstring(updated_node)
+    assert updated_node.body.body[0].value.strip() == docstrings["ClassName.method_name"]
+```
+✅ write_the/cst/docstring_adder.py
+import pytest                                                                                                                                             
+                                                                                                                                                          
+from write_the.cst.docstring_adder import DocstringAdder                                                                                                  
+from write_the.cst.utils import has_docstring, remove_docstring                                                                                           
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def docstrings():                                                                                                                                         
+    return {                                                                                                                                              
+        "function_name": "This is a docstring for a function.",                                                                                           
+        "ClassName.method_name": "This is a docstring for a method.",                                                                                     
+    }                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def force():                                                                                                                                              
+    return False                                                                                                                                          
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def function_def_node():                                                                                                                                  
+    return cst.FunctionDef(                                                                                                                               
+        name=cst.Name("function_name"),                                                                                                                   
+        params=cst.Parameters(),                                                                                                                          
+        body=cst.Suite([cst.Pass()]),                                                                                                                     
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def class_def_node():                                                                                                                                     
+    return cst.ClassDef(                                                                                                                                  
+        name=cst.Name("ClassName"),                                                                                                                       
+        body=cst.Suite(                                                                                                                                   
+            [                                                                                                                                             
+                cst.FunctionDef(                                                                                                                          
+                    name=cst.Name("method_name"),                                                                                                         
+                    params=cst.Parameters(),                                                                                                              
+                    body=cst.Suite([cst.Pass()]),                                                                                                         
+                )                                                                                                                                         
+            ]                                                                                                                                             
+        ),                                                                                                                                                
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_function_def_with_no_docstring(docstrings, force, function_def_node):                                                                      
+    # given                                                                                                                                               
+    docstring_adder = DocstringAdder(docstrings, force)                                                                                                   
+    # when                                                                                                                                                
+    updated_node = docstring_adder.leave_FunctionDef(                                                                                                     
+        function_def_node, function_def_node                                                                                                              
+    )                                                                                                                                                     
+    # then                                                                                                                                                
+    assert has_docstring(updated_node)                                                                                                                    
+    assert updated_node.body.body[0].value.strip() == docstrings["function_name"]                                                                         
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_function_def_with_existing_docstring(                                                                                                      
+    docstrings, force, function_def_node                                                                                                                  
+):                                                                                                                                                        
+    # given                                                                                                                                               
+    docstring_adder = DocstringAdder(docstrings, force)                                                                                                   
+    existing_docstring = cst.parse_statement('"""This is an existing docstring."""')                                                                      
+    updated_node = function_def_node.with_changes(                                                                                                        
+        body=[existing_docstring] + list(function_def_node.body.body)                                                                                     
+    )                                                                                                                                                     
+    # when                                                                                                                                                
+    updated_node = docstring_adder.leave_FunctionDef(function_def_node, updated_node)                                                                     
+    # then                                                                                                                                                
+    assert has_docstring(updated_node)                                                                                                                    
+    assert updated_node.body.body[0].value.strip() == docstrings["function_name"]                                                                         
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_function_def_with_existing_docstring_and_force_true(                                                                                       
+    docstrings, function_def_node                                                                                                                         
+):                                                                                                                                                        
+    # given                                                                                                                                               
+    force = True                                                                                                                                          
+    docstring_adder = DocstringAdder(docstrings, force)                                                                                                   
+    existing_docstring = cst.parse_statement('"""This is an existing docstring."""')                                                                      
+    updated_node = function_def_node.with_changes(                                                                                                        
+        body=[existing_docstring] + list(function_def_node.body.body)                                                                                     
+    )                                                                                                                                                     
+    # when                                                                                                                                                
+    updated_node = docstring_adder.leave_FunctionDef(function_def_node, updated_node)                                                                     
+    # then                                                                                                                                                
+    assert has_docstring(updated_node)                                                                                                                    
+    assert updated_node.body.body[0].value.strip() == docstrings["function_name"]                                                                         
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_class_def_with_no_docstring(docstrings, force, class_def_node):                                                                            
+    # given                                                                                                                                               
+    docstring_adder = DocstringAdder(docstrings, force)                                                                                                   
+    # when                                                                                                                                                
+    updated_node = docstring_adder.leave_ClassDef(class_def_node, class_def_node)                                                                         
+    # then                                                                                                                                                
+    assert has_docstring(updated_node)                                                                                                                    
+    assert (                                                                                                                                              
+        updated_node.body.body[0].value.strip() == docstrings["ClassName.method_name"]                                                                    
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_class_def_with_existing_docstring(docstrings, force, class_def_node):                                                                      
+    # given                                                                                                                                               
+    docstring_adder = DocstringAdder(docstrings, force)                                                                                                   
+    existing_docstring = cst.parse_statement('"""This is an existing docstring."""')                                                                      
+    updated_node = class_def_node.with_changes(                                                                                                           
+        body=[existing_docstring] + list(class_def_node.body.body)                                                                                        
+    )                                                                                                                                                     
+    # when                                                                                                                                                
+    updated_node = docstring_adder.leave_ClassDef(class_def_node, updated_node)                                                                           
+    # then                                                                                                                                                
+    assert has_docstring(updated_node)                                                                                                                    
+    assert (                                                                                                                                              
+        updated_node.body.body[0].value.strip() == docstrings["ClassName.method_name"]                                                                    
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_class_def_with_existing_docstring_and_force_true(                                                                                          
+    docstrings, class_def_node                                                                                                                            
+):                                                                                                                                                        
+    # given                                                                                                                                               
+    force = True                                                                                                                                          
+    docstring_adder = DocstringAdder(docstrings, force)                                                                                                   
+    existing_docstring = cst.parse_statement('"""This is an existing docstring."""')                                                                      
+    updated_node = class_def_node.with_changes(                                                                                                           
+        body=[existing_docstring] + list(class_def_node.body.body)                                                                                        
+    )                                                                                                                                                     
+    # when                                                                                                                                                
+    updated_node = docstring_adder.leave_ClassDef(class_def_node, updated_node)                                                                           
+    # then                                                                                                                                                
+    assert has_docstring(updated_node)                                                                                                                    
+    assert (                                                                                                                                              
+        updated_node.body.body[0].value.strip() == docstrings["ClassName.method_name"]                                                                    
+    )                                                                                                                                                     
+                                                                                                                                                          
+
+Test Code:
+```python
+import pytest
+
+from write_the.cst.docstring_remover import DocstringRemover, remove_docstrings
+
+@pytest.fixture
+def tree():
+    return cst.parse_module("""
+def foo():
+    '''This is a docstring.'''
+    pass
+
+class Bar:
+    '''This is a docstring.'''
+    pass
+""")
+
+@pytest.fixture
+def nodes():
+    return ["foo", "Bar"]
+
+def test_leave_FunctionDef(tree, nodes):
+    remover = DocstringRemover(nodes)
+    updated_tree = tree.visit(remover)
+    assert updated_tree.body[0].body[0].value is None
+
+def test_leave_ClassDef(tree, nodes):
+    remover = DocstringRemover(nodes)
+    updated_tree = tree.visit(remover)
+    assert updated_tree.body[1].body[0].value is None
+
+def test_remove_docstrings(tree, nodes):
+    updated_tree = remove_docstrings(tree, nodes)
+    assert updated_tree.body[0].body[0].value is None
+    assert updated_tree.body[1].body[0].value is None
+
+@pytest.mark.parametrize("node", ["foo", "Bar", "baz"])
+def test_leave_FunctionDef_node_not_in_list(tree, node):
+    remover = DocstringRemover([node])
+    updated_tree = tree.visit(remover)
+    assert updated_tree.body[0].body[0].value is not None
+
+@pytest.mark.parametrize("node", ["foo", "Bar", "baz"])
+def test_leave_ClassDef_node_not_in_list(tree, node):
+    remover = DocstringRemover([node])
+    updated_tree = tree.visit(remover)
+    assert updated_tree.body[1].body[0].value is not None
+
+@pytest.mark.parametrize("node", ["foo", "Bar", "baz"])
+def test_remove_docstrings_node_not_in_list(tree, node):
+    updated_tree = remove_docstrings(tree, [node])
+    assert updated_tree.body[0].body[0].value is not None
+    assert updated_tree.body[1].body[0].value is not None
+```
+✅ write_the/cst/docstring_remover.py
+import pytest                                                                                                                                             
+                                                                                                                                                          
+from write_the.cst.docstring_remover import DocstringRemover, remove_docstrings                                                                           
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def tree():                                                                                                                                               
+    return cst.parse_module(                                                                                                                              
+        """                                                                                                                                               
+def foo():                                                                                                                                                
+    '''This is a docstring.'''                                                                                                                            
+    pass                                                                                                                                                  
+                                                                                                                                                          
+class Bar:                                                                                                                                                
+    '''This is a docstring.'''                                                                                                                            
+    pass                                                                                                                                                  
+"""                                                                                                                                                       
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def nodes():                                                                                                                                              
+    return ["foo", "Bar"]                                                                                                                                 
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_FunctionDef(tree, nodes):                                                                                                                  
+    remover = DocstringRemover(nodes)                                                                                                                     
+    updated_tree = tree.visit(remover)                                                                                                                    
+    assert updated_tree.body[0].body[0].value is None                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_ClassDef(tree, nodes):                                                                                                                     
+    remover = DocstringRemover(nodes)                                                                                                                     
+    updated_tree = tree.visit(remover)                                                                                                                    
+    assert updated_tree.body[1].body[0].value is None                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+def test_remove_docstrings(tree, nodes):                                                                                                                  
+    updated_tree = remove_docstrings(tree, nodes)                                                                                                         
+    assert updated_tree.body[0].body[0].value is None                                                                                                     
+    assert updated_tree.body[1].body[0].value is None                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.mark.parametrize("node", ["foo", "Bar", "baz"])                                                                                                   
+def test_leave_FunctionDef_node_not_in_list(tree, node):                                                                                                  
+    remover = DocstringRemover([node])                                                                                                                    
+    updated_tree = tree.visit(remover)                                                                                                                    
+    assert updated_tree.body[0].body[0].value is not None                                                                                                 
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.mark.parametrize("node", ["foo", "Bar", "baz"])                                                                                                   
+def test_leave_ClassDef_node_not_in_list(tree, node):                                                                                                     
+    remover = DocstringRemover([node])                                                                                                                    
+    updated_tree = tree.visit(remover)                                                                                                                    
+    assert updated_tree.body[1].body[0].value is not None                                                                                                 
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.mark.parametrize("node", ["foo", "Bar", "baz"])                                                                                                   
+def test_remove_docstrings_node_not_in_list(tree, node):                                                                                                  
+    updated_tree = remove_docstrings(tree, [node])                                                                                                        
+    assert updated_tree.body[0].body[0].value is not None                                                                                                 
+    assert updated_tree.body[1].body[0].value is not None                                                                                                 
+                                                                                                                                                          
+
+Test Code:
+```python
+import pytest
+
+from write_the.cst.utils import (
+    has_docstring,
+    remove_docstring,
+    get_docstring,
+    nodes_to_tree,
+)
+import libcst as cst
+
+
+@pytest.fixture
+def function_def_node():
+    return cst.FunctionDef(
+        name=cst.Name("test_function"),
+        params=cst.Parameters(),
+        body=cst.Suite(
+            body=[
+                cst.SimpleStatementLine(
+                    body=[
+                        cst.Expr(
+                            value=cst.SimpleString(
+                                value="This is a docstring."
+                            )
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+
+
+@pytest.fixture
+def class_def_node():
+    return cst.ClassDef(
+        name=cst.Name("TestClass"),
+        body=cst.Suite(
+            body=[
+                cst.SimpleStatementLine(
+                    body=[
+                        cst.Expr(
+                            value=cst.SimpleString(
+                                value="This is a docstring."
+                            )
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+
+
+@pytest.fixture
+def no_docstring_node():
+    return cst.FunctionDef(
+        name=cst.Name("test_function"),
+        params=cst.Parameters(),
+        body=cst.Suite(
+            body=[
+                cst.SimpleStatementLine(
+                    body=[
+                        cst.Expr(
+                            value=cst.Integer(
+                                value=1
+                            )
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+
+
+def test_has_docstring_function_def():
+    assert has_docstring(function_def_node()) is True
+
+
+def test_has_docstring_class_def():
+    assert has_docstring(class_def_node()) is True
+
+
+def test_has_docstring_no_docstring():
+    assert has_docstring(no_docstring_node()) is False
+
+
+def test_remove_docstring():
+    node = remove_docstring(function_def_node())
+    assert isinstance(node, cst.FunctionDef)
+    assert node.body.body == []
+
+
+def test_get_docstring_function_def():
+    assert get_docstring(function_def_node()) == "This is a docstring."
+
+
+def test_get_docstring_class_def():
+    assert get_docstring(class_def_node()) == "This is a docstring."
+
+
+def test_get_docstring_no_docstring():
+    assert get_docstring(no_docstring_node()) is None
+
+
+@pytest.mark.parametrize(
+    "nodes, expected",
+    [
+        ([], cst.Module(body=[])),
+        (
+            [
+                cst.SimpleStatementLine(
+                    body=[
+                        cst.Expr(
+                            value=cst.SimpleString(
+                                value="This is a docstring."
+                            )
+                        )
+                    ]
+                )
+            ],
+            cst.Module(
+                body=[
+                    cst.SimpleStatementLine(
+                        body=[
+                            cst.Expr(
+                                value=cst.SimpleString(
+                                    value="This is a docstring."
+                                )
+                            )
+                        ]
+                    )
+                ]
+            ),
+        ),
+    ],
+)
+def test_nodes_to_tree(nodes, expected):
+    assert nodes_to_tree(nodes) == expected
+```
+✅ write_the/cst/utils.py
+import pytest                                                                                                                                             
+                                                                                                                                                          
+from write_the.cst.utils import (                                                                                                                         
+    has_docstring,                                                                                                                                        
+    remove_docstring,                                                                                                                                     
+    get_docstring,                                                                                                                                        
+    nodes_to_tree,                                                                                                                                        
+)                                                                                                                                                         
+import libcst as cst                                                                                                                                      
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def function_def_node():                                                                                                                                  
+    return cst.FunctionDef(                                                                                                                               
+        name=cst.Name("test_function"),                                                                                                                   
+        params=cst.Parameters(),                                                                                                                          
+        body=cst.Suite(                                                                                                                                   
+            body=[                                                                                                                                        
+                cst.SimpleStatementLine(                                                                                                                  
+                    body=[                                                                                                                                
+                        cst.Expr(value=cst.SimpleString(value="This is a docstring."))                                                                    
+                    ]                                                                                                                                     
+                )                                                                                                                                         
+            ]                                                                                                                                             
+        ),                                                                                                                                                
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def class_def_node():                                                                                                                                     
+    return cst.ClassDef(                                                                                                                                  
+        name=cst.Name("TestClass"),                                                                                                                       
+        body=cst.Suite(                                                                                                                                   
+            body=[                                                                                                                                        
+                cst.SimpleStatementLine(                                                                                                                  
+                    body=[                                                                                                                                
+                        cst.Expr(value=cst.SimpleString(value="This is a docstring."))                                                                    
+                    ]                                                                                                                                     
+                )                                                                                                                                         
+            ]                                                                                                                                             
+        ),                                                                                                                                                
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def no_docstring_node():                                                                                                                                  
+    return cst.FunctionDef(                                                                                                                               
+        name=cst.Name("test_function"),                                                                                                                   
+        params=cst.Parameters(),                                                                                                                          
+        body=cst.Suite(                                                                                                                                   
+            body=[cst.SimpleStatementLine(body=[cst.Expr(value=cst.Integer(value=1))])]                                                                   
+        ),                                                                                                                                                
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+def test_has_docstring_function_def():                                                                                                                    
+    assert has_docstring(function_def_node()) is True                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+def test_has_docstring_class_def():                                                                                                                       
+    assert has_docstring(class_def_node()) is True                                                                                                        
+                                                                                                                                                          
+                                                                                                                                                          
+def test_has_docstring_no_docstring():                                                                                                                    
+    assert has_docstring(no_docstring_node()) is False                                                                                                    
+                                                                                                                                                          
+                                                                                                                                                          
+def test_remove_docstring():                                                                                                                              
+    node = remove_docstring(function_def_node())                                                                                                          
+    assert isinstance(node, cst.FunctionDef)                                                                                                              
+    assert node.body.body == []                                                                                                                           
+                                                                                                                                                          
+                                                                                                                                                          
+def test_get_docstring_function_def():                                                                                                                    
+    assert get_docstring(function_def_node()) == "This is a docstring."                                                                                   
+                                                                                                                                                          
+                                                                                                                                                          
+def test_get_docstring_class_def():                                                                                                                       
+    assert get_docstring(class_def_node()) == "This is a docstring."                                                                                      
+                                                                                                                                                          
+                                                                                                                                                          
+def test_get_docstring_no_docstring():                                                                                                                    
+    assert get_docstring(no_docstring_node()) is None                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.mark.parametrize(                                                                                                                                 
+    "nodes, expected",                                                                                                                                    
+    [                                                                                                                                                     
+        ([], cst.Module(body=[])),                                                                                                                        
+        (                                                                                                                                                 
+            [                                                                                                                                             
+                cst.SimpleStatementLine(                                                                                                                  
+                    body=[                                                                                                                                
+                        cst.Expr(value=cst.SimpleString(value="This is a docstring."))                                                                    
+                    ]                                                                                                                                     
+                )                                                                                                                                         
+            ],                                                                                                                                            
+            cst.Module(                                                                                                                                   
+                body=[                                                                                                                                    
+                    cst.SimpleStatementLine(                                                                                                              
+                        body=[                                                                                                                            
+                            cst.Expr(                                                                                                                     
+                                value=cst.SimpleString(value="This is a docstring.")                                                                      
+                            )                                                                                                                             
+                        ]                                                                                                                                 
+                    )                                                                                                                                     
+                ]                                                                                                                                         
+            ),                                                                                                                                            
+        ),                                                                                                                                                
+    ],                                                                                                                                                    
+)                                                                                                                                                         
+def test_nodes_to_tree(nodes, expected):                                                                                                                  
+    assert nodes_to_tree(nodes) == expected                                                                                                               
+                                                                                                                                                          
+
+Test Code:
+```python
+import pytest
+
+from write_the.cst.node_extractor import extract_nodes_from_tree
+
+@pytest.fixture
+def tree():
+    return cst.parse_module("def foo(): pass")
+
+@pytest.fixture
+def nodes():
+    return ["foo"]
+
+def test_extract_nodes_from_tree(tree, nodes):
+    extracted_nodes = extract_nodes_from_tree(tree, nodes)
+    assert len(extracted_nodes) == 1
+    assert isinstance(extracted_nodes[0], cst.FunctionDef)
+    assert extracted_nodes[0].name.value == "foo"
+
+def test_extract_nodes_from_tree_empty_nodes(tree):
+    extracted_nodes = extract_nodes_from_tree(tree, [])
+    assert len(extracted_nodes) == 0
+
+def test_extract_nodes_from_tree_invalid_node(tree, nodes):
+    tree = cst.parse_module("def bar(): pass")
+    extracted_nodes = extract_nodes_from_tree(tree, nodes)
+    assert len(extracted_nodes) == 0
+
+def test_extract_nodes_from_tree_multiple_nodes(tree):
+    nodes = ["foo", "bar"]
+    tree = cst.parse_module("def foo(): pass\ndef bar(): pass")
+    extracted_nodes = extract_nodes_from_tree(tree, nodes)
+    assert len(extracted_nodes) == 2
+    assert isinstance(extracted_nodes[0], cst.FunctionDef)
+    assert extracted_nodes[0].name.value == "foo"
+    assert isinstance(extracted_nodes[1], cst.FunctionDef)
+    assert extracted_nodes[1].name.value == "bar"
+
+def test_extract_nodes_from_tree_class_node(tree):
+    nodes = ["Foo"]
+    tree = cst.parse_module("class Foo: pass")
+    extracted_nodes = extract_nodes_from_tree(tree, nodes)
+    assert len(extracted_nodes) == 1
+    assert isinstance(extracted_nodes[0], cst.ClassDef)
+    assert extracted_nodes[0].name.value == "Foo"
+```
+✅ write_the/cst/node_extractor.py
+import pytest                                                                                                                                             
+                                                                                                                                                          
+from write_the.cst.node_extractor import extract_nodes_from_tree                                                                                          
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def tree():                                                                                                                                               
+    return cst.parse_module("def foo(): pass")                                                                                                            
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def nodes():                                                                                                                                              
+    return ["foo"]                                                                                                                                        
+                                                                                                                                                          
+                                                                                                                                                          
+def test_extract_nodes_from_tree(tree, nodes):                                                                                                            
+    extracted_nodes = extract_nodes_from_tree(tree, nodes)                                                                                                
+    assert len(extracted_nodes) == 1                                                                                                                      
+    assert isinstance(extracted_nodes[0], cst.FunctionDef)                                                                                                
+    assert extracted_nodes[0].name.value == "foo"                                                                                                         
+                                                                                                                                                          
+                                                                                                                                                          
+def test_extract_nodes_from_tree_empty_nodes(tree):                                                                                                       
+    extracted_nodes = extract_nodes_from_tree(tree, [])                                                                                                   
+    assert len(extracted_nodes) == 0                                                                                                                      
+                                                                                                                                                          
+                                                                                                                                                          
+def test_extract_nodes_from_tree_invalid_node(tree, nodes):                                                                                               
+    tree = cst.parse_module("def bar(): pass")                                                                                                            
+    extracted_nodes = extract_nodes_from_tree(tree, nodes)                                                                                                
+    assert len(extracted_nodes) == 0                                                                                                                      
+                                                                                                                                                          
+                                                                                                                                                          
+def test_extract_nodes_from_tree_multiple_nodes(tree):                                                                                                    
+    nodes = ["foo", "bar"]                                                                                                                                
+    tree = cst.parse_module("def foo(): pass\ndef bar(): pass")                                                                                           
+    extracted_nodes = extract_nodes_from_tree(tree, nodes)                                                                                                
+    assert len(extracted_nodes) == 2                                                                                                                      
+    assert isinstance(extracted_nodes[0], cst.FunctionDef)                                                                                                
+    assert extracted_nodes[0].name.value == "foo"                                                                                                         
+    assert isinstance(extracted_nodes[1], cst.FunctionDef)                                                                                                
+    assert extracted_nodes[1].name.value == "bar"                                                                                                         
+                                                                                                                                                          
+                                                                                                                                                          
+def test_extract_nodes_from_tree_class_node(tree):                                                                                                        
+    nodes = ["Foo"]                                                                                                                                       
+    tree = cst.parse_module("class Foo: pass")                                                                                                            
+    extracted_nodes = extract_nodes_from_tree(tree, nodes)                                                                                                
+    assert len(extracted_nodes) == 1                                                                                                                      
+    assert isinstance(extracted_nodes[0], cst.ClassDef)                                                                                                   
+    assert extracted_nodes[0].name.value == "Foo"                                                                                                         
+                                                                                                                                                          
+
+Test Code:
+```python
+import pytest
+
+from write_the.cst.node_remover import NodeRemover, remove_nodes_from_tree
+
+@pytest.fixture
+def tree():
+    return cst.parse_module("""
+def foo():
+    pass
+
+def bar():
+    pass
+
+class Foo:
+    pass
+
+class Bar:
+    pass
+""")
+
+@pytest.fixture
+def nodes():
+    return ["foo", "Bar"]
+
+def test_node_remover_init(nodes):
+    remover = NodeRemover(nodes)
+    assert remover.nodes == nodes
+
+def test_leave_function_def(tree, nodes):
+    remover = NodeRemover(nodes)
+    updated_tree = tree.visit(remover)
+    assert len(updated_tree.body) == 2
+    assert isinstance(updated_tree.body[0], cst.ClassDef)
+    assert updated_tree.body[0].name.value == "Foo"
+    assert isinstance(updated_tree.body[1], cst.ClassDef)
+    assert updated_tree.body[1].name.value == "Bar"
+
+def test_leave_class_def(tree, nodes):
+    remover = NodeRemover(nodes)
+    updated_tree = tree.visit(remover)
+    assert len(updated_tree.body) == 2
+    assert isinstance(updated_tree.body[0], cst.FunctionDef)
+    assert updated_tree.body[0].name.value == "bar"
+    assert isinstance(updated_tree.body[1], cst.ClassDef)
+    assert updated_tree.body[1].name.value == "Bar"
+
+def test_remove_nodes_from_tree(tree, nodes):
+    updated_tree = remove_nodes_from_tree(tree, nodes)
+    assert len(updated_tree.body) == 2
+    assert isinstance(updated_tree.body[0], cst.FunctionDef)
+    assert updated_tree.body[0].name.value == "bar"
+    assert isinstance(updated_tree.body[1], cst.ClassDef)
+    assert updated_tree.body[1].name.value == "Bar"
+
+@pytest.mark.parametrize("nodes", [
+    [],
+    ["foo"],
+    ["Bar"],
+    ["foo", "Bar"]
+])
+def test_remove_nodes_from_tree_edge_cases(tree, nodes):
+    updated_tree = remove_nodes_from_tree(tree, nodes)
+    if not nodes:
+        assert len(updated_tree.body) == 4
+    elif len(nodes) == 1:
+        assert len(updated_tree.body) == 3
+        if nodes[0] == "foo":
+            assert isinstance(updated_tree.body[0], cst.ClassDef)
+            assert updated_tree.body[0].name.value == "Foo"
+        else:
+            assert isinstance(updated_tree.body[0], cst.FunctionDef)
+            assert updated_tree.body[0].name.value == "foo"
+    else:
+        assert len(updated_tree.body) == 2
+```
+✅ write_the/cst/node_remover.py
+import pytest                                                                                                                                             
+                                                                                                                                                          
+from write_the.cst.node_remover import NodeRemover, remove_nodes_from_tree                                                                                
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def tree():                                                                                                                                               
+    return cst.parse_module(                                                                                                                              
+        """                                                                                                                                               
+def foo():                                                                                                                                                
+    pass                                                                                                                                                  
+                                                                                                                                                          
+def bar():                                                                                                                                                
+    pass                                                                                                                                                  
+                                                                                                                                                          
+class Foo:                                                                                                                                                
+    pass                                                                                                                                                  
+                                                                                                                                                          
+class Bar:                                                                                                                                                
+    pass                                                                                                                                                  
+"""                                                                                                                                                       
+    )                                                                                                                                                     
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.fixture                                                                                                                                           
+def nodes():                                                                                                                                              
+    return ["foo", "Bar"]                                                                                                                                 
+                                                                                                                                                          
+                                                                                                                                                          
+def test_node_remover_init(nodes):                                                                                                                        
+    remover = NodeRemover(nodes)                                                                                                                          
+    assert remover.nodes == nodes                                                                                                                         
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_function_def(tree, nodes):                                                                                                                 
+    remover = NodeRemover(nodes)                                                                                                                          
+    updated_tree = tree.visit(remover)                                                                                                                    
+    assert len(updated_tree.body) == 2                                                                                                                    
+    assert isinstance(updated_tree.body[0], cst.ClassDef)                                                                                                 
+    assert updated_tree.body[0].name.value == "Foo"                                                                                                       
+    assert isinstance(updated_tree.body[1], cst.ClassDef)                                                                                                 
+    assert updated_tree.body[1].name.value == "Bar"                                                                                                       
+                                                                                                                                                          
+                                                                                                                                                          
+def test_leave_class_def(tree, nodes):                                                                                                                    
+    remover = NodeRemover(nodes)                                                                                                                          
+    updated_tree = tree.visit(remover)                                                                                                                    
+    assert len(updated_tree.body) == 2                                                                                                                    
+    assert isinstance(updated_tree.body[0], cst.FunctionDef)                                                                                              
+    assert updated_tree.body[0].name.value == "bar"                                                                                                       
+    assert isinstance(updated_tree.body[1], cst.ClassDef)                                                                                                 
+    assert updated_tree.body[1].name.value == "Bar"                                                                                                       
+                                                                                                                                                          
+                                                                                                                                                          
+def test_remove_nodes_from_tree(tree, nodes):                                                                                                             
+    updated_tree = remove_nodes_from_tree(tree, nodes)                                                                                                    
+    assert len(updated_tree.body) == 2                                                                                                                    
+    assert isinstance(updated_tree.body[0], cst.FunctionDef)                                                                                              
+    assert updated_tree.body[0].name.value == "bar"                                                                                                       
+    assert isinstance(updated_tree.body[1], cst.ClassDef)                                                                                                 
+    assert updated_tree.body[1].name.value == "Bar"                                                                                                       
+                                                                                                                                                          
+                                                                                                                                                          
+@pytest.mark.parametrize("nodes", [[], ["foo"], ["Bar"], ["foo", "Bar"]])                                                                                 
+def test_remove_nodes_from_tree_edge_cases(tree, nodes):                                                                                                  
+    updated_tree = remove_nodes_from_tree(tree, nodes)                                                                                                    
+    if not nodes:                                                                                                                                         
+        assert len(updated_tree.body) == 4                                                                                                                
+    elif len(nodes) == 1:                                                                                                                                 
+        assert len(updated_tree.body) == 3                                                                                                                
+        if nodes[0] == "foo":                                                                                                                             
+            assert isinstance(updated_tree.body[0], cst.ClassDef)                                                                                         
+            assert updated_tree.body[0].name.value == "Foo"                                                                                               
+        else:                                                                                                                                             
+            assert isinstance(updated_tree.body[0], cst.FunctionDef)                                                                                      
+            assert updated_tree.body[0].name.value == "foo"                                                                                               
+    else:                                                                                                                                                 
+        assert len(updated_tree.body) == 2                                                                                                                
+                                                                                                                                                          
+
+~/Library/CloudStorage/OneDrive-TheUniversityofMelbourne/MDU/programming/write-the master* ⇡ 2m 32s
