@@ -24,6 +24,8 @@ classifiers = [
 dependencies = [
   "typer[all]",
   "langchain",
+  "openai",
+  "tiktoken",
   "black",
   "libcst",
   "mkdocstrings[python]",
