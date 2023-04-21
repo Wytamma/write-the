@@ -39,7 +39,7 @@ def docs(
         help="Generate docs for specific nodes (functions and classes).",
     ),
     save: bool = typer.Option(
-        False, "--save/--print", "-s", help="Save the tests to the tests directory or print to stdout."
+        False, "--save/--print", "-s", help="Save the docstrings to file or print to stdout."
     ),
     context: bool = typer.Option(
         False, "--context/--no-context", "-c", help="Send context with nodes."
