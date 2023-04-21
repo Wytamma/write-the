@@ -13,18 +13,12 @@ Write-the is an AI-powered documentation and test generation tool that leverages
 
 ![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/multiply-docs-tests.png)
 
------
+## Real-world examples
 
-**Table of Contents**
-
-- [Features](#Features)
-- [Requirements](#Requirements)
-- [Installation](#Installation)
-- [Usage](#Usage)
-- [Roadmap](#Roadmap)
-- [Contributing](#Contributing)
-- [License](#License)
-
+- [`write-the docs` to write the docs for the `write-the docs` command 🤖](https://github.com/Wytamma/write-the/blob/master/write_the/docs/write.py#L14)
+- [`write-the docs` and `write-the mkdocs` to build documenation for `autoresearcher` 🤖](https://github.com/eimenhmdt/autoresearcher/pull/17)
+- [`write-the docs` and `write-the mkdocs` to build documenation for `hyperspec` 🤖](https://github.com/smutch/hyperspec/pull/1)
+- [`write-the tests` to write tests for `write-the docs` 🤖](https://github.com/Wytamma/write-the/commit/6b6c8a08d7991e07e4972281c471f7842c04dda0)
 
 ## Installation
 ```console
@@ -51,8 +45,6 @@ write-the docs [OPTIONS] [PATH_TO_SOURCE_CODE]
 
 ![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/docs-help.png)
 
-Real-world examples:
-- [`write-the docs` to write the docs for the `write-the docs` command 🤖](https://github.com/Wytamma/write-the/blob/master/write_the/docs/write.py#L14)
 
 ### Mkdocs:
 ```bash
@@ -61,8 +53,6 @@ write-the mkdocs [OPTIONS] [PATH_TO_SOURCE_CODE]
 
 ![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/mkdocs-help.png)
 
-Real-world examples:
-- [`write-the docs` and `write-the mkdocs` to build documenation for `autoresearcher` 🤖](https://github.com/eimenhmdt/autoresearcher/pull/17)
 
 ### Tests:
 ```bash
@@ -71,8 +61,6 @@ write-the tests [OPTIONS] [PATH_TO_SOURCE_CODE]
 
 ![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/tests-help.png)
 
-Real-world examples:
-- [`write-the tests` to write tests for `write-the docs` 🤖](https://github.com/Wytamma/write-the/commit/6b6c8a08d7991e07e4972281c471f7842c04dda0)
 
 For detailed information on available options and parameters, refer to the official (`write-the` generated) [documentation](https://write-the.wytamma.com/).
 
