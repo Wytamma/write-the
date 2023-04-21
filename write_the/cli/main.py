@@ -149,7 +149,8 @@ def tests(
         if file.stem.startswith('_'):
             continue
         parts = list(file.parts[1:-1])
-        test_file = f"test_{'_'.join(parts)}_{file.stem}.py"
+        parts = ['test'] + parts
+        test_file = f"{'_'.join(parts)}_{file.stem}.py"
         if group:
             parts.append(test_file)
             test_file = Path(os.path.join(*parts))
