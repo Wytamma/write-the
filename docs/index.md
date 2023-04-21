@@ -14,7 +14,7 @@ AI-powered Documentation and Test Generation Tool
 
 Write-the is an AI-powered documentation and test generation tool that leverages GPTs to automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
 
-![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/multiply-docs-tests.png)
+![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/write-the-docs.gif)
 
 ## Real-world examples
 
@@ -30,6 +30,7 @@ pip install write-the
 ## Features
 
 Write-the offers the following AI-driven features:
+
 - Write-the Docs: Automatically generate documentation for your codebase, including class and function descriptions, parameter explanations, and examples.
 - Write-the Tests: Create test cases for your code, ensuring thorough test coverage and better code quality.
 - Write-the Refactor: Receive refactoring suggestions, reduce code complexity, optimize performance, and fix bugs (TBD).
