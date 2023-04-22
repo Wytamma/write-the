@@ -1,14 +1,13 @@
 
-name: tests 
+name: publish
 on:
   push:
-    branches:
-      - master 
-      - main
+    tags:
+      - 'v*.*.*'
 permissions:
   contents: write
 jobs:
-  test:
+  pypi:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,9 +18,7 @@ jobs:
         with:
           key: ${{ github.ref }}
           path: .cache
-      - run: pip install hatch
-      - run: hatch run cov
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-
-
+      - name: Install hatch
+        run: pip install hatch
+      - name: Build & publish
+        run: hatch build && hatch publish
