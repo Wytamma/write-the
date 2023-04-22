@@ -71,8 +71,7 @@ def docs(
                 result = write_the_docs(
                     file, nodes=nodes, force=force, save=save, context=context, pretty=pretty
                 )
-            except Exception as e:           
-                raise e
+            except Exception:           
                 failed = True
             progress.stop()
             if len(files) > 1 or save or failed:
