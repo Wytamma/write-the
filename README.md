@@ -69,7 +69,9 @@ For detailed information on available options and parameters, refer to the offic
 
 ## Roadmap
 
-For a detailed project roadmap, including planned features, improvements, and milestones, please see our Project Timeline.
+The main goal for write-the is to develop a generic module system document, test, and optimise code in any language in a reliable and repatable way.
+
+For a detailed project roadmap, including planned features, improvements, and milestones, please see our Project Timeline (TBD).
 
 ## Contributing
 We welcome contributions from the community. If you would like to contribute to Write-The, please follow these steps:
