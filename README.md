@@ -1,4 +1,4 @@
-# 🤖 write-the
+![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/logo.png)
 
 AI-powered Documentation and Test Generation Tool
 
