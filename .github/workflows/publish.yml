@@ -24,4 +24,4 @@ jobs:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
           hatch build
-          hatch publish -u __token__ -p $PYPI_TOKEN
+          hatch publish -u __token__ -a $PYPI_TOKEN
