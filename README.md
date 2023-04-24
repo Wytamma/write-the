@@ -39,7 +39,8 @@ Write-the offers the following AI-driven features:
 - OpenAI API key
 
 ## Usage
-To use `write-the`, run the following commands:
+
+To use `write-the` you must set an OPENAI_API_KEY environment variable (e.g. `export OPENAI_API_KEY=...`).
 
 ### Docs:
 ```bash
