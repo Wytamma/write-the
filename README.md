@@ -39,7 +39,8 @@ Write-the offers the following AI-driven features:
 - OpenAI API key
 
 ## Usage
-To use `write-the`, run the following commands:
+
+To use `write-the` you must set an OPENAI_API_KEY environment variable (e.g. `export OPENAI_API_KEY=...`).
 
 ### Docs:
 ```bash
@@ -69,7 +70,9 @@ For detailed information on available options and parameters, refer to the offic
 
 ## Roadmap
 
-For a detailed project roadmap, including planned features, improvements, and milestones, please see our Project Timeline.
+The main goal for write-the is to develop a generic module system to document, test, and optimise code in any language in a reliable and repatable way.
+
+For a detailed project roadmap, including planned features, improvements, and milestones, please see our Project Timeline (TBD).
 
 ## Contributing
 We welcome contributions from the community. If you would like to contribute to Write-The, please follow these steps:
