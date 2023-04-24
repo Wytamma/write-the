@@ -70,7 +70,7 @@ For detailed information on available options and parameters, refer to the offic
 
 ## Roadmap
 
-The main goal for write-the is to develop a generic module system document, test, and optimise code in any language in a reliable and repatable way.
+The main goal for write-the is to develop a generic module system to document, test, and optimise code in any language in a reliable and repatable way.
 
 For a detailed project roadmap, including planned features, improvements, and milestones, please see our Project Timeline (TBD).
 
