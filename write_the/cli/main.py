@@ -4,15 +4,31 @@ from write_the.__about__ import __version__
 from write_the.docs import write_the_docs
 from write_the.tests import write_the_tests
 from write_the.mkdocs import write_the_mkdocs
-from write_the.utils import list_python_files
+from write_the.utils import list_python_files, load_source_code, create_tree, format_source_code
 from pathlib import Path
 from rich.console import Console
 from rich.syntax import Syntax
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from typing import List, Optional
 from black import InvalidInput
+from asyncio import run, gather
+from functools import wraps
 
-app = typer.Typer()
+
+class AsyncTyper(typer.Typer):
+    def async_command(self, *args, **kwargs):
+        def decorator(async_func):
+            @wraps(async_func)
+            def sync_func(*_args, **_kwargs):
+                return run(async_func(*_args, **_kwargs))
+
+            self.command(*args, **kwargs)(sync_func)
+            return async_func
+
+        return decorator
+
+
+app = AsyncTyper()
 
 def _print_version(ctx: typer.Context, value: bool):
     if value:
@@ -29,8 +45,56 @@ def callback(
     """
 
 
-@app.command()
-def docs(
+
+async def async_cli_task(file, nodes, 
+            force, 
+            save, 
+            context, 
+            pretty,
+            batch,
+            print_status,
+            progress: Progress):
+    task_id = progress.add_task(description=f"{file}", total=None)
+    failed = False
+    source_code = load_source_code(file=file) 
+    if pretty:
+        source_code = format_source_code(source_code)
+    tree = create_tree(source_code) 
+    try:
+        result = await write_the_docs(
+            tree,
+            nodes=nodes, 
+            force=force, 
+            save=save, 
+            context=context, 
+            pretty=pretty,
+            batch=batch,
+        )
+    except Exception as e: 
+        print(e)          
+        failed = True
+    progress.remove_task(task_id)
+    progress.refresh()
+    if failed:
+        return
+    if print_status or save or failed:
+        icon = "❌" if failed else "✅"
+        colour = "red" if failed else "green"
+        progress.print(f"[not underline]{icon} [/not underline]{file}", style=f"bold {colour} underline")
+    if save:
+        with open(file, "w") as f:
+            f.writelines(result)
+        return None
+    if pretty:
+        syntax = Syntax(result, "python")
+        progress.print(syntax)
+    else:
+        progress.print(result, highlight=False, markup=False)
+    
+
+
+@app.async_command()
+async def docs(
     file: Path = typer.Argument(..., help="Path to the code file/folder."),
     nodes: List[str] = typer.Option(
         None,
@@ -41,14 +105,17 @@ def docs(
     save: bool = typer.Option(
         False, "--save/--print", "-s", help="Save the docstrings to file or print to stdout."
     ),
+    pretty: bool = typer.Option(
+        False, "--pretty/--plain", "-p", help="Syntax highlight and format the output."
+    ),
     context: bool = typer.Option(
         False, "--context/--no-context", "-c", help="Send context with nodes."
     ),
-    pretty: bool = typer.Option(
-        False, "--pretty/--plain", "-p", help="Syntax highlight the output."
-    ),
     force: bool = typer.Option(
-        False, "--force", "-f", help="Generate docstings even if they already exist."
+        False, "--force/--no-force", "-f", help="Generate docstings even if they already exist."
+    ),
+    batch: bool = typer.Option(
+        False, "--batch/--no-batch", "-b", help="Send each node as a separate request."
     ),
 ):
     """
@@ -59,36 +126,29 @@ def docs(
     else:
         assert file.suffix == ".py"
         files = [file]
-    for file in files:
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            transient=True,
-        ) as progress:
-            failed = False
-            progress.add_task(description=f"{file}", total=None)
-            try:
-                result = write_the_docs(
-                    file, nodes=nodes, force=force, save=save, context=context, pretty=pretty
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("{task.description}"),
+        transient=True,
+        auto_refresh=True,
+    ) as progress:
+        tasks = []
+        print_status=len(files)>1
+        for file in files:
+            tasks.append(
+                async_cli_task(
+                    file,
+                    nodes=nodes, 
+                    force=force, 
+                    save=save, 
+                    context=context, 
+                    pretty=pretty,
+                    batch=batch,
+                    print_status=print_status,
+                    progress=progress
                 )
-            except Exception:           
-                failed = True
-            progress.stop()
-            if len(files) > 1 or save or failed:
-                icon = "❌" if failed else "✅"
-                colour = "red" if failed else "green"
-                typer.secho(f"{icon} {file}", fg=colour)
-            if failed:
-                continue
-            if save:
-                with open(file, "w") as f:
-                    f.writelines(result)
-            elif pretty:
-                syntax = Syntax(result, "python")
-                console = Console()
-                console.print(syntax)
-            else:
-                typer.echo(result)
+            )
+        await gather(*tasks)
 
 @app.command()
 def mkdocs(

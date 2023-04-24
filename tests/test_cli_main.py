@@ -63,7 +63,7 @@ def test_docs_mocked(mocked_run, file_path: Path, nodes, save, context, pretty, 
     mocked_run.assert_called_once()
     if save:
         assert "Sums 2 numbers" in file_path.read_text()
-        assert str(file_path) in result.stdout
+        assert file_path.name in result.stdout
     else:
         assert "Sums 2 numbers" in result.stdout
 

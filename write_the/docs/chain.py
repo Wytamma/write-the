@@ -30,7 +30,7 @@ Code:
 Formatted docstrings for {nodes}:
 """
 
-def run(code, nodes: list) -> str:
+async def run(code, nodes: list) -> str:
     """
     Generates docstrings for a given code and list of nodes.
     Args:
@@ -50,4 +50,4 @@ def run(code, nodes: list) -> str:
     docs_prompt = PromptTemplate(input_variables=["code", "nodes"], template=docs_template)
     docs_chain = LLMChain(llm=llm, prompt=docs_prompt)
     nodes = ",".join(nodes)
-    return docs_chain.predict(code=code, nodes=nodes)
+    return await docs_chain.apredict(code=code, nodes=nodes)

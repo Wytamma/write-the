@@ -1,4 +1,3 @@
-from pathlib import Path
 import libcst as cst
 from black import format_str, FileMode
 
@@ -11,17 +10,57 @@ from write_the.cst.node_remover import remove_nodes_from_tree
 from write_the.docs.chain import run
 
 
-def write_the_docs(
-    filename: Path, nodes=[], force=False, save=False, context=True, pretty=False
+def process_nodes(tree: cst.Module, nodes, context, extract_specific_nodes) -> str:
+    """
+    Processes a tree of nodes.
+    Args:
+      tree (cst.Module): The tree of nodes to process.
+      nodes (list): The list of nodes to process.
+      context (bool): Whether to include context nodes.
+      extract_specific_nodes (bool): Whether to extract specific nodes.
+    Returns:
+      str: The processed tree as a string.
+    Examples:
+      >>> process_nodes(tree, nodes, context, extract_specific_nodes)
+      "Processed tree as a string"
+    """
+    tree_without_docstrings = remove_docstrings(tree, nodes)
+    if not context:
+        if extract_specific_nodes:
+            extracted_nodes = extract_nodes_from_tree(tree_without_docstrings, nodes)
+            processed_tree = nodes_to_tree(extracted_nodes)
+        else:
+            all_nodes = get_node_names(tree, False)
+            nodes_to_remove = [n for n in all_nodes if n not in nodes]
+            processed_tree = remove_nodes_from_tree(
+                tree_without_docstrings, nodes_to_remove
+            )
+        code = processed_tree.code
+    else:
+        code = tree_without_docstrings.code
+
+    return code
+
+
+async def write_the_docs(
+    tree: cst.Module,
+    nodes=[],
+    force=False,
+    save=False,
+    context=True,
+    pretty=False,
+    batch=False,
 ) -> str:
     """
-    Generates docstrings for a given file.
+    Generates docstrings for a given tree of nodes.
     Args:
-      filename (Path): The path to the file to generate docstrings for.
-      nodes (list): A list of nodes to generate docstrings for.
-      force (bool): Whether to overwrite existing docstrings.
-      save (bool): Whether to generate docstrings in the same file.
-      context (bool): Whether to send context with the code (can improve docstings).
+      tree (cst.Module): The tree of nodes to write docs for.
+      nodes (list): The list of nodes to write docs for.
+      force (bool): Whether to force writing of docs.
+      save (bool): Whether to save the docs.
+      context (bool): Whether to include context nodes.
+      pretty (bool): Whether to format the code.
+      batch (bool): Whether to run in batch mode.
     Returns:
       str: The source code with the generated docstrings.
     Notes:
@@ -38,35 +77,17 @@ def write_the_docs(
           \"\"\"
           return a + b"
     """
-    with open(filename, "r") as file:
-        source_code = file.read()
-    if pretty:
-        source_code = format_str(source_code, mode=FileMode())
-    tree = cst.parse_module(source_code)
     extract_specific_nodes = False
-
     if nodes:
         extract_specific_nodes = True
         force = True
     else:
         nodes = get_node_names(tree, force)
     if not nodes:
-        return source_code
-    tree_without_docstrings = remove_docstrings(tree, nodes)
-    if not context:
-        if extract_specific_nodes:
-            extracted_nodes = extract_nodes_from_tree(tree_without_docstrings, nodes)
-            processed_tree = nodes_to_tree(extracted_nodes)
-        else:
-            all_nodes = get_node_names(tree, False)
-            nodes_to_remove = [n for n in all_nodes if n not in nodes]
-            processed_tree = remove_nodes_from_tree(
-                tree_without_docstrings, nodes_to_remove
-            )
-        code = processed_tree.code
-    else:
-        code = tree_without_docstrings.code
-    result = run(code=code, nodes=nodes)
+        return tree.code
+
+    code = process_nodes(tree, nodes, context, extract_specific_nodes)
+    result = await run(code=code, nodes=nodes)
     docstring_dict = {}
     for line in result.split("\n\n"):
         line = line.strip()
@@ -74,11 +95,10 @@ def write_the_docs(
             continue
         (node_name, docsting) = line.split(":", 1)
         docstring_dict[node_name] = docsting + "\n"
-    modified_tree = tree_without_docstrings.visit(DocstringAdder(docstring_dict, force))
+    modified_tree = tree.visit(DocstringAdder(docstring_dict, force))
     if not save and extract_specific_nodes:
         extracted_nodes = extract_nodes_from_tree(modified_tree, nodes)
         modified_tree = nodes_to_tree(extracted_nodes)
     if pretty:
-        
         return format_str(modified_tree.code, mode=FileMode())
     return modified_tree.code
