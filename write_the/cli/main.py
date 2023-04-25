@@ -1,10 +1,9 @@
 import typer
 import os
 from write_the.__about__ import __version__
-from write_the.docs import write_the_docs
 from write_the.tests import write_the_tests
 from write_the.mkdocs import write_the_mkdocs
-from write_the.utils import list_python_files, load_source_code, create_tree, format_source_code
+from write_the.utils import list_python_files
 from pathlib import Path
 from rich.console import Console
 from rich.syntax import Syntax
@@ -14,6 +13,7 @@ from black import InvalidInput
 from asyncio import run, gather
 from functools import wraps
 
+from .tasks import async_cli_task
 
 class AsyncTyper(typer.Typer):
     def async_command(self, *args, **kwargs):
@@ -43,54 +43,6 @@ def callback(
     """
     AI-powered Code Generation and Refactoring Tool
     """
-
-
-
-async def async_cli_task(file, nodes, 
-            force, 
-            save, 
-            context, 
-            pretty,
-            batch,
-            print_status,
-            progress: Progress):
-    task_id = progress.add_task(description=f"{file}", total=None)
-    failed = False
-    source_code = load_source_code(file=file) 
-    if pretty:
-        source_code = format_source_code(source_code)
-    tree = create_tree(source_code) 
-    try:
-        result = await write_the_docs(
-            tree,
-            nodes=nodes, 
-            force=force, 
-            save=save, 
-            context=context, 
-            pretty=pretty,
-            batch=batch,
-        )
-    except Exception as e: 
-        print(e)          
-        failed = True
-    progress.remove_task(task_id)
-    progress.refresh()
-    if failed:
-        return
-    if print_status or save or failed:
-        icon = "❌" if failed else "✅"
-        colour = "red" if failed else "green"
-        progress.print(f"[not underline]{icon} [/not underline]{file}", style=f"bold {colour} underline")
-    if save:
-        with open(file, "w") as f:
-            f.writelines(result)
-        return None
-    if pretty:
-        syntax = Syntax(result, "python")
-        progress.print(syntax)
-    else:
-        progress.print(result, highlight=False, markup=False)
-    
 
 
 @app.async_command()
