@@ -1,6 +1,7 @@
 import libcst as cst
 from .utils import has_docstring, remove_docstring
 import textwrap
+import re
 
 class DocstringAdder(cst.CSTTransformer):
     def __init__(self, docstrings, force):
@@ -54,12 +55,13 @@ class DocstringAdder(cst.CSTTransformer):
             if self.current_class
             else node.name.value
         )
-        docstring = self.docstrings.get(key, None)
+        docstring: str = self.docstrings.get(key, None)
         if docstring and (self.force or not has_docstring(node)):
             if self.force and has_docstring(node):
                 # Remove existing docstring
-                node = remove_docstring(node)
-            dedented_docstring = textwrap.dedent(docstring)
+                node = remove_docstring(node)            
+            escaped_docstring = re.sub(r'(?<!\\)\\n', '\\\\\\\\n', docstring) 
+            dedented_docstring = textwrap.dedent(escaped_docstring)
             indented_docstring = textwrap.indent(dedented_docstring, '    ')
             new_docstring = cst.parse_statement(f'"""{indented_docstring}    """')
             body = node.body.with_changes(body=[new_docstring] + list(node.body.body))

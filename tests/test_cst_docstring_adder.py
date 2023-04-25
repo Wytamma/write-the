@@ -1,7 +1,7 @@
 import pytest
 import libcst as cst
 from write_the.cst.docstring_adder import DocstringAdder
-from write_the.cst.docstring_adder import has_docstring
+from write_the.cst.utils import has_docstring, get_docstring
 
 
 @pytest.fixture
@@ -109,3 +109,11 @@ def test_add_docstring_with_force(docstrings, function_def_node):
     docstring_adder = DocstringAdder(docstrings, force)
     updated_node = docstring_adder.add_docstring(function_def_node)
     assert has_docstring(updated_node)
+
+def test_add_docstring_escape_newline(docstrings, function_def_node):
+    force = True
+    docstrings['function_name'] = """\\ntest\ntest\\\\n\\n"""
+    docstring_adder = DocstringAdder(docstrings, force)
+    updated_node = docstring_adder.add_docstring(function_def_node)
+    assert has_docstring(updated_node)
+    assert get_docstring(updated_node).strip('"""').strip() == """\\\\ntest\n    test\\\\n\\\\n"""
