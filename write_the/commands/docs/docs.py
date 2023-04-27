@@ -2,44 +2,13 @@ import libcst as cst
 from black import format_str, FileMode
 
 from write_the.cst import nodes_to_tree
-from write_the.cst.docstring_adder import DocstringAdder
+from write_the.cst.docstring_adder import add_docstrings_to_tree
 from write_the.cst.docstring_remover import remove_docstrings
 from write_the.cst.function_and_class_collector import get_node_names
 from write_the.cst.node_extractor import extract_nodes_from_tree
-from write_the.cst.node_remover import remove_nodes_from_tree
-from write_the.docs.chain import run
-
-
-def process_nodes(tree: cst.Module, nodes, context, extract_specific_nodes) -> str:
-    """
-    Processes a tree of nodes.
-    Args:
-      tree (cst.Module): The tree of nodes to process.
-      nodes (list): The list of nodes to process.
-      context (bool): Whether to include context nodes.
-      extract_specific_nodes (bool): Whether to extract specific nodes.
-    Returns:
-      str: The processed tree as a string.
-    Examples:
-      >>> process_nodes(tree, nodes, context, extract_specific_nodes)
-      "Processed tree as a string"
-    """
-    tree_without_docstrings = remove_docstrings(tree, nodes)
-    if not context:
-        if extract_specific_nodes:
-            extracted_nodes = extract_nodes_from_tree(tree_without_docstrings, nodes)
-            processed_tree = nodes_to_tree(extracted_nodes)
-        else:
-            all_nodes = get_node_names(tree, False)
-            nodes_to_remove = [n for n in all_nodes if n not in nodes]
-            processed_tree = remove_nodes_from_tree(
-                tree_without_docstrings, nodes_to_remove
-            )
-        code = processed_tree.code
-    else:
-        code = tree_without_docstrings.code
-
-    return code
+from write_the.commands.docs.utils import extract_block, process_nodes
+from write_the.llm import LLM
+from .prompts import write_docstings_for_nodes_prompt
 
 
 async def write_the_docs(
@@ -85,17 +54,12 @@ async def write_the_docs(
         nodes = get_node_names(tree, force)
     if not nodes:
         return tree.code
-
-    code = process_nodes(tree, nodes, context, extract_specific_nodes)
-    result = await run(code=code, nodes=nodes)
-    docstring_dict = {}
-    for line in result.split("\n\n"):
-        line = line.strip()
-        if not line:
-            continue
-        (node_name, docsting) = line.split(":", 1)
-        docstring_dict[node_name] = docsting + "\n"
-    modified_tree = tree.visit(DocstringAdder(docstring_dict, force))
+    tree_without_docstrings = remove_docstrings(tree, nodes)
+    code = process_nodes(tree_without_docstrings, nodes, context, extract_specific_nodes)
+    llm = LLM(write_docstings_for_nodes_prompt)
+    result = await llm.run(code=code, nodes=nodes)
+    docstring_dict = extract_block(result, nodes)
+    modified_tree = add_docstrings_to_tree(tree, docstring_dict, force=force)
     if not save and extract_specific_nodes:
         extracted_nodes = extract_nodes_from_tree(modified_tree, nodes)
         modified_tree = nodes_to_tree(extracted_nodes)

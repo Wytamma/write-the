@@ -68,3 +68,6 @@ class DocstringAdder(cst.CSTTransformer):
             return node.with_changes(body=body)
         
         return node
+
+def add_docstrings_to_tree(tree, docstring_dict, force=False):
+    return tree.visit(DocstringAdder(docstring_dict, force))

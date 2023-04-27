@@ -1,9 +1,9 @@
 from pathlib import Path
 from black import format_str, FileMode
-from .chain import run
+from .prompts import write_tests_for_file_prompt
+from write_the.llm import LLM
 
-
-def write_the_tests(
+async def write_the_tests(
     filename: Path,
     gpt_4: bool = False
 ) -> str:
@@ -21,6 +21,7 @@ def write_the_tests(
     with open(filename, "r") as file:
         source_code = file.read()
     source_code = format_str(source_code, mode=FileMode())
-    result = run(code=source_code, path=filename, gpt_4=gpt_4)
+    llm = LLM(write_tests_for_file_prompt, gpt_4=gpt_4)
+    result = await llm.run(code=source_code, path=filename)
     code = result.strip().lstrip("Test Code:\n```python").lstrip("```python").lstrip("```").rstrip("```")
     return format_str(code, mode=FileMode())

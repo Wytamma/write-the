@@ -1,8 +1,7 @@
 import typer
 import os
 from write_the.__about__ import __version__
-from write_the.tests import write_the_tests
-from write_the.mkdocs import write_the_mkdocs
+from write_the.commands import write_the_tests, write_the_mkdocs
 from write_the.utils import list_python_files
 from pathlib import Path
 from rich.console import Console
@@ -122,8 +121,8 @@ def mkdocs(
     write_the_mkdocs(code_dir=code_dir, readme=readme, out_dir=out_dir)
 
 
-@app.command()
-def tests(
+@app.async_command()
+async def tests(
     file: Path = typer.Argument(..., help="Path to the code file/folder."),
     tests_dir: Path = typer.Option(
         'tests', "--out", "-o", help="Path to save the docs."
@@ -176,7 +175,7 @@ def tests(
             failed = False
             progress.add_task(description=f"{file}", total=None)
             try:
-                result = write_the_tests(file, gpt_4=gpt_4)
+                result = await write_the_tests(file, gpt_4=gpt_4)
             except InvalidInput:
                 failed = True
                 result = ""
