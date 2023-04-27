@@ -1,4 +1,4 @@
-from write_the.docs.write import write_the_docs
+from write_the.commands import write_the_docs
 from write_the.utils import create_tree, format_source_code, load_source_code
 from rich.syntax import Syntax
 from rich.progress import Progress
@@ -60,8 +60,6 @@ async def async_cli_task(
         failed = True
     progress.remove_task(task_id)
     progress.refresh()
-    if failed:
-        return None
     if print_status or save or failed:
         icon = "❌" if failed else "✅"
         colour = "red" if failed else "green"
@@ -69,6 +67,8 @@ async def async_cli_task(
             f"[not underline]{icon} [/not underline]{file}",
             style=f"bold {colour} underline",
         )
+    if failed:
+        return None
     if save:
         with open(file, "w") as f:
             f.writelines(result)

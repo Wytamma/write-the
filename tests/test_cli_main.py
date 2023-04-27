@@ -2,7 +2,7 @@ import pytest
 from write_the.__about__ import __version__
 from pathlib import Path
 from write_the.cli.main import app
-from write_the.docs.chain import run
+from write_the.llm import LLM
 from typer.testing import CliRunner
 import unittest.mock as mock
 
@@ -36,7 +36,7 @@ def test_callback_version():
         (False, True, True, True),
     ],
 )
-@mock.patch('write_the.docs.write.run', return_value="\n\nadd:\n  Sums 2 numbers.\n  Args:\n    a (int): The first number to add.\n    b (int): The second number to add.\n  Returns:\n    int: The sum of `a` and `b`.\n  Examples:\n    >>> add(1, 2)\n    3\n\n")
+@mock.patch('write_the.llm.LLM.run', return_value="\n\nadd:\n  Sums 2 numbers.\n  Args:\n    a (int): The first number to add.\n    b (int): The second number to add.\n  Returns:\n    int: The sum of `a` and `b`.\n  Examples:\n    >>> add(1, 2)\n    3\n\n")
 def test_docs_mocked(mocked_run, file_path: Path, nodes, save, context, pretty, force):
     runner = CliRunner()
     args = ["docs", str(file_path)]
@@ -90,7 +90,7 @@ def test_mkdocs(tmp_path: Path):
         (False, True, True),
     ],
 )
-@mock.patch('write_the.tests.write.run', return_value="""@pytest.mark.parametrize(
+@mock.patch('write_the.llm.LLM.run', return_value="""@pytest.mark.parametrize(
     "a, b, expected", [(2, 3, 5), (0, 5, 5), (-2, -3, -5), (2.5, 3, 5.5), (2, -3, -1)]
 )
 def test_add(a, b, expected):

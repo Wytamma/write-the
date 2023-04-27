@@ -11,7 +11,7 @@ def directory():
 def test_list_python_files(directory):
     python_files = list_python_files(directory)
     assert isinstance(python_files, list)
-    assert len(python_files) == 2
+    assert len(python_files) == 3
     assert Path("tests/data/multiply_docstring.py") in python_files
     assert Path("tests/data/multiply.py") in python_files
 
