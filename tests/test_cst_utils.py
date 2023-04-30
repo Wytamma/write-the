@@ -2,31 +2,42 @@ import libcst as cst
 from write_the.cst.utils import has_docstring, nodes_to_tree
 import pytest
 
+
 @pytest.fixture
 def cst_function_def():
     return cst.FunctionDef(
-    name=cst.Name("function_name"),
-    params=cst.Parameters(),
-    body=cst.IndentedBlock(
-        body=[
-            cst.SimpleStatementLine(body=[cst.Expr(value=cst.SimpleString('"""This is a docstring."""'))]),
-            cst.SimpleStatementLine(body=[cst.Pass()]),
-        ]
-    ),
-)
+        name=cst.Name("function_name"),
+        params=cst.Parameters(),
+        body=cst.IndentedBlock(
+            body=[
+                cst.SimpleStatementLine(
+                    body=[
+                        cst.Expr(value=cst.SimpleString('"""This is a docstring."""'))
+                    ]
+                ),
+                cst.SimpleStatementLine(body=[cst.Pass()]),
+            ]
+        ),
+    )
 
 
 @pytest.fixture
 def cst_class_def():
     return cst.ClassDef(
-    name=cst.Name("ClassName"),
-    body=cst.IndentedBlock(
-        body=[
-            cst.SimpleStatementLine(body=[cst.Expr(value=cst.SimpleString('"""This is a class docstring."""'))]),
-            cst.SimpleStatementLine(body=[cst.Pass()]),
-        ]
-    ),
-)
+        name=cst.Name("ClassName"),
+        body=cst.IndentedBlock(
+            body=[
+                cst.SimpleStatementLine(
+                    body=[
+                        cst.Expr(
+                            value=cst.SimpleString('"""This is a class docstring."""')
+                        )
+                    ]
+                ),
+                cst.SimpleStatementLine(body=[cst.Pass()]),
+            ]
+        ),
+    )
 
 
 def test_has_docstring_function_def(cst_function_def):

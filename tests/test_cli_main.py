@@ -7,7 +7,7 @@ from typer.testing import CliRunner
 import unittest.mock as mock
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def file_path(tmp_path) -> Path:
     temp_file = tmp_path / "test_add.py"
     temp_file.write_text("def add(a, b):\n  return a + b")
@@ -36,7 +36,10 @@ def test_callback_version():
         (False, True, True, True),
     ],
 )
-@mock.patch('write_the.llm.LLM.run', return_value="\n\nadd:\n  Sums 2 numbers.\n  Args:\n    a (int): The first number to add.\n    b (int): The second number to add.\n  Returns:\n    int: The sum of `a` and `b`.\n  Examples:\n    >>> add(1, 2)\n    3\n\n")
+@mock.patch(
+    "write_the.llm.LLM.run",
+    return_value="\n\nadd:\n  Sums 2 numbers.\n  Args:\n    a (int): The first number to add.\n    b (int): The second number to add.\n  Returns:\n    int: The sum of `a` and `b`.\n  Examples:\n    >>> add(1, 2)\n    3\n\n",
+)
 def test_docs_mocked(mocked_run, file_path: Path, nodes, save, context, pretty, force):
     runner = CliRunner()
     args = ["docs", str(file_path)]
@@ -75,9 +78,9 @@ def test_mkdocs(tmp_path: Path):
     print(result.stdout)
     assert result.exit_code == 0
     files = [f.name for f in tmp_path.glob("*")]
-    assert 'mkdocs.yml' in files
-    assert '.github' in files
-    assert 'docs' in files
+    assert "mkdocs.yml" in files
+    assert ".github" in files
+    assert "docs" in files
 
 
 @pytest.mark.parametrize(
@@ -90,14 +93,17 @@ def test_mkdocs(tmp_path: Path):
         (False, True, True),
     ],
 )
-@mock.patch('write_the.llm.LLM.run', return_value="""@pytest.mark.parametrize(
+@mock.patch(
+    "write_the.llm.LLM.run",
+    return_value="""@pytest.mark.parametrize(
     "a, b, expected", [(2, 3, 5), (0, 5, 5), (-2, -3, -5), (2.5, 3, 5.5), (2, -3, -1)]
 )
 def test_add(a, b, expected):
-    assert add(a, b) == expected""")
+    assert add(a, b) == expected""",
+)
 def test_tests_mocked(mocked_run, file_path: Path, save, pretty, force):
     runner = CliRunner()
-    test_dir = file_path.parent / 'docs'
+    test_dir = file_path.parent / "docs"
     args = ["tests", str(file_path), "--out", test_dir]
 
     if save:

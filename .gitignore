@@ -7,3 +7,4 @@ site/
 test.py
 coverage.xml
 .DS_Store
+wizard/

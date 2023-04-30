@@ -1,22 +1,24 @@
 import libcst as cst
-import re 
+import re
 
 from write_the.cst import nodes_to_tree
 from write_the.cst.function_and_class_collector import get_node_names
 from write_the.cst.node_extractor import extract_nodes_from_tree
 from write_the.cst.node_remover import remove_nodes_from_tree
 
+
 def pad_with_newline_if_needed(s):
-    if not s.startswith('\n'):
-        s = '\n' + s
-    if not s.endswith('\n'):
-        s = s + '\n'
+    if not s.startswith("\n"):
+        s = "\n" + s
+    if not s.endswith("\n"):
+        s = s + "\n"
     return s
+
 
 def extract_block(text, class_function_names):
     results = {}
     for name in class_function_names:
-        pattern = rf'({name}:[\s\S]*?)(?=(\n\w|\Z))'
+        pattern = rf"({name}:[\s\S]*?)(?=(\n\w|\Z))"
         match = re.search(pattern, text)
         if match:
             block = match.group(1).lstrip(f"{name}:")
@@ -43,14 +45,11 @@ def process_nodes(tree: cst.Module, nodes, context, extract_specific_nodes) -> s
             extracted_nodes = extract_nodes_from_tree(tree, nodes)
             processed_tree = nodes_to_tree(extracted_nodes)
         else:
-            all_nodes = get_node_names(tree, False)
+            all_nodes = get_node_names(tree, True)
             nodes_to_remove = [n for n in all_nodes if n not in nodes]
-            processed_tree = remove_nodes_from_tree(
-                tree, nodes_to_remove
-            )
+            processed_tree = remove_nodes_from_tree(tree, nodes_to_remove)
         code = processed_tree.code
     else:
         code = tree.code
 
     return code
-

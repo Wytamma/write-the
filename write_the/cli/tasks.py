@@ -4,6 +4,7 @@ from rich.syntax import Syntax
 from rich.progress import Progress
 from typing import List
 from pathlib import Path
+from openai.error import InvalidRequestError
 
 
 async def async_cli_task(
@@ -12,6 +13,7 @@ async def async_cli_task(
     force: bool,
     save: bool,
     context: bool,
+    background: bool,
     pretty: bool,
     batch: bool,
     print_status: bool,
@@ -45,18 +47,26 @@ async def async_cli_task(
     if pretty:
         source_code = format_source_code(source_code)
     tree = create_tree(source_code)
+    max_batch_size = None
+    msg = ""
+    if batch:
+        max_batch_size = 1
     try:
         result = await write_the_docs(
             tree,
-            nodes=nodes,
+            node_names=nodes,
             force=force,
             save=save,
             context=context,
+            background=background,
             pretty=pretty,
-            batch=batch,
+            max_batch_size=max_batch_size,
         )
-    except Exception as e:
-        print(e)
+    except ValueError as e:
+        msg = f" - {e}"
+        failed = True
+    except InvalidRequestError as e:
+        msg = f" - {e}"
         failed = True
     progress.remove_task(task_id)
     progress.refresh()
@@ -64,7 +74,7 @@ async def async_cli_task(
         icon = "❌" if failed else "✅"
         colour = "red" if failed else "green"
         progress.print(
-            f"[not underline]{icon} [/not underline]{file}",
+            f"[not underline]{icon} [/not underline]{file}{msg}",
             style=f"bold {colour} underline",
         )
     if failed:

@@ -3,6 +3,7 @@ import libcst as cst
 from write_the.cst.docstring_remover import DocstringRemover, remove_docstrings
 from write_the.cst.utils import get_docstring
 
+
 @pytest.fixture
 def tree():
     return cst.parse_module(
@@ -34,7 +35,7 @@ def nodes():
 def test_leave_FunctionDef(tree, nodes):
     remover = DocstringRemover(nodes)
     updated_tree = tree.visit(remover)
-    assert get_docstring(updated_tree.body[0]) is None 
+    assert get_docstring(updated_tree.body[0]) is None
     assert get_docstring(updated_tree.body[1]) == "'''This is another docstring.'''"
 
 

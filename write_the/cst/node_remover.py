@@ -9,6 +9,7 @@ class NodeRemover(cst.CSTTransformer):
           nodes (list): A list of nodes to remove.
         """
         self.nodes = nodes
+        self.current_class = None
 
     def leave_FunctionDef(
         self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef
@@ -21,9 +22,17 @@ class NodeRemover(cst.CSTTransformer):
         Returns:
           cst.RemovalSentinel: A sentinel indicating whether the node should be removed.
         """
-        if original_node.name.value in self.nodes:
+        name = (
+            f"{self.current_class}.{original_node.name.value}"
+            if self.current_class
+            else original_node.name.value
+        )
+        if name in self.nodes:
             return cst.RemoveFromParent()
         return updated_node
+
+    def visit_ClassDef(self, original_node: cst.ClassDef) -> None:
+        self.current_class = original_node.name.value
 
     def leave_ClassDef(
         self, original_node: cst.ClassDef, updated_node: cst.ClassDef
@@ -36,8 +45,10 @@ class NodeRemover(cst.CSTTransformer):
         Returns:
           cst.RemovalSentinel: A sentinel indicating whether the node should be removed.
         """
+        self.current_class = None
         if original_node.name.value in self.nodes:
             return cst.RemoveFromParent()
+
         return updated_node
 
 

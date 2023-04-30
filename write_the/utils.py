@@ -23,9 +23,11 @@ def list_python_files(directory):
 def load_source_code(file: Path):
     with open(file, "r") as file:
         return file.read()
-    
+
+
 def format_source_code(source_code):
-  return format_str(source_code, mode=FileMode())
+    return format_str(source_code, mode=FileMode())
+
 
 def create_tree(source_code):
     return cst.parse_module(source_code)

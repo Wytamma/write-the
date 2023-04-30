@@ -2,6 +2,7 @@ import pytest
 import libcst as cst
 from write_the.cst.node_extractor import NodeExtractor, extract_nodes_from_tree
 
+
 @pytest.fixture
 def tree():
     return cst.parse_module(

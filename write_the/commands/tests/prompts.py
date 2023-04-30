@@ -12,6 +12,6 @@ Code:
 {code}
 ```
 """
-write_tests_for_file_prompt = PromptTemplate(input_variables=["code", "path"], template=tests_template)
-
-
+write_tests_for_file_prompt = PromptTemplate(
+    input_variables=["code", "path"], template=tests_template
+)
