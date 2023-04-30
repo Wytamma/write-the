@@ -14,6 +14,7 @@ from functools import wraps
 
 from .tasks import async_cli_task
 
+
 class AsyncTyper(typer.Typer):
     def async_command(self, *args, **kwargs):
         def decorator(async_func):
@@ -29,6 +30,7 @@ class AsyncTyper(typer.Typer):
 
 app = AsyncTyper()
 
+
 def _print_version(ctx: typer.Context, value: bool):
     if value:
         typer.echo(__version__)
@@ -37,8 +39,16 @@ def _print_version(ctx: typer.Context, value: bool):
 
 @app.callback(context_settings={"help_option_names": ["-h", "--help"]})
 def callback(
-        version: Optional[bool] = typer.Option(None, '-v', '--version', help="Show the pipeline version.", is_eager=True, callback=_print_version, show_default=False)
-    ):
+    version: Optional[bool] = typer.Option(
+        None,
+        "-v",
+        "--version",
+        help="Show the pipeline version.",
+        is_eager=True,
+        callback=_print_version,
+        show_default=False,
+    )
+):
     """
     AI-powered Code Generation and Refactoring Tool
     """
@@ -54,16 +64,31 @@ async def docs(
         help="Generate docs for specific nodes (functions and classes).",
     ),
     save: bool = typer.Option(
-        False, "--save/--print", "-s", help="Save the docstrings to file or print to stdout."
+        False,
+        "--save/--print",
+        "-s",
+        help="Save the docstrings to file or print to stdout.",
     ),
     pretty: bool = typer.Option(
         False, "--pretty/--plain", "-p", help="Syntax highlight and format the output."
     ),
     context: bool = typer.Option(
-        False, "--context/--no-context", "-c", help="Send context with nodes."
+        False,
+        "--context/--no-context",
+        "-c",
+        help="Send context (other nodes) with nodes.",
+    ),
+    background: bool = typer.Option(
+        True,
+        "--background/--no-background",
+        "-g",
+        help="Send background (other code) with nodes.",
     ),
     force: bool = typer.Option(
-        False, "--force/--no-force", "-f", help="Generate docstings even if they already exist."
+        False,
+        "--force/--no-force",
+        "-f",
+        help="Generate docstings even if they already exist.",
     ),
     batch: bool = typer.Option(
         False, "--batch/--no-batch", "-b", help="Send each node as a separate request."
@@ -84,22 +109,24 @@ async def docs(
         auto_refresh=True,
     ) as progress:
         tasks = []
-        print_status=len(files)>1
+        print_status = len(files) > 1
         for file in files:
             tasks.append(
                 async_cli_task(
                     file,
-                    nodes=nodes, 
-                    force=force, 
-                    save=save, 
-                    context=context, 
+                    nodes=nodes,
+                    force=force,
+                    save=save,
+                    context=context,
+                    background=background,
                     pretty=pretty,
                     batch=batch,
                     print_status=print_status,
-                    progress=progress
+                    progress=progress,
                 )
             )
         await gather(*tasks)
+
 
 @app.command()
 def mkdocs(
@@ -112,7 +139,10 @@ def mkdocs(
         None, help="Path to projects README (used to create index.md).", dir_okay=False
     ),
     out_dir: Path = typer.Option(
-        Path('.'), "--out", "-o", help="Path to save output (docs/ and yaml). Defaults to current directory."
+        Path("."),
+        "--out",
+        "-o",
+        help="Path to save output (docs/ and yaml). Defaults to current directory.",
     ),
 ):
     """
@@ -125,29 +155,40 @@ def mkdocs(
 async def tests(
     file: Path = typer.Argument(..., help="Path to the code file/folder."),
     tests_dir: Path = typer.Option(
-        'tests', "--out", "-o", help="Path to save the docs."
+        "tests", "--out", "-o", help="Path to save the docs."
     ),
     save: bool = typer.Option(
-        False, "--save/--print", "-s", help="Save the tests to the tests directory or print to stdout."
+        False,
+        "--save/--print",
+        "-s",
+        help="Save the tests to the tests directory or print to stdout.",
     ),
-       pretty: bool = typer.Option(
+    pretty: bool = typer.Option(
         False, "--pretty/--plain", "-p", help="Syntax highlight the output."
     ),
     group: bool = typer.Option(
-        False, "--group/--flat", "-g", help="Group the tests into folder or keep them flat."
+        False,
+        "--group/--flat",
+        "-g",
+        help="Group the tests into folder or keep them flat.",
     ),
     force: bool = typer.Option(
         False, "--force", "-f", help="Generate tests even if they already exist."
     ),
     empty: bool = typer.Option(
-        False, "--empty", "-e", help="Save empty files if a test creation fails. This will prevent write-the from regenerating failed test creations."
+        False,
+        "--empty",
+        "-e",
+        help="Save empty files if a test creation fails. This will prevent write-the from regenerating failed test creations.",
     ),
     gpt_4: bool = typer.Option(
-        False, "--gpt-4", help="Use GPT-4 to generate the tests (requires API will access)."
+        False,
+        "--gpt-4",
+        help="Use GPT-4 to generate the tests (requires API will access).",
     ),
 ):
     """
-    Generate tests for your code. 
+    Generate tests for your code.
     """
     current_tests = list_python_files(tests_dir)
     if file.is_dir():
@@ -156,16 +197,20 @@ async def tests(
         assert file.suffix == ".py"
         files = [file]
     for file in files:
-        if file.stem.startswith('_'):
+        if file.stem.startswith("_"):
             continue
         parts = list(file.parts[1:-1])
-        parts = ['test'] + parts
+        parts = ["test"] + parts
         test_file = f"{'_'.join(parts)}_{file.stem}.py"
         if group:
             parts.append(test_file)
             test_file = Path(os.path.join(*parts))
         test_file_path = tests_dir / test_file
-        if test_file_path.exists() and (not force and save) or (test_file in current_tests):
+        if (
+            test_file_path.exists()
+            and (not force and save)
+            or (test_file in current_tests)
+        ):
             continue
         with Progress(
             SpinnerColumn(),
@@ -198,7 +243,12 @@ async def tests(
                 console.print(syntax)
             else:
                 typer.echo(result)
-            
+
+
+@app.command()
+def models():
+    raise NotImplementedError()
+
 
 @app.command()
 def refactor():

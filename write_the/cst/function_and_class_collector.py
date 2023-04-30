@@ -11,8 +11,8 @@ class FunctionAndClassCollector(cst.CSTVisitor):
         """
         self.functions = []
         self.classes = []
-        self.current_class = None
         self.force = force
+        self.current_class = None
 
     def visit_FunctionDef(self, node: cst.FunctionDef) -> None:
         """
@@ -54,4 +54,4 @@ def get_node_names(tree, force):
     """
     collector = FunctionAndClassCollector(force)
     tree.visit(collector)
-    return collector.functions + collector.classes
+    return collector.classes + collector.functions

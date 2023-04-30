@@ -3,11 +3,12 @@ from .utils import has_docstring, remove_docstring
 import textwrap
 import re
 
+
 class DocstringAdder(cst.CSTTransformer):
     def __init__(self, docstrings, force):
         self.docstrings = docstrings
-        self.current_class = None
         self.force = force
+        self.current_class = None
 
     def leave_FunctionDef(
         self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef
@@ -22,9 +23,7 @@ class DocstringAdder(cst.CSTTransformer):
         """
         return self.add_docstring(updated_node)
 
-    def visit_ClassDef(
-            self, original_node: cst.ClassDef
-    ) -> None:
+    def visit_ClassDef(self, original_node: cst.ClassDef) -> None:
         self.current_class = original_node.name.value
 
     def leave_ClassDef(
@@ -59,15 +58,16 @@ class DocstringAdder(cst.CSTTransformer):
         if docstring and (self.force or not has_docstring(node)):
             if self.force and has_docstring(node):
                 # Remove existing docstring
-                node = remove_docstring(node)            
-            escaped_docstring = re.sub(r'(?<!\\)\\n', '\\\\\\\\n', docstring) 
+                node = remove_docstring(node)
+            escaped_docstring = re.sub(r"(?<!\\)\\n", "\\\\\\\\n", docstring)
             dedented_docstring = textwrap.dedent(escaped_docstring)
-            indented_docstring = textwrap.indent(dedented_docstring, '    ')
+            indented_docstring = textwrap.indent(dedented_docstring, "    ")
             new_docstring = cst.parse_statement(f'"""{indented_docstring}    """')
             body = node.body.with_changes(body=[new_docstring] + list(node.body.body))
             return node.with_changes(body=body)
-        
+
         return node
+
 
 def add_docstrings_to_tree(tree, docstring_dict, force=False):
     return tree.visit(DocstringAdder(docstring_dict, force))

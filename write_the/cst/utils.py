@@ -1,6 +1,7 @@
 import libcst as cst
 from typing import Optional
 
+
 def has_docstring(node: cst.CSTNode) -> bool:
     """
     Checks if a CSTNode has a docstring.
@@ -18,6 +19,7 @@ def has_docstring(node: cst.CSTNode) -> bool:
             if isinstance(stmt, cst.Expr) and isinstance(stmt.value, cst.SimpleString):
                 return True
     return False
+
 
 def remove_docstring(node):
     """
@@ -37,6 +39,7 @@ def remove_docstring(node):
             return node.with_changes(body=new_body)
     return node
 
+
 def get_docstring(node: cst.CSTNode) -> Optional[str]:
     """
     Retrieves the docstring of a CSTNode if it has one.
@@ -53,6 +56,7 @@ def get_docstring(node: cst.CSTNode) -> Optional[str]:
         return stmt.value.value
     return None
 
+
 def nodes_to_tree(nodes):
     """
     Converts a list of CSTNodes into a CSTModule.
@@ -63,3 +67,7 @@ def nodes_to_tree(nodes):
     """
     module = cst.Module(body=nodes)
     return module
+
+
+def get_code_from_node(node: cst.CSTNode):
+    return cst.Module(body=[node]).code
