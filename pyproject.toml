@@ -25,6 +25,7 @@ dependencies = [
   "typer[all]",
   "langchain",
   "openai",
+  "pyexpect",
   "tiktoken",
   "black",
   "libcst",
