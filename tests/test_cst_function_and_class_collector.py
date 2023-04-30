@@ -41,8 +41,8 @@ def test_visit_ClassDef_with_docstring(tree):
 
 
 def test_get_node_names(tree, force):
-    assert get_node_names(tree, force) == ["foo", "Bar"]
+    assert get_node_names(tree, force) == ["Bar", "foo"]
 
 
 def test_get_node_names_with_force_true(tree, force):
-    assert get_node_names(tree, True) == ["foo", "Bar"]
+    assert get_node_names(tree, True) == ["Bar", "foo"]

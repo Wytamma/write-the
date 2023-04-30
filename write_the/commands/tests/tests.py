@@ -3,10 +3,8 @@ from black import format_str, FileMode
 from .prompts import write_tests_for_file_prompt
 from write_the.llm import LLM
 
-async def write_the_tests(
-    filename: Path,
-    gpt_4: bool = False
-) -> str:
+
+async def write_the_tests(filename: Path, gpt_4: bool = False) -> str:
     """
     Formats and runs the tests for a given file.
     Args:
@@ -23,5 +21,11 @@ async def write_the_tests(
     source_code = format_str(source_code, mode=FileMode())
     llm = LLM(write_tests_for_file_prompt, gpt_4=gpt_4)
     result = await llm.run(code=source_code, path=filename)
-    code = result.strip().lstrip("Test Code:\n```python").lstrip("```python").lstrip("```").rstrip("```")
+    code = (
+        result.strip()
+        .lstrip("Test Code:\n```python")
+        .lstrip("```python")
+        .lstrip("```")
+        .rstrip("```")
+    )
     return format_str(code, mode=FileMode())

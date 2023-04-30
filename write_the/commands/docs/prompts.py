@@ -26,4 +26,6 @@ Code:
 {code}
 Formatted docstrings for {nodes}:
 """
-write_docstings_for_nodes_prompt = PromptTemplate(input_variables=["code", "nodes"], template=docs_template)
+write_docstings_for_nodes_prompt = PromptTemplate(
+    input_variables=["code", "nodes"], template=docs_template
+)
