@@ -9,8 +9,8 @@ def add(a, b):
     return a + b
 ```
 ```javascript
-function add(p1, p2) {{
-  return p1 + p2;
+function add(a, b) {{
+  return a + b;
 }}
 ```
 Code:
