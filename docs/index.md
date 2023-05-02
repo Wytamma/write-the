@@ -23,7 +23,7 @@ Write-the is an AI-powered documentation and test generation tool that leverages
 - [`write-the tests` to write tests for `write-the docs` 🤖](https://github.com/Wytamma/write-the/commit/6b6c8a08d7991e07e4972281c471f7842c04dda0)
 - [`write-the docs` and `write-the mkdocs` to build documenation for `autoresearcher` 🤖](https://github.com/eimenhmdt/autoresearcher/pull/17)
 - [`write-the docs` and `write-the mkdocs` to build documenation for `hyperspec` 🤖](https://github.com/smutch/hyperspec/pull/1)
-
+- [`write-the docs` and `write-the mkdocs` to build documenation for `CUPCAKEAGI` 🤖](https://github.com/AkshitIreddy/CUPCAKEAGI/pull/4)
 
 ## Installation
 ```console
@@ -35,6 +35,7 @@ Write-the offers the following AI-driven features:
 
 - Write-the Docs: Automatically generate documentation for your codebase, including class and function descriptions, parameter explanations, and examples.
 - Write-the Tests: Create test cases for your code, ensuring thorough test coverage and better code quality.
+- Write-the Convert: Convert code and data from any format into another. 
 - Write-the Refactor: Receive refactoring suggestions, reduce code complexity, optimize performance, and fix bugs (TBD).
 
 ## Requirements
@@ -42,7 +43,8 @@ Write-the offers the following AI-driven features:
 - OpenAI API key
 
 ## Usage
-To use `write-the`, run the following commands:
+
+To use `write-the` you must set an OPENAI_API_KEY environment variable (e.g. `export OPENAI_API_KEY=...`).
 
 ### Docs:
 ```bash
@@ -68,11 +70,20 @@ write-the tests [OPTIONS] [PATH_TO_SOURCE_CODE]
 ![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/tests-help.png)
 
 
+### Convert:
+```bash
+write-the convert [OPTIONS] IN_FILE [OUT_FILE]
+```
+
+![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/convert-help.png)
+
 For detailed information on available options and parameters, refer to the official (`write-the` generated) [documentation](https://write-the.wytamma.com/).
 
 ## Roadmap
 
-For a detailed project roadmap, including planned features, improvements, and milestones, please see our Project Timeline.
+The main goal for write-the is to develop a generic module system to document, test, and optimise code in any language in a reliable and repatable way.
+
+For a detailed project roadmap, including planned features, improvements, and milestones, please see our Project Timeline (TBD).
 
 ## Contributing
 We welcome contributions from the community. If you would like to contribute to Write-The, please follow these steps:

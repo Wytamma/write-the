@@ -2,6 +2,10 @@
 
 ::: write_the.commands.tests.tests
 
+::: write_the.commands.converters.prompts
+
+::: write_the.commands.converters.converters
+
 ::: write_the.commands.docs.docs
 
 ::: write_the.commands.docs.prompts
