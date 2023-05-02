@@ -29,7 +29,7 @@ async def write_the_converters(filename: Path, input_format: str, output_format:
     # Little difficult to capture the output of the prompt
     # due to different formatting based on conversions
     formatted_text = (
-        result.strip()
+        result.strip().rstrip('```')
     )
     # Commented out because it's was making empty string
     #return format_str(formatted_text, mode=FileMode())
