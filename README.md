@@ -32,6 +32,7 @@ Write-the offers the following AI-driven features:
 
 - Write-the Docs: Automatically generate documentation for your codebase, including class and function descriptions, parameter explanations, and examples.
 - Write-the Tests: Create test cases for your code, ensuring thorough test coverage and better code quality.
+- Write-the Convert: Convert code and data from any format into another. 
 - Write-the Refactor: Receive refactoring suggestions, reduce code complexity, optimize performance, and fix bugs (TBD).
 
 ## Requirements
@@ -65,6 +66,13 @@ write-the tests [OPTIONS] [PATH_TO_SOURCE_CODE]
 
 ![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/tests-help.png)
 
+
+### Convert:
+```bash
+write-the convert [OPTIONS] IN_FILE [OUT_FILE]
+```
+
+![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/convert-help.png)
 
 For detailed information on available options and parameters, refer to the official (`write-the` generated) [documentation](https://write-the.wytamma.com/).
 
