@@ -247,25 +247,29 @@ async def tests(
 
 @app.async_command()
 async def convert(
-    file: Path = typer.Argument(..., help="Path to the code file."),
-    out: str = typer.Option(
-        "stdout",
-        "--out",
-        "-o",
-        help="File to save the output to"
+    in_file: Path = typer.Argument(..., help="Path to the code file.", dir_okay=False, exists=True),
+    out_file: Optional[Path] = typer.Argument(
+        None,
+        help="File to save the output to.",
+        dir_okay=False,
     ),
     input_format: str = typer.Option(
-        False,
+        None,
         "--input-format",
-        help="The input format of the file",
+        "-i",
+        help="The input format of the file.",
     ),
     output_format: str = typer.Option(
-        False,
+        None,
         "--output-format",
-        help="The format to convert the file to",
+        "-o",
+        help="The format to convert the file to.",
     ),
     force: bool = typer.Option(
         False, "--force", "-f", help="Generate output file even if they already exist."
+    ),
+    pretty: bool = typer.Option(
+        False, "--pretty/--plain", "-p", help="Syntax highlight the output."
     ),
     gpt_4: bool = typer.Option(
         False,
@@ -276,16 +280,26 @@ async def convert(
     """
     Convert input file to a different format.
     """
+    if not force and (out_file and out_file.exists()):
+        typer.secho("Output file exists!", fg="red")
+        return typer.Exit(1)
+    if not input_format:
+        input_format = in_file.suffix
+    if not output_format and not out_file:
+        typer.secho("Output format required!", fg="red")
+        return typer.Exit(1)
+    if not output_format:
+        output_format = out_file.suffix
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
         transient=True,
     ) as progress:
         failed = False
-        progress.add_task(description=f"converting {file} to {output_format}", total=None)
+        progress.add_task(description=f"converting {in_file.name} to {output_format}", total=None)
         try:
             result = await write_the_converters(
-                file,
+                in_file,
                 input_format=input_format,
                 output_format=output_format,
                 gpt_4=gpt_4
@@ -294,9 +308,19 @@ async def convert(
             failed = True
             result = ""
         progress.stop()
-        if out != "stdout":
-            with open(out, "w") as f:
+        if out_file or failed:
+            icon = "❌" if failed else "✅"
+            colour = "red" if failed else "green"
+            typer.secho(f"{icon} {in_file} -> {out_file}", fg=colour)
+        if failed:
+            return typer.Exit(1)
+        if out_file:
+            with open(out_file, "w") as f:
                 f.writelines(result)
+        elif pretty:
+            syntax = Syntax(result, "python")
+            console = Console()
+            console.print(syntax)
         else:
             typer.echo(result)
 
