@@ -2,14 +2,24 @@ from langchain.prompts import PromptTemplate
 
 
 converters_template = """
-Covert the following text in {input_format} format to an equivalent {output_format} format
-Return only the converted output in a code block formatted as a "plaintext" file.
-
+Convert the following to the desired output.
+Example:
+```python
+def add(a, b):
+    return a + b
+```
+```javascript
+function add(p1, p2) {{
+  return p1 + p2;
+}}
+```
 Code:
-```plaintext
+```{input_format}
 {code}
 ```
+```{output_format}
 """
 write_converters_for_file_prompt = PromptTemplate(
-    input_variables=["code", "input_format", "output_format"], template=converters_template
+    input_variables=["code", "input_format", "output_format"], 
+    template=converters_template
 )
