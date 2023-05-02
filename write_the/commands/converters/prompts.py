@@ -3,17 +3,16 @@ from langchain.prompts import PromptTemplate
 
 converters_template = """
 Convert the following to the desired output.
-Example:
 ```python
 def add(a, b):
     return a + b
 ```
-```javascript
-function add(a, b) {{
+```typescript
+function add(a: number, b: number): number {{
   return a + b;
 }}
 ```
-Code:
+
 ```{input_format}
 {code}
 ```

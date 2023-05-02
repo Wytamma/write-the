@@ -21,16 +21,10 @@ async def write_the_converters(filename: Path, input_format: str, output_format:
     with open(filename, "r") as file:
         source_text = file.read()
 
-    # Commented out because it's was making empty string
-    #source_text = format_str(source_text, mode=FileMode())
     llm = LLM(write_converters_for_file_prompt, gpt_4=gpt_4)
     result = await llm.run(code=source_text, input_format=input_format, output_format=output_format)
 
-    # Little difficult to capture the output of the prompt
-    # due to different formatting based on conversions
     formatted_text = (
         result.strip().rstrip('```')
     )
-    # Commented out because it's was making empty string
-    #return format_str(formatted_text, mode=FileMode())
-    return formatted_text
+    return formatted_text.strip()
