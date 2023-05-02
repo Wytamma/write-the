@@ -1,7 +1,7 @@
 import typer
 import os
 from write_the.__about__ import __version__
-from write_the.commands import write_the_tests, write_the_mkdocs
+from write_the.commands import write_the_tests, write_the_mkdocs, write_the_converters
 from write_the.utils import list_python_files
 from pathlib import Path
 from rich.console import Console
@@ -243,6 +243,62 @@ async def tests(
                 console.print(syntax)
             else:
                 typer.echo(result)
+
+
+@app.async_command()
+async def convert(
+    file: Path = typer.Argument(..., help="Path to the code file."),
+    out: str = typer.Option(
+        "stdout",
+        "--out",
+        "-o",
+        help="File to save the output to"
+    ),
+    input_format: str = typer.Option(
+        False,
+        "--input-format",
+        help="The input format of the file",
+    ),
+    output_format: str = typer.Option(
+        False,
+        "--output-format",
+        help="The format to convert the file to",
+    ),
+    force: bool = typer.Option(
+        False, "--force", "-f", help="Generate output file even if they already exist."
+    ),
+    gpt_4: bool = typer.Option(
+        False,
+        "--gpt-4",
+        help="Use GPT-4 to generate the tests (requires API will access).",
+    ),
+):
+    """
+    Convert input file to a different format.
+    """
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        transient=True,
+    ) as progress:
+        failed = False
+        progress.add_task(description=f"converting {file} to {output_format}", total=None)
+        try:
+            result = await write_the_converters(
+                file,
+                input_format=input_format,
+                output_format=output_format,
+                gpt_4=gpt_4
+            )
+        except InvalidInput:
+            failed = True
+            result = ""
+        progress.stop()
+        if out != "stdout":
+            with open(out, "w") as f:
+                f.writelines(result)
+        else:
+            typer.echo(result)
 
 
 @app.command()
