@@ -56,7 +56,7 @@ def callback(
 
 @app.async_command()
 async def docs(
-    file: Path = typer.Argument(..., help="Path to the code file/folder."),
+    file: List[Path] = typer.Argument(..., help="Path to the code file/folder."),
     nodes: List[str] = typer.Option(
         None,
         "--node",
@@ -97,11 +97,13 @@ async def docs(
     """
     Document your code with AI.
     """
-    if file.is_dir():
-        files = list_python_files(file)
-    else:
-        assert file.suffix == ".py"
-        files = [file]
+    files = []
+    for f in file:
+        if f.is_dir():
+            files.extend(list_python_files(f))
+        else:
+            assert f.suffix == ".py"
+            files.append(f)
     with Progress(
         SpinnerColumn(),
         TextColumn("{task.description}"),
