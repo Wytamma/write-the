@@ -13,11 +13,14 @@ def add(a, b):
 Formatted docstrings for add:
 add:
   Sums 2 numbers.
+
   Args:
     a (int): The first number to add.
     b (int): The second number to add.
+
   Returns:
     int: The sum of a and b.
+
   Examples:
     >>> add(1, 2)
     3
