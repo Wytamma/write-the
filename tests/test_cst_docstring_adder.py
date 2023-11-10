@@ -1,6 +1,6 @@
 import pytest
 import libcst as cst
-from write_the.cst.docstring_adder import DocstringAdder
+from write_the.cst.docstring_adder import DocstringAdder, add_docstrings_to_tree
 from write_the.cst.utils import has_docstring, get_docstring
 
 
@@ -22,7 +22,7 @@ def function_def_node():
     return cst.FunctionDef(
         name=cst.Name("function_name"),
         params=cst.Parameters(),
-        body=cst.IndentedBlock(body=[cst.SimpleStatementLine(body=[cst.Pass()])]),
+        body=cst.IndentedBlock(body=[cst.SimpleStatementLine(body=[cst.Pass()])], indent="    "),
     )
 
 
@@ -117,3 +117,39 @@ def test_add_docstring_escape_newline(docstrings, function_def_node):
         get_docstring(updated_node).strip('"""').strip()
         == """\\\\ntest\n    test\\\\n\\\\n"""
     )
+
+def tree():
+    return cst.parse_module(
+"""
+def function_name():
+    pass
+
+class ClassName:
+    def method_name():
+        pass
+"""
+    )
+
+def test_add_docstring_indentation():
+    docstrings = {
+        "function_name": """
+        This is a docstring for a function.
+        Args:
+            a (int): The first number to add.
+            b (int): The second number to add.
+        Returns:
+            int: The sum of `a` and `b`.
+        """,
+        "ClassName.method_name": """
+        This is a docstring for a method.
+        Args:
+            a (int): The first number to add.
+            b (int): The second number to add.
+        Returns:
+            int: The sum of `a` and `b`.
+        """,
+    }
+    modified_tree = add_docstrings_to_tree(tree(), docstrings, force=True)
+    code = modified_tree.code
+    assert "    This is a docstring for a function." in  code
+    assert "        This is a docstring for a method." in  code

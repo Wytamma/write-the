@@ -5,9 +5,10 @@ import re
 
 
 class DocstringAdder(cst.CSTTransformer):
-    def __init__(self, docstrings, force):
+    def __init__(self, docstrings, force, indent="    "):
         self.docstrings = docstrings
         self.force = force
+        self.indent = indent
         self.current_class = None
 
     def leave_FunctionDef(
@@ -61,13 +62,16 @@ class DocstringAdder(cst.CSTTransformer):
                 node = remove_docstring(node)
             escaped_docstring = re.sub(r"(?<!\\)\\n", "\\\\\\\\n", docstring)
             dedented_docstring = textwrap.dedent(escaped_docstring)
-            indented_docstring = textwrap.indent(dedented_docstring, "    ")
-            new_docstring = cst.parse_statement(f'"""{indented_docstring}    """')
-            body = node.body.with_changes(body=[new_docstring] + list(node.body.body))
+            indent = self.indent
+            if self.current_class:
+                indent = indent * 2
+            indented_docstring = textwrap.indent(dedented_docstring, indent)
+            new_docstring = cst.parse_statement(f'"""{indented_docstring}{indent}"""')
+            body = node.body.with_changes(body=(new_docstring, *node.body.body))
             return node.with_changes(body=body)
 
         return node
 
 
 def add_docstrings_to_tree(tree, docstring_dict, force=False):
-    return tree.visit(DocstringAdder(docstring_dict, force))
+    return tree.visit(DocstringAdder(docstring_dict, force=force, indent=tree.config_for_parsing.default_indent))
