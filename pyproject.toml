@@ -27,7 +27,7 @@ dependencies = [
   "openai==0.28.1",
   "tiktoken==0.5.1",
   "black==23.11.0",
-  "libcst=1.1.0",
+  "libcst==1.1.0",
 ]
 dynamic = ["version"]
 
