@@ -1,0 +1,10 @@
+{
+    "summary": "The code declares the version of the package as \"0.10.1\".",
+    "details": [
+        {
+            "comment": "The code declares the version of the package as \"0.10.1\".",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/__about__.py\":0-0",
+            "content": "__version__ = \"0.10.1\""
+        }
+    ]
+}

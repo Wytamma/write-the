@@ -1,0 +1,20 @@
+{
+    "summary": "The `NodeRemover` class is initialized with a list of nodes to remove and removes specified ClassDef nodes from a CST tree using a visitor pattern, handling the removal process in `remove_nodes_from_tree()`.",
+    "details": [
+        {
+            "comment": "Class NodeRemover initializes with a list of nodes to remove. Removes FunctionDef node from the tree if it is in the list of nodes, otherwise returns the updated node.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/node_remover.py\":0-31",
+            "content": "import libcst as cst\nclass NodeRemover(cst.CSTTransformer):\n    def __init__(self, nodes):\n        \"\"\"\n        Initializes a NodeRemover instance.\n        Args:\n          nodes (list): A list of nodes to remove.\n        \"\"\"\n        self.nodes = nodes\n        self.current_class = None\n    def leave_FunctionDef(\n        self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef\n    ) -> cst.RemovalSentinel:\n        \"\"\"\n        Removes a FunctionDef node from the tree if it is in the list of nodes.\n        Args:\n          original_node (cst.FunctionDef): The original FunctionDef node.\n          updated_node (cst.FunctionDef): The updated FunctionDef node.\n        Returns:\n          cst.RemovalSentinel: A sentinel indicating whether the node should be removed.\n        \"\"\"\n        name = (\n            f\"{self.current_class}.{original_node.name.value}\"\n            if self.current_class\n            else original_node.name.value\n        )\n        if name in self.nodes:\n            return cst.RemoveFromParent()\n        return updated_node"
+        },
+        {
+            "comment": "The code defines a class `NodeRemover` that can remove specified ClassDef nodes from a CST tree. It utilizes two methods: `visit_ClassDef()` and `leave_ClassDef()`. If the ClassDef node's name value is in the list of nodes to be removed, it returns a RemoveFromParent sentinel indicating that the node should be removed. The function `remove_nodes_from_tree()` removes nodes from a given CST tree using instances of the NodeRemover class.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/node_remover.py\":33-63",
+            "content": "    def visit_ClassDef(self, original_node: cst.ClassDef) -> None:\n        self.current_class = original_node.name.value\n    def leave_ClassDef(\n        self, original_node: cst.ClassDef, updated_node: cst.ClassDef\n    ) -> cst.RemovalSentinel:\n        \"\"\"\n        Removes a ClassDef node from the tree if it is in the list of nodes.\n        Args:\n          original_node (cst.ClassDef): The original ClassDef node.\n          updated_node (cst.ClassDef): The updated ClassDef node.\n        Returns:\n          cst.RemovalSentinel: A sentinel indicating whether the node should be removed.\n        \"\"\"\n        self.current_class = None\n        if original_node.name.value in self.nodes:\n            return cst.RemoveFromParent()\n        return updated_node\ndef remove_nodes_from_tree(tree, nodes):\n    \"\"\"\n    Removes nodes from a CST tree.\n    Args:\n      tree (cst.CSTNode): The CST tree to remove nodes from.\n      nodes (list): A list of nodes to remove.\n    Returns:\n      cst.CSTNode: The updated CST tree.\n    \"\"\"\n    remover = NodeRemover(nodes)"
+        },
+        {
+            "comment": "Removes nodes from the AST using a visitor pattern.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/node_remover.py\":64-65",
+            "content": "    tree = tree.visit(remover)\n    return tree"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "summary": "This code sets up a MkDocs template and action for a project, defining settings and using GitHub Actions to run a CI/CD pipeline on Ubuntu virtual machines for building and deploying changes.",
+    "details": [
+        {
+            "comment": "This code defines the MkDocs template and action for a project. The template includes settings for site name, theme, palette, features, social links, plugins, and markdown extensions. The action will run on push events to master or main branches.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/mkdocs/templates.py\":0-52",
+            "content": "mkdocs_template = \"\"\"\nsite_name: {project_name}\n# repo_url: https://github.com/wytamma/write-the\ntheme:\n  name: \"material\"\n  # homepage: https://write-the.wytamma.com\n  # logo: assets/logo.png\n  # favicon: images/favicon.png\n  palette: \n    - scheme: default\n      toggle:\n        icon: material/brightness-7 \n        name: Switch to dark mode\n    - scheme: slate\n      toggle:\n        icon: material/brightness-4\n        name: Switch to light mode\n  features:\n    - toc.follow\n    - content.action.edit\nextra:\n  social:\n    - icon: fontawesome/solid/robot\n      link: https://github.com/Wytamma/write-the\n      name: Generated with write-the\nplugins:\n- search\n- mkdocstrings:\n    handlers:\n      python:\n        options:\n          docstring_style: \"google\"\nmarkdown_extensions:\n  - pymdownx.highlight:\n      anchor_linenums: true\n      line_spans: __span\n      pygments_lang_class: true\n  - pymdownx.inlinehilite\n  - pymdownx.snippets\n  - pymdownx.superfences\n\"\"\"\naction_template = \"\"\"\nname: mkdocs \non:\n  push:\n    branches:\n      - master \n      - main"
+        },
+        {
+            "comment": "This code is setting up a CI/CD pipeline for building and deploying a MkDocs project. It uses GitHub Actions to run the deployment job on an Ubuntu virtual machine, installs required packages, and deploys the changes using `mkdocs gh-deploy --force`.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/mkdocs/templates.py\":53-69",
+            "content": "permissions:\n  contents: write\njobs:\n  deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - uses: actions/setup-python@v4\n        with:\n          python-version: 3.x\n      - uses: actions/cache@v2\n        with:\n          key: ${{ github.ref }}\n          path: .cache\n      - run: pip install \"mkdocstrings==0.22.0\" \"mkdocstrings-python==1.3.*\" \"mkdocs-material\"\n      - run: mkdocs gh-deploy --force\n\"\"\""
+        }
+    ]
+}

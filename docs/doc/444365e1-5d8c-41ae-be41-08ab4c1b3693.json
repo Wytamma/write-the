@@ -1,0 +1,10 @@
+{
+    "summary": "Function takes two inputs, multiplies them, and returns the result.",
+    "details": [
+        {
+            "comment": "Function takes two inputs, multiplies them, and returns the result.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/data/multiply.py\":0-1",
+            "content": "def multiply(a, b):\n    return a * b"
+        }
+    ]
+}

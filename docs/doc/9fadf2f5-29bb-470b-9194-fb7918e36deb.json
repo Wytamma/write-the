@@ -1,0 +1,20 @@
+{
+    "summary": "The function takes a CSTNode, checks for docstrings and removes them, converts list of nodes into a module, retrieves docstring for FunctionDef or ClassDef, and if the first statement is an expression with simple string value, it removes the statement and returns modified node.",
+    "details": [
+        {
+            "comment": "This code checks if a given CSTNode has a docstring and removes the docstring from a node. It only checks for docstrings on FunctionDef and ClassDef nodes, and returns True or False accordingly.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/utils.py\":0-34",
+            "content": "import libcst as cst\nfrom typing import Optional\ndef has_docstring(node: cst.CSTNode) -> bool:\n    \"\"\"\n    Checks if a CSTNode has a docstring.\n    Args:\n      node (cst.CSTNode): The node to check.\n    Returns:\n      bool: Whether or not the node has a docstring.\n    Notes:\n      Only checks for docstrings on FunctionDef and ClassDef nodes.\n    \"\"\"\n    if isinstance(node, cst.FunctionDef) or isinstance(node, cst.ClassDef):\n        body = node.body.body\n        if body and isinstance(body[0], cst.SimpleStatementLine):\n            stmt = body[0].body[0]\n            if isinstance(stmt, cst.Expr) and isinstance(stmt.value, cst.SimpleString):\n                return True\n    return False\ndef remove_docstring(node):\n    \"\"\"\n    Removes the docstring from a node.\n    Args:\n      node (cst.CSTNode): The node to remove the docstring from.\n    Returns:\n      cst.CSTNode: The node with the docstring removed.\n    \"\"\"\n    if not node.body.body:\n        return node\n    first_stmt = node.body.body[0]\n    if isinstance(first_stmt, cst.SimpleStatementLine):"
+        },
+        {
+            "comment": "1. Function `nodes_to_tree` accepts a list of CSTNodes and converts them into a CSTModule.\n2. Function `get_docstring` retrieves the docstring for FunctionDef or ClassDef nodes, if they exist.\n3. The code block checks if the first statement in a node's body is an expression with a simple string value; if so, it removes the first statement from the body and returns the modified node.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/utils.py\":35-68",
+            "content": "        stmt = first_stmt.body[0]\n        if isinstance(stmt, cst.Expr) and isinstance(stmt.value, cst.SimpleString):\n            new_body = node.body.with_changes(body=node.body.body[1:])\n            return node.with_changes(body=new_body)\n    return node\ndef get_docstring(node: cst.CSTNode) -> Optional[str]:\n    \"\"\"\n    Retrieves the docstring of a CSTNode if it has one.\n    Args:\n        node (cst.CSTNode): The node to check.\n    Returns:\n        Optional[str]: The docstring of the node if it exists, None otherwise.\n    Notes:\n        Only retrieves docstrings for FunctionDef and ClassDef nodes.\n    \"\"\"\n    if has_docstring(node):\n        body = node.body.body\n        stmt = body[0].body[0]\n        return stmt.value.value\n    return None\ndef nodes_to_tree(nodes):\n    \"\"\"\n    Converts a list of CSTNodes into a CSTModule.\n    Args:\n      nodes (list[cst.CSTNode]): The list of nodes to convert.\n    Returns:\n      cst.Module: The CSTModule containing the given nodes.\n    \"\"\"\n    module = cst.Module(body=nodes)\n    return module"
+        },
+        {
+            "comment": "Function takes a CSTNode and returns the code for it.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/utils.py\":71-72",
+            "content": "def get_code_from_node(node: cst.CSTNode):\n    return cst.Module(body=[node]).code"
+        }
+    ]
+}

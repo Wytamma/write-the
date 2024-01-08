@@ -1,0 +1,536 @@
+{
+    "100": {
+        "file_id": 16,
+        "content": "from pathlib import Path\nimport libcst as cst\nfrom black import FileMode, format_str\ndef list_python_files(directory):\n    \"\"\"\n    Finds all Python files in a given directory.\n    Args:\n      directory (Path): The directory to search for Python files.\n    Returns:\n      list: A list of Path objects for each Python file found.\n    Examples:\n      >>> list_python_files(Path('/home/user/code'))\n      [Path('/home/user/code/main.py'), Path('/home/user/code/utils.py')]\n    \"\"\"\n    python_files = []\n    for file in directory.glob(\"**/*.py\"):\n        python_files.append(file)\n    return python_files\ndef load_source_code(file: Path):\n    with open(file, \"r\") as file:\n        return file.read()\ndef format_source_code(source_code):\n    return format_str(source_code, mode=FileMode())\ndef create_tree(source_code):\n    return cst.parse_module(source_code)",
+        "type": "code",
+        "location": "/write_the/utils.py:1-33"
+    },
+    "101": {
+        "file_id": 16,
+        "content": "This code contains three functions: \"list_python_files\", \"load_source_code\", and \"create_tree\". The first function finds all Python files in a given directory, while the second and third functions read and parse the source code of a single Python file, respectively.",
+        "type": "comment"
+    },
+    "102": {
+        "file_id": 17,
+        "content": "/write_the/cli/__init__.py",
+        "type": "filepath"
+    },
+    "103": {
+        "file_id": 17,
+        "content": "Imports the 'app' object from the 'main' module in the same package.",
+        "type": "summary"
+    },
+    "104": {
+        "file_id": 17,
+        "content": "from .main import app",
+        "type": "code",
+        "location": "/write_the/cli/__init__.py:1-1"
+    },
+    "105": {
+        "file_id": 17,
+        "content": "Imports the 'app' object from the 'main' module in the same package.",
+        "type": "comment"
+    },
+    "106": {
+        "file_id": 18,
+        "content": "/write_the/cli/main.py",
+        "type": "filepath"
+    },
+    "107": {
+        "file_id": 18,
+        "content": "The code is for a CLI app that imports libraries, defines classes for AI-refactored code generation and refactoring with customizable interfaces, handles command line options, processes files using parallel task execution, generates test files, supports various input/output locations and formats, and displays progress and success/failure icons.",
+        "type": "summary"
+    },
+    "108": {
+        "file_id": 18,
+        "content": "import typer\nimport os\nfrom write_the.__about__ import __version__\nfrom write_the.commands import write_the_tests, write_the_mkdocs, write_the_converters\nfrom write_the.utils import list_python_files\nfrom pathlib import Path\nfrom rich.console import Console\nfrom rich.syntax import Syntax\nfrom rich.progress import Progress, SpinnerColumn, TextColumn\nfrom typing import List, Optional\nfrom black import InvalidInput\nfrom asyncio import run, gather\nfrom functools import wraps\nfrom .tasks import async_cli_task\nclass AsyncTyper(typer.Typer):\n    def async_command(self, *args, **kwargs):\n        def decorator(async_func):\n            @wraps(async_func)\n            def sync_func(*_args, **_kwargs):\n                return run(async_func(*_args, **_kwargs))\n            self.command(*args, **kwargs)(sync_func)\n            return async_func\n        return decorator\napp = AsyncTyper()\ndef _print_version(ctx: typer.Context, value: bool):\n    if value:\n        typer.echo(__version__)\n        raise typer.Exit()\n@app.callback(context_settings={\"help_option_names\": [\"-h\", \"--help\"]})",
+        "type": "code",
+        "location": "/write_the/cli/main.py:1-40"
+    },
+    "109": {
+        "file_id": 18,
+        "content": "This code is importing necessary libraries and defining classes and functions for a command-line interface (CLI) application. It also includes a version printing function.",
+        "type": "comment"
+    },
+    "110": {
+        "file_id": 18,
+        "content": "def callback(\n    version: Optional[bool] = typer.Option(\n        None,\n        \"-v\",\n        \"--version\",\n        help=\"Show the pipeline version.\",\n        is_eager=True,\n        callback=_print_version,\n        show_default=False,\n    )\n):\n    \"\"\"\n    AI-powered Code Generation and Refactoring Tool\n    \"\"\"\n@app.async_command()\nasync def docs(\n    file: List[Path] = typer.Argument(..., help=\"Path to the code file/folder.\"),\n    nodes: List[str] = typer.Option(\n        None,\n        \"--node\",\n        \"-n\",\n        help=\"Generate docs for specific nodes (functions and classes).\",\n    ),\n    save: bool = typer.Option(\n        False,\n        \"--save/--print\",\n        \"-s\",\n        help=\"Save the docstrings to file or print to stdout.\",\n    ),\n    pretty: bool = typer.Option(\n        False, \"--pretty/--plain\", \"-p\", help=\"Syntax highlight and format the output.\"\n    ),\n    context: bool = typer.Option(\n        False,\n        \"--context/--no-context\",\n        \"-c\",\n        help=\"Send context (other nodes) with nodes.\",\n    ),\n    background: bool = typer.Option(",
+        "type": "code",
+        "location": "/write_the/cli/main.py:41-81"
+    },
+    "111": {
+        "file_id": 18,
+        "content": "This function defines a command-line interface (CLI) for generating and refactoring code with AI. It accepts optional parameters for version information, file paths or folders, specific nodes to generate docs for, whether to save the docstrings to file or print to stdout, formatting options for output, and sending context with nodes.",
+        "type": "comment"
+    },
+    "112": {
+        "file_id": 18,
+        "content": "        True,\n        \"--background/--no-background\",\n        \"-g\",\n        help=\"Send background (other code) with nodes.\",\n    ),\n    force: bool = typer.Option(\n        False,\n        \"--force/--no-force\",\n        \"-f\",\n        help=\"Generate docstings even if they already exist.\",\n    ),\n    batch: bool = typer.Option(\n        False, \"--batch/--no-batch\", \"-b\", help=\"Send each node as a separate request.\"\n    ),\n):\n    \"\"\"\n    Document your code with AI.\n    \"\"\"\n    files = []\n    for f in file:\n        if f.is_dir():\n            files.extend(list_python_files(f))\n        else:\n            assert f.suffix == \".py\"\n            files.append(f)\n    with Progress(\n        SpinnerColumn(),\n        TextColumn(\"{task.description}\"),\n        transient=True,\n        auto_refresh=True,\n    ) as progress:\n        tasks = []\n        print_status = len(files) > 1\n        for file in files:\n            tasks.append(\n                async_cli_task(\n                    file,\n                    nodes=nodes,\n                    force=force,",
+        "type": "code",
+        "location": "/write_the/cli/main.py:82-120"
+    },
+    "113": {
+        "file_id": 18,
+        "content": "This code is parsing command line options for functions like background, force, and batch. It also loops through a list of files, checks if they are directories or python files, and adds them to the list of files to process. Then it uses a progress bar to show the status and starts tasks in parallel.",
+        "type": "comment"
+    },
+    "114": {
+        "file_id": 18,
+        "content": "                    save=save,\n                    context=context,\n                    background=background,\n                    pretty=pretty,\n                    batch=batch,\n                    print_status=print_status,\n                    progress=progress,\n                )\n            )\n        await gather(*tasks)\n@app.command()\ndef mkdocs(\n    code_dir: Path = typer.Argument(\n        ...,\n        help=\"Path to the projects code. Uses docstings to build API reference.\",\n        file_okay=False,\n    ),\n    readme: Optional[Path] = typer.Option(\n        None, help=\"Path to projects README (used to create index.md).\", dir_okay=False\n    ),\n    out_dir: Path = typer.Option(\n        Path(\".\"),\n        \"--out\",\n        \"-o\",\n        help=\"Path to save output (docs/ and yaml). Defaults to current directory.\",\n    ),\n):\n    \"\"\"\n    Generate a mkdocs website for a project including the API reference.\n    \"\"\"\n    write_the_mkdocs(code_dir=code_dir, readme=readme, out_dir=out_dir)\n@app.async_command()\nasync def tests(\n    file: Path = typer.Argument(..., help=\"Path to the code file/folder.\"),",
+        "type": "code",
+        "location": "/write_the/cli/main.py:121-158"
+    },
+    "115": {
+        "file_id": 18,
+        "content": "This code defines a command-line interface (CLI) for generating an MkDocs website for a project, including the API reference. The `mkdocs` command takes three arguments: `code_dir`, `readme`, and `out_dir`. It uses the `write_the_mkdocs` function to generate the website, which takes these same three arguments. Additionally, there is an asynchronous command `tests` that takes a file path argument and performs some operation on it.",
+        "type": "comment"
+    },
+    "116": {
+        "file_id": 18,
+        "content": "    tests_dir: Path = typer.Option(\n        \"tests\", \"--out\", \"-o\", help=\"Path to save the docs.\"\n    ),\n    save: bool = typer.Option(\n        False,\n        \"--save/--print\",\n        \"-s\",\n        help=\"Save the tests to the tests directory or print to stdout.\",\n    ),\n    pretty: bool = typer.Option(\n        False, \"--pretty/--plain\", \"-p\", help=\"Syntax highlight the output.\"\n    ),\n    group: bool = typer.Option(\n        False,\n        \"--group/--flat\",\n        \"-g\",\n        help=\"Group the tests into folder or keep them flat.\",\n    ),\n    force: bool = typer.Option(\n        False, \"--force\", \"-f\", help=\"Generate tests even if they already exist.\"\n    ),\n    empty: bool = typer.Option(\n        False,\n        \"--empty\",\n        \"-e\",\n        help=\"Save empty files if a test creation fails. This will prevent write-the from regenerating failed test creations.\",\n    ),\n    gpt_4: bool = typer.Option(\n        False,\n        \"--gpt-4\",\n        help=\"Use GPT-4 to generate the tests (requires API will access).\",\n    ),\n):",
+        "type": "code",
+        "location": "/write_the/cli/main.py:159-191"
+    },
+    "117": {
+        "file_id": 18,
+        "content": "This code defines a set of command line interface (CLI) options for a program. The options include the path to save the docs, whether to save or print tests to stdout, syntax highlighting preference, grouping tests into folders or keeping them flat, generating tests even if they already exist, using GPT-4 to generate tests, and saving empty files in case of test creation failures.",
+        "type": "comment"
+    },
+    "118": {
+        "file_id": 18,
+        "content": "    \"\"\"\n    Generate tests for your code.\n    \"\"\"\n    current_tests = list_python_files(tests_dir)\n    if file.is_dir():\n        files = list_python_files(file)\n    else:\n        assert file.suffix == \".py\"\n        files = [file]\n    for file in files:\n        if file.stem.startswith(\"_\"):\n            continue\n        parts = list(file.parts[1:-1])\n        parts = [\"test\"] + parts\n        test_file = f\"{'_'.join(parts)}_{file.stem}.py\"\n        if group:\n            parts.append(test_file)\n            test_file = Path(os.path.join(*parts))\n        test_file_path = tests_dir / test_file\n        if (\n            test_file_path.exists()\n            and (not force and save)\n            or (test_file in current_tests)\n        ):\n            continue\n        with Progress(\n            SpinnerColumn(),\n            TextColumn(\"[progress.description]{task.description}\"),\n            transient=True,\n        ) as progress:\n            failed = False\n            progress.add_task(description=f\"{file}\", total=None)\n            try:",
+        "type": "code",
+        "location": "/write_the/cli/main.py:192-224"
+    },
+    "119": {
+        "file_id": 18,
+        "content": "Generates test files for Python code.",
+        "type": "comment"
+    },
+    "120": {
+        "file_id": 18,
+        "content": "                result = await write_the_tests(file, gpt_4=gpt_4)\n            except InvalidInput:\n                failed = True\n                result = \"\"\n            progress.stop()\n            if len(files) > 1 or save or failed:\n                icon = \"❌\" if failed else \"✅\"\n                colour = \"red\" if failed else \"green\"\n                typer.secho(f\"{icon} {file}\", fg=colour)\n            if failed and not empty:\n                continue\n            if save:\n                # create test file\n                tests_dir.mkdir(exist_ok=True)\n                test_file_path.parent.mkdir(exist_ok=True, parents=True)\n                with open(test_file_path, \"w\") as f:\n                    f.writelines(result)\n            elif pretty:\n                syntax = Syntax(result, \"python\")\n                console = Console()\n                console.print(syntax)\n            else:\n                typer.echo(result)\n@app.async_command()\nasync def convert(\n    in_file: Path = typer.Argument(..., help=\"Path to the code file.\", dir_okay=False, exists=True),",
+        "type": "code",
+        "location": "/write_the/cli/main.py:225-252"
+    },
+    "121": {
+        "file_id": 18,
+        "content": "This code is handling the conversion of a code file to test files using GPT-4. If an InvalidInput exception occurs, it sets failed to True and resets the result to an empty string. It stops the progress indicator. If there are multiple files or save is set to True, it displays a success or failure icon based on whether the conversion was successful or not. If the conversion failed but there were no previous tests, it continues to the next file. If save is set to True, it creates a test file and writes the result to it. If pretty is set to True, it formats and prints the result using a syntax highlighter. Otherwise, it simply echoes the result.",
+        "type": "comment"
+    },
+    "122": {
+        "file_id": 18,
+        "content": "    out_file: Optional[Path] = typer.Argument(\n        None,\n        help=\"File to save the output to.\",\n        dir_okay=False,\n    ),\n    input_format: str = typer.Option(\n        None,\n        \"--input-format\",\n        \"-i\",\n        help=\"The input format of the file.\",\n    ),\n    output_format: str = typer.Option(\n        None,\n        \"--output-format\",\n        \"-o\",\n        help=\"The format to convert the file to.\",\n    ),\n    force: bool = typer.Option(\n        False, \"--force\", \"-f\", help=\"Generate output file even if they already exist.\"\n    ),\n    pretty: bool = typer.Option(\n        False, \"--pretty/--plain\", \"-p\", help=\"Syntax highlight the output.\"\n    ),\n    gpt_4: bool = typer.Option(\n        False,\n        \"--gpt-4\",\n        help=\"Use GPT-4 to generate the tests (requires API will access).\",\n    ),\n):\n    \"\"\"\n    Convert input file to a different format.\n    \"\"\"\n    if not force and (out_file and out_file.exists()):\n        typer.secho(\"Output file exists!\", fg=\"red\")\n        return typer.Exit(1)\n    if not input_format:",
+        "type": "code",
+        "location": "/write_the/cli/main.py:253-288"
+    },
+    "123": {
+        "file_id": 18,
+        "content": "The code defines command-line arguments for a file output location, input format, output format, forcing the creation of an existing file, and using GPT-4 for generating tests. It also checks if the output file already exists before proceeding to avoid overwriting it.",
+        "type": "comment"
+    },
+    "124": {
+        "file_id": 18,
+        "content": "        input_format = in_file.suffix\n    if not output_format and not out_file:\n        typer.secho(\"Output format required!\", fg=\"red\")\n        return typer.Exit(1)\n    if not output_format:\n        output_format = out_file.suffix\n    with Progress(\n        SpinnerColumn(),\n        TextColumn(\"[progress.description]{task.description}\"),\n        transient=True,\n    ) as progress:\n        failed = False\n        progress.add_task(description=f\"converting {in_file.name} to {output_format}\", total=None)\n        try:\n            result = await write_the_converters(\n                in_file,\n                input_format=input_format,\n                output_format=output_format,\n                gpt_4=gpt_4\n            )\n        except InvalidInput:\n            failed = True\n            result = \"\"\n        progress.stop()\n        if out_file or failed:\n            icon = \"❌\" if failed else \"✅\"\n            colour = \"red\" if failed else \"green\"\n            typer.secho(f\"{icon} {in_file} -> {out_file}\", fg=colour)\n        if failed:",
+        "type": "code",
+        "location": "/write_the/cli/main.py:289-317"
+    },
+    "125": {
+        "file_id": 18,
+        "content": "Checking output format and creating progress bar",
+        "type": "comment"
+    },
+    "126": {
+        "file_id": 18,
+        "content": "            return typer.Exit(1)\n        if out_file:\n            with open(out_file, \"w\") as f:\n                f.writelines(result)\n        elif pretty:\n            syntax = Syntax(result, \"python\")\n            console = Console()\n            console.print(syntax)\n        else:\n            typer.echo(result)\n@app.command()\ndef models():\n    raise NotImplementedError()\n@app.command()\ndef refactor():\n    raise NotImplementedError()\n@app.command()\ndef optimise():\n    raise NotImplementedError()",
+        "type": "code",
+        "location": "/write_the/cli/main.py:318-342"
+    },
+    "127": {
+        "file_id": 18,
+        "content": "This code defines commands for a CLI application. The main function checks if an output file is specified or if the 'pretty' option is set, and handles the result accordingly by writing to a file, printing in a formatted way, or echoing to the console.",
+        "type": "comment"
+    },
+    "128": {
+        "file_id": 19,
+        "content": "/write_the/cli/tasks.py",
+        "type": "filepath"
+    },
+    "129": {
+        "file_id": 19,
+        "content": "The `async_cli_task` function asynchronously executes tasks with various arguments, handling exceptions and managing task completion by removing tasks, refreshing progress, and printing or saving results, with an optional pretty output format.",
+        "type": "summary"
+    },
+    "130": {
+        "file_id": 19,
+        "content": "from write_the.commands import write_the_docs\nfrom write_the.utils import create_tree, format_source_code, load_source_code\nfrom rich.syntax import Syntax\nfrom rich.progress import Progress\nfrom typing import List\nfrom pathlib import Path\nfrom openai.error import InvalidRequestError\nasync def async_cli_task(\n    file: Path,\n    nodes: List,\n    force: bool,\n    save: bool,\n    context: bool,\n    background: bool,\n    pretty: bool,\n    batch: bool,\n    print_status: bool,\n    progress: Progress,\n) -> None:\n    \"\"\"\n    Executes a task asynchronously.\n    Args:\n      file (Path): The file to process.\n      nodes (List): The nodes to process.\n      force (bool): Whether to force the task.\n      save (bool): Whether to save the task.\n      context (bool): Whether to include context.\n      pretty (bool): Whether to format the output.\n      batch (bool): Whether to run in batch mode.\n      print_status (bool): Whether to print the status.\n      progress (Progress): The progress object.\n    Returns:\n      None\n    Side Effects:",
+        "type": "code",
+        "location": "/write_the/cli/tasks.py:1-36"
+    },
+    "131": {
+        "file_id": 19,
+        "content": "Function `async_cli_task` takes in several arguments and executes a task asynchronously. It has no return value, but may have side effects.",
+        "type": "comment"
+    },
+    "132": {
+        "file_id": 19,
+        "content": "      Writes to the file if save is True.\n      Prints the pass/fail status if print_status is True.\n      Pretty prints the result if pretty is True.\n    Examples:\n      >>> await async_cli_task(file, nodes, force, save, context, pretty, batch, print_status, progress)\n      None\n    \"\"\"\n    task_id = progress.add_task(description=f\"{file}\", total=None)\n    failed = False\n    source_code = load_source_code(file=file)\n    if pretty:\n        source_code = format_source_code(source_code)\n    tree = create_tree(source_code)\n    max_batch_size = None\n    msg = \"\"\n    if batch:\n        max_batch_size = 1\n    try:\n        result = await write_the_docs(\n            tree,\n            node_names=nodes,\n            force=force,\n            save=save,\n            context=context,\n            background=background,\n            pretty=pretty,\n            max_batch_size=max_batch_size,\n        )\n    except ValueError as e:\n        msg = f\" - {e}\"\n        failed = True\n    except InvalidRequestError as e:\n        msg = f\" - {e}\"\n        failed = True",
+        "type": "code",
+        "location": "/write_the/cli/tasks.py:37-70"
+    },
+    "133": {
+        "file_id": 19,
+        "content": "This code snippet is part of a task function that takes in various parameters like file, nodes, force, save, etc. It performs different tasks such as writing to a file, printing pass/fail status, and pretty-printing the result if necessary. The code handles exceptions like ValueError or InvalidRequestError and sets the failed variable accordingly.",
+        "type": "comment"
+    },
+    "134": {
+        "file_id": 19,
+        "content": "    progress.remove_task(task_id)\n    progress.refresh()\n    if print_status or save or failed:\n        icon = \"❌\" if failed else \"✅\"\n        colour = \"red\" if failed else \"green\"\n        progress.print(\n            f\"[not underline]{icon} [/not underline]{file}{msg}\",\n            style=f\"bold {colour} underline\",\n        )\n    if failed:\n        return None\n    if save:\n        with open(file, \"w\") as f:\n            f.writelines(result)\n        return None\n    if pretty:\n        syntax = Syntax(result, \"python\")\n        progress.print(syntax)\n    else:\n        progress.print(result, highlight=False, markup=False)",
+        "type": "code",
+        "location": "/write_the/cli/tasks.py:71-90"
+    },
+    "135": {
+        "file_id": 19,
+        "content": "This code handles the task completion by removing a task, refreshing progress, printing or saving the result based on flags. It also has the option to prettify the output if pretty flag is set.",
+        "type": "comment"
+    },
+    "136": {
+        "file_id": 20,
+        "content": "/write_the/commands/__init__.py",
+        "type": "filepath"
+    },
+    "137": {
+        "file_id": 20,
+        "content": "Importing functions from converters, docs, mkdocs, and tests modules.",
+        "type": "summary"
+    },
+    "138": {
+        "file_id": 20,
+        "content": "from .converters import write_the_converters\nfrom .docs import write_the_docs\nfrom .mkdocs import write_the_mkdocs\nfrom .tests import write_the_tests",
+        "type": "code",
+        "location": "/write_the/commands/__init__.py:1-4"
+    },
+    "139": {
+        "file_id": 20,
+        "content": "Importing functions from converters, docs, mkdocs, and tests modules.",
+        "type": "comment"
+    },
+    "140": {
+        "file_id": 21,
+        "content": "/write_the/commands/converters/__init__.py",
+        "type": "filepath"
+    },
+    "141": {
+        "file_id": 21,
+        "content": "Imports converters from the same directory.",
+        "type": "summary"
+    },
+    "142": {
+        "file_id": 21,
+        "content": "from .converters import write_the_converters",
+        "type": "code",
+        "location": "/write_the/commands/converters/__init__.py:1-1"
+    },
+    "143": {
+        "file_id": 21,
+        "content": "Imports converters from the same directory.",
+        "type": "comment"
+    },
+    "144": {
+        "file_id": 22,
+        "content": "/write_the/commands/converters/converters.py",
+        "type": "filepath"
+    },
+    "145": {
+        "file_id": 22,
+        "content": "The `write_the_converters` function takes a file path, input format, output format, and optional GPT-4 flag. It reads the content, passes it to LLM, awaits the result, and returns the converted output as a string. Additionally, it trims leading and trailing '```' from the formatted text.",
+        "type": "summary"
+    },
+    "146": {
+        "file_id": 22,
+        "content": "from pathlib import Path\nfrom .prompts import write_converters_for_file_prompt\nfrom write_the.llm import LLM\nasync def write_the_converters(filename: Path, input_format: str, output_format: str, gpt_4: bool = False) -> str:\n    \"\"\"\n    Formats and runs the tests for a given file.\n    Args:\n      filename (Path): The path to the file to be tested.\n      input_format (str): The input format of the file.\n      output_format (str): The format to convert the file to.\n      gpt_4 (bool, optional): Whether to use GPT-4 for testing. Defaults to False.\n    Returns:\n      str: The converted output.\n    Examples:\n      >>> write_the_converters(Path(\".travis.yml\"), input_format=\"Travis CI\", output_format=\"Github Actions\", gpt_4=True)\n      \"The converted output\"\n    \"\"\"\n    with open(filename, \"r\") as file:\n        source_text = file.read()\n    llm = LLM(write_converters_for_file_prompt, gpt_4=gpt_4)\n    result = await llm.run(code=source_text, input_format=input_format, output_format=output_format)\n    formatted_text = (",
+        "type": "code",
+        "location": "/write_the/commands/converters/converters.py:1-26"
+    },
+    "147": {
+        "file_id": 22,
+        "content": "Function `write_the_converters` accepts a file path, input format, output format, and an optional boolean for GPT-4. It reads the file content, passes it to LLM (Language Model), and awaits the result of running code with specified input and output formats. Returns the converted output as a string.",
+        "type": "comment"
+    },
+    "148": {
+        "file_id": 22,
+        "content": "        result.strip().rstrip('```')\n    )\n    return formatted_text.strip()",
+        "type": "code",
+        "location": "/write_the/commands/converters/converters.py:27-29"
+    },
+    "149": {
+        "file_id": 22,
+        "content": "Trims leading and trailing '```' from formatted text.",
+        "type": "comment"
+    },
+    "150": {
+        "file_id": 23,
+        "content": "/write_the/commands/converters/prompts.py",
+        "type": "filepath"
+    },
+    "151": {
+        "file_id": 23,
+        "content": "This code imports a PromptTemplate from langchain.prompts and defines a converters_template to convert Python code into TypeScript code. It then creates a write_converters_for_file_prompt using the PromptTemplate, with input variables of \"code\", \"input_format\", and \"output_format\".",
+        "type": "summary"
+    },
+    "152": {
+        "file_id": 23,
+        "content": "from langchain.prompts import PromptTemplate\nconverters_template = \"\"\"\nConvert the following to the desired output.\n```python\ndef add(a, b):\n    return a + b\n```\n```typescript\nfunction add(a: number, b: number): number {{\n  return a + b;\n}}\n```\n```{input_format}\n{code}\n```\n```{output_format}\n\"\"\"\nwrite_converters_for_file_prompt = PromptTemplate(\n    input_variables=[\"code\", \"input_format\", \"output_format\"], \n    template=converters_template\n)",
+        "type": "code",
+        "location": "/write_the/commands/converters/prompts.py:1-25"
+    },
+    "153": {
+        "file_id": 23,
+        "content": "This code imports a PromptTemplate from langchain.prompts and defines a converters_template to convert Python code into TypeScript code. It then creates a write_converters_for_file_prompt using the PromptTemplate, with input variables of \"code\", \"input_format\", and \"output_format\".",
+        "type": "comment"
+    },
+    "154": {
+        "file_id": 24,
+        "content": "/write_the/commands/mkdocs/__init__.py",
+        "type": "filepath"
+    },
+    "155": {
+        "file_id": 24,
+        "content": "Imports the function \"write_the_mkdocs\" from the \"mkdocs\" module in the same directory.",
+        "type": "summary"
+    },
+    "156": {
+        "file_id": 24,
+        "content": "from .mkdocs import write_the_mkdocs",
+        "type": "code",
+        "location": "/write_the/commands/mkdocs/__init__.py:1-1"
+    },
+    "157": {
+        "file_id": 24,
+        "content": "Imports the function \"write_the_mkdocs\" from the \"mkdocs\" module in the same directory.",
+        "type": "comment"
+    },
+    "158": {
+        "file_id": 25,
+        "content": "/write_the/commands/mkdocs/mkdocs.py",
+        "type": "filepath"
+    },
+    "159": {
+        "file_id": 25,
+        "content": "The function creates an MkDocs project from Python files, groups non-starting files, assigns a project name, writes references to a \"reference\" directory, and checks/creates necessary files including GitHub Actions configuration.",
+        "type": "summary"
+    },
+    "160": {
+        "file_id": 25,
+        "content": "from pathlib import Path\nfrom collections import defaultdict\nfrom write_the.utils import list_python_files\nfrom .templates import action_template, mkdocs_template\ndef write_the_mkdocs(\n    code_dir: Path, readme: Path = None, out_dir: Path = Path(\".\"), project_name=None\n):\n    \"\"\"\n    Generates a mkdocs project from a directory of python files.\n    Args:\n      code_dir (Path): The directory containing the python files.\n      readme (Path, optional): The readme file to include in the project. Defaults to None.\n      out_dir (Path, optional): The directory to write the project to. Defaults to the current directory.\n      project_name (str, optional): The name of the project. Defaults to the name of the code_dir.\n    Notes:\n      If readme is not provided, the project will not have a home page.\n      If project_name is not provided, the project will be named after the code_dir.\n    Side Effects:\n      Creates a mkdocs project in the out_dir.\n      Creates a .github/workflows/mkdocs.yml file in the out_dir.\n    Returns:",
+        "type": "code",
+        "location": "/write_the/commands/mkdocs/mkdocs.py:1-24"
+    },
+    "161": {
+        "file_id": 25,
+        "content": "Generates a mkdocs project from a directory of python files",
+        "type": "comment"
+    },
+    "162": {
+        "file_id": 25,
+        "content": "      None\n    \"\"\"\n    files = list_python_files(code_dir)\n    groups = [path.stem for path in code_dir.glob(\"*\") if not path.stem.startswith(\"_\")]\n    if not project_name:\n        project_name = code_dir.name\n    mkdocs = mkdocs_template.format(project_name=project_name)\n    references = defaultdict(list)\n    for file in files:\n        if file.name.startswith(\"_\"):\n            continue\n        key = \"index\"\n        for group in groups:\n            if f\"{code_dir.name}/{group}/\" in str(\n                file\n            ) or f\"{code_dir.name}/{group}.\" in str(file):\n                key = group\n                break\n        module = str(file).rstrip(\".py\").replace(\"/\", \".\")  # breaks on windows?\n        references[key].append(f\"::: {module}\")\n    docs_dir = out_dir / \"docs\"\n    reference_path = docs_dir / \"reference\"\n    reference_path.mkdir(parents=True, exist_ok=True)\n    for doc in references:\n        with open(f\"{reference_path}/{doc}.md\", \"w\") as f:\n            for ref in references[doc]:\n                f.write(ref + \"\\n\\n\")",
+        "type": "code",
+        "location": "/write_the/commands/mkdocs/mkdocs.py:25-52"
+    },
+    "163": {
+        "file_id": 25,
+        "content": "This function lists Python files in the code directory, groups them by non-starting files, and assigns a project name if not provided. Then, it creates an MkDocs template with the project name. The code then creates references for each file, based on their grouping, and writes these references to a \"reference\" directory within the output directory.",
+        "type": "comment"
+    },
+    "164": {
+        "file_id": 25,
+        "content": "    if readme:\n        index_text = f\"---\\ntitle: Home\\n---\\n{readme.read_text()}\"\n        (docs_dir / \"index.md\").write_text(index_text)\n    if not (out_dir / \"mkdocs.yml\").exists():\n        (out_dir / \"mkdocs.yml\").write_text(mkdocs)\n    action_path = out_dir / \".github\" / \"workflows\" / \"mkdocs.yml\"\n    if not action_path.exists():\n        action_path.parent.mkdir(parents=True, exist_ok=True)\n        action_path.write_text(action_template)",
+        "type": "code",
+        "location": "/write_the/commands/mkdocs/mkdocs.py:53-61"
+    },
+    "165": {
+        "file_id": 25,
+        "content": "This code checks if certain files exist, and if not, it writes or creates them in the specified directory. It also handles GitHub Actions configuration.",
+        "type": "comment"
+    },
+    "166": {
+        "file_id": 26,
+        "content": "/write_the/commands/mkdocs/templates.py",
+        "type": "filepath"
+    },
+    "167": {
+        "file_id": 26,
+        "content": "This code sets up a MkDocs template and action for a project, defining settings and using GitHub Actions to run a CI/CD pipeline on Ubuntu virtual machines for building and deploying changes.",
+        "type": "summary"
+    },
+    "168": {
+        "file_id": 26,
+        "content": "mkdocs_template = \"\"\"\nsite_name: {project_name}\n# repo_url: https://github.com/wytamma/write-the\ntheme:\n  name: \"material\"\n  # homepage: https://write-the.wytamma.com\n  # logo: assets/logo.png\n  # favicon: images/favicon.png\n  palette: \n    - scheme: default\n      toggle:\n        icon: material/brightness-7 \n        name: Switch to dark mode\n    - scheme: slate\n      toggle:\n        icon: material/brightness-4\n        name: Switch to light mode\n  features:\n    - toc.follow\n    - content.action.edit\nextra:\n  social:\n    - icon: fontawesome/solid/robot\n      link: https://github.com/Wytamma/write-the\n      name: Generated with write-the\nplugins:\n- search\n- mkdocstrings:\n    handlers:\n      python:\n        options:\n          docstring_style: \"google\"\nmarkdown_extensions:\n  - pymdownx.highlight:\n      anchor_linenums: true\n      line_spans: __span\n      pygments_lang_class: true\n  - pymdownx.inlinehilite\n  - pymdownx.snippets\n  - pymdownx.superfences\n\"\"\"\naction_template = \"\"\"\nname: mkdocs \non:\n  push:\n    branches:\n      - master \n      - main",
+        "type": "code",
+        "location": "/write_the/commands/mkdocs/templates.py:1-53"
+    },
+    "169": {
+        "file_id": 26,
+        "content": "This code defines the MkDocs template and action for a project. The template includes settings for site name, theme, palette, features, social links, plugins, and markdown extensions. The action will run on push events to master or main branches.",
+        "type": "comment"
+    },
+    "170": {
+        "file_id": 26,
+        "content": "permissions:\n  contents: write\njobs:\n  deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - uses: actions/setup-python@v4\n        with:\n          python-version: 3.x\n      - uses: actions/cache@v2\n        with:\n          key: ${{ github.ref }}\n          path: .cache\n      - run: pip install \"mkdocstrings==0.22.0\" \"mkdocstrings-python==1.3.*\" \"mkdocs-material\"\n      - run: mkdocs gh-deploy --force\n\"\"\"",
+        "type": "code",
+        "location": "/write_the/commands/mkdocs/templates.py:54-70"
+    },
+    "171": {
+        "file_id": 26,
+        "content": "This code is setting up a CI/CD pipeline for building and deploying a MkDocs project. It uses GitHub Actions to run the deployment job on an Ubuntu virtual machine, installs required packages, and deploys the changes using `mkdocs gh-deploy --force`.",
+        "type": "comment"
+    },
+    "172": {
+        "file_id": 27,
+        "content": "/write_the/commands/tests/__init__.py",
+        "type": "filepath"
+    },
+    "173": {
+        "file_id": 27,
+        "content": "Imports write_the_tests from tests module.",
+        "type": "summary"
+    },
+    "174": {
+        "file_id": 27,
+        "content": "from .tests import write_the_tests",
+        "type": "code",
+        "location": "/write_the/commands/tests/__init__.py:1-1"
+    },
+    "175": {
+        "file_id": 27,
+        "content": "Imports write_the_tests from tests module.",
+        "type": "comment"
+    },
+    "176": {
+        "file_id": 28,
+        "content": "/write_the/commands/tests/prompts.py",
+        "type": "filepath"
+    },
+    "177": {
+        "file_id": 28,
+        "content": "This code imports a PromptTemplate from langchain and defines a tests_template string for generating pytest unit tests. The write_tests_for_file_prompt is created using the PromptTemplate, with input variables \"code\" and \"path\".",
+        "type": "summary"
+    },
+    "178": {
+        "file_id": 28,
+        "content": "from langchain.prompts import PromptTemplate\ntests_template = \"\"\"\nGenerate pytest unit tests for the code below, covering all possible scenarios and edge cases. \nUse fixtures and parametrize when appropriate. \nImport the code from {path} and adjust any relative imports. \nReturn only the test code.\nCode:\n```python\n{code}\n```\n\"\"\"\nwrite_tests_for_file_prompt = PromptTemplate(\n    input_variables=[\"code\", \"path\"], template=tests_template\n)",
+        "type": "code",
+        "location": "/write_the/commands/tests/prompts.py:1-17"
+    },
+    "179": {
+        "file_id": 28,
+        "content": "This code imports a PromptTemplate from langchain and defines a tests_template string for generating pytest unit tests. The write_tests_for_file_prompt is created using the PromptTemplate, with input variables \"code\" and \"path\".",
+        "type": "comment"
+    },
+    "180": {
+        "file_id": 29,
+        "content": "/write_the/commands/tests/tests.py",
+        "type": "filepath"
+    },
+    "181": {
+        "file_id": 29,
+        "content": "This code defines a function `write_the_tests` that formats and runs tests for a given file. It takes the filename as input, optionally allows using GPT-4 for testing, reads the source code, formats it, then passes the formatted code to an LLM (Language Model) object for testing. The result is returned after stripping unnecessary characters.",
+        "type": "summary"
+    },
+    "182": {
+        "file_id": 29,
+        "content": "from pathlib import Path\nfrom black import format_str, FileMode\nfrom .prompts import write_tests_for_file_prompt\nfrom write_the.llm import LLM\nasync def write_the_tests(filename: Path, gpt_4: bool = False) -> str:\n    \"\"\"\n    Formats and runs the tests for a given file.\n    Args:\n      filename (Path): The path to the file to be tested.\n      gpt_4 (bool, optional): Whether to use GPT-4 for testing. Defaults to False.\n    Returns:\n      str: The formatted and tested code.\n    Examples:\n      >>> write_the_tests(Path(\"test.py\"), gpt_4=True)\n      \"Formatted and tested code\"\n    \"\"\"\n    with open(filename, \"r\") as file:\n        source_code = file.read()\n    source_code = format_str(source_code, mode=FileMode())\n    llm = LLM(write_tests_for_file_prompt, gpt_4=gpt_4)\n    result = await llm.run(code=source_code, path=filename)\n    code = (\n        result.strip()\n        .lstrip(\"Test Code:\\n```python\")\n        .lstrip(\"```python\")\n        .lstrip(\"```\")\n        .rstrip(\"```\")\n    )\n    return format_str(code, mode=FileMode())",
+        "type": "code",
+        "location": "/write_the/commands/tests/tests.py:1-31"
+    },
+    "183": {
+        "file_id": 29,
+        "content": "This code defines a function `write_the_tests` that formats and runs tests for a given file. It takes the filename as input, optionally allows using GPT-4 for testing, reads the source code, formats it, then passes the formatted code to an LLM (Language Model) object for testing. The result is returned after stripping unnecessary characters.",
+        "type": "comment"
+    },
+    "184": {
+        "file_id": 30,
+        "content": "/write_the/cst/__init__.py",
+        "type": "filepath"
+    },
+    "185": {
+        "file_id": 30,
+        "content": "Imports various classes and functions from different modules for code reuse.",
+        "type": "summary"
+    },
+    "186": {
+        "file_id": 30,
+        "content": "from .docstring_adder import DocstringAdder, has_docstring\nfrom .docstring_remover import DocstringRemover, remove_docstrings\nfrom .function_and_class_collector import FunctionAndClassCollector, get_node_names\nfrom .node_extractor import NodeExtractor, extract_nodes_from_tree\nfrom .node_remover import NodeRemover, remove_nodes_from_tree\nfrom .utils import nodes_to_tree",
+        "type": "code",
+        "location": "/write_the/cst/__init__.py:1-6"
+    },
+    "187": {
+        "file_id": 30,
+        "content": "Imports various classes and functions from different modules for code reuse.",
+        "type": "comment"
+    },
+    "188": {
+        "file_id": 31,
+        "content": "/write_the/cst/docstring_adder.py",
+        "type": "filepath"
+    },
+    "189": {
+        "file_id": 31,
+        "content": "The `DocstringAdder` class extends `cst.CSTTransformer`, adding or updating docstrings in a Python AST using a dictionary, and allows for overwriting existing docstrings based on conditions such as indentation level and function/class name.",
+        "type": "summary"
+    },
+    "190": {
+        "file_id": 31,
+        "content": "import libcst as cst\nfrom .utils import has_docstring, remove_docstring\nimport textwrap\nimport re\nclass DocstringAdder(cst.CSTTransformer):\n    def __init__(self, docstrings, force, indent=\"    \"):\n        self.docstrings = docstrings\n        self.force = force\n        self.indent = indent\n        self.current_class = None\n    def leave_FunctionDef(\n        self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef\n    ) -> cst.FunctionDef:\n        \"\"\"\n        Adds a docstring to a function definition.\n        Args:\n          original_node (cst.FunctionDef): The original CST node.\n          updated_node (cst.FunctionDef): The updated CST node.\n        Returns:\n          cst.FunctionDef: The updated CST node with a docstring added.\n        \"\"\"\n        return self.add_docstring(updated_node)\n    def visit_ClassDef(self, original_node: cst.ClassDef) -> None:\n        self.current_class = original_node.name.value\n    def leave_ClassDef(\n        self, original_node: cst.ClassDef, updated_node: cst.ClassDef\n    ) -> cst.ClassDef:",
+        "type": "code",
+        "location": "/write_the/cst/docstring_adder.py:1-32"
+    },
+    "191": {
+        "file_id": 31,
+        "content": "This code defines a class `DocstringAdder` that extends `cst.CSTTransformer`. It adds docstrings to function definitions and classes, based on certain conditions. The `leave_FunctionDef` method adds a docstring to a function definition node, while the `visit_ClassDef` and `leave_ClassDef` methods are used to keep track of class names for adding docstrings later.",
+        "type": "comment"
+    },
+    "192": {
+        "file_id": 31,
+        "content": "        \"\"\"\n        Adds a docstring to a class definition.\n        Args:\n          original_node (cst.ClassDef): The original CST node.\n          updated_node (cst.ClassDef): The updated CST node.\n        Returns:\n          cst.ClassDef: The updated CST node with a docstring added.\n        \"\"\"\n        self.current_class = None\n        updated_node = self.add_docstring(updated_node)\n        return updated_node\n    def add_docstring(self, node):\n        \"\"\"\n        Adds a docstring to a CST node.\n        Args:\n            node (cst.CSTNode): The CST node to add a docstring to.\n        Returns:\n            cst.CSTNode: The updated CST node with a docstring added.\n        \"\"\"\n        key = (\n            f\"{self.current_class}.{node.name.value}\"\n            if self.current_class\n            else node.name.value\n        )\n        docstring: str = self.docstrings.get(key, None)\n        if docstring and (self.force or not has_docstring(node)):\n            if self.force and has_docstring(node):\n                # Remove existing docstring",
+        "type": "code",
+        "location": "/write_the/cst/docstring_adder.py:33-61"
+    },
+    "193": {
+        "file_id": 31,
+        "content": "Method adds docstrings to a class definition.",
+        "type": "comment"
+    },
+    "194": {
+        "file_id": 31,
+        "content": "                node = remove_docstring(node)\n            escaped_docstring = re.sub(r\"(?<!\\\\)\\\\n\", \"\\\\\\\\\\\\\\\\n\", docstring)\n            dedented_docstring = textwrap.dedent(escaped_docstring)\n            indent = self.indent\n            if self.current_class:\n                indent = indent * 2\n            indented_docstring = textwrap.indent(dedented_docstring, indent)\n            new_docstring = cst.parse_statement(f'\"\"\"{indented_docstring}{indent}\"\"\"')\n            body = node.body.with_changes(body=(new_docstring, *node.body.body))\n            return node.with_changes(body=body)\n        return node\ndef add_docstrings_to_tree(tree, docstring_dict, force=False):\n    return tree.visit(DocstringAdder(docstring_dict, force=force, indent=tree.config_for_parsing.default_indent))",
+        "type": "code",
+        "location": "/write_the/cst/docstring_adder.py:62-77"
+    },
+    "195": {
+        "file_id": 31,
+        "content": "This code adds or updates docstrings in a Python AST (Abstract Syntax Tree) using a dictionary to map function/class names to their respective docstrings. If the `force` parameter is True, it will overwrite existing docstrings. The `indent` parameter determines the indentation level for the new docstrings based on whether it's a class or not.",
+        "type": "comment"
+    },
+    "196": {
+        "file_id": 32,
+        "content": "/write_the/cst/docstring_remover.py",
+        "type": "filepath"
+    },
+    "197": {
+        "file_id": 32,
+        "content": "The described feature enables the removal of docstrings from specified FunctionDef and ClassDef nodes, based on a provided list of nodes, resulting in a modified tree with docstrings removed.",
+        "type": "summary"
+    },
+    "198": {
+        "file_id": 32,
+        "content": "import libcst as cst\nfrom .utils import remove_docstring\nclass DocstringRemover(cst.CSTTransformer):\n    def __init__(self, nodes):\n        \"\"\"\n        Initializes the DocstringRemover object.\n        Args:\n          nodes (list): A list of nodes to remove docstrings from.\n        \"\"\"\n        self.nodes = nodes\n        self.current_class = None\n    def leave_FunctionDef(\n        self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef\n    ) -> cst.FunctionDef:\n        \"\"\"\n        Removes the docstring from a FunctionDef node if it is in the list of nodes.\n        Args:\n          original_node (cst.FunctionDef): The original FunctionDef node.\n          updated_node (cst.FunctionDef): The updated FunctionDef node.\n        Returns:\n          cst.FunctionDef: The updated FunctionDef node with the docstring removed if it is in the list of nodes.\n        \"\"\"\n        name = (\n            f\"{self.current_class}.{original_node.name.value}\"\n            if self.current_class\n            else original_node.name.value",
+        "type": "code",
+        "location": "/write_the/cst/docstring_remover.py:1-29"
+    },
+    "199": {
+        "file_id": 32,
+        "content": "Removes docstrings from specified nodes in FunctionDef.",
+        "type": "comment"
+    }
+}

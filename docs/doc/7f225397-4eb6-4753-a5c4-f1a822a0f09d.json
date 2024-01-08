@@ -1,0 +1,10 @@
+{
+    "summary": "The code is testing the `list_python_files` function by passing different directory paths and checking if it returns an empty list for an empty directory or a directory with no .py files. The code also tests that it returns a list of 3 files when passed a directory containing 3 Python files.",
+    "details": [
+        {
+            "comment": "The code is testing the `list_python_files` function by passing different directory paths and checking if it returns an empty list for an empty directory or a directory with no .py files. The code also tests that it returns a list of 3 files when passed a directory containing 3 Python files.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_utils.py\":0-27",
+            "content": "import pytest\nfrom pathlib import Path\nfrom write_the.utils import list_python_files\n@pytest.fixture\ndef directory():\n    return Path(\"tests/data\")\ndef test_list_python_files(directory):\n    python_files = list_python_files(directory)\n    assert isinstance(python_files, list)\n    assert len(python_files) == 3\n    assert Path(\"tests/data/multiply_docstring.py\") in python_files\n    assert Path(\"tests/data/multiply.py\") in python_files\n@pytest.mark.parametrize(\n    \"directory, expected\",\n    [\n        (Path(\"/home/user/code/empty_dir\"), []),\n        (Path(\"/home/user/code/no_py_files\"), []),\n    ],\n)\ndef test_list_python_files_edge_cases(directory, expected):\n    python_files = list_python_files(directory)\n    assert python_files == expected"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "summary": "The class runs a Language Model Chain, taking prompt template and temperature as arguments, while the function initializes an LLMChain with OpenAI model, user code, and keyword arguments, returning generated text. It also has a token counting function.",
+    "details": [
+        {
+            "comment": "Class for running a Language Model Chain, takes a prompt template and temperature as arguments. Initializes the class attributes. Runs the Language Model Chain with given code.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/llm.py\":0-31",
+            "content": "from langchain.prompts import PromptTemplate\nfrom langchain.chains import LLMChain\nfrom langchain.llms import OpenAI\nimport tiktoken\nclass LLM:\n    \"\"\"\n    A class for running a Language Model Chain.\n    \"\"\"\n    def __init__(self, prompt: PromptTemplate, temperature=0, gpt_4=False):\n        \"\"\"\n        Initializes the LLM class.\n        Args:\n            prompt (PromptTemplate): The prompt template to use.\n            temperature (int): The temperature to use for the model.\n            gpt_4 (bool): Whether to use GPT-4 or Text-Davinci-003.\n        Side Effects:\n            Sets the class attributes.\n        \"\"\"\n        self.prompt = prompt\n        self.prompt_size = self.number_of_tokens(prompt.template)\n        self.temperature = temperature\n        self.gpt_4 = gpt_4\n        self.model_name = \"gpt-4\" if self.gpt_4 else \"text-davinci-003\"\n        self.max_tokens = 4097 * 2 if self.gpt_4 else 4097\n    async def run(self, code, **kwargs):\n        \"\"\"\n        Runs the Language Model Chain.\n        Args:\n            code (str): The code to use for the chain."
+        },
+        {
+            "comment": "This function initializes an LLMChain with an OpenAI model, takes user code as input along with additional keywords arguments, and returns the generated text. It also has a separate function to count tokens in a given text.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/llm.py\":32-51",
+            "content": "            **kwargs (dict): Additional keyword arguments.\n        Returns:\n            str: The generated text.\n        \"\"\"\n        llm = OpenAI(\n            temperature=self.temperature, max_tokens=-1, model_name=self.model_name\n        )\n        chain = LLMChain(llm=llm, prompt=self.prompt)\n        return await chain.apredict(code=code, **kwargs)\n    def number_of_tokens(self, text):\n        \"\"\"\n        Counts the number of tokens in a given text.\n        Args:\n            text (str): The text to count tokens for.\n        Returns:\n            int: The number of tokens in the text.\n        \"\"\"\n        encoding = tiktoken.encoding_for_model(\"gpt-4\")\n        return len(encoding.encode(text))"
+        }
+    ]
+}

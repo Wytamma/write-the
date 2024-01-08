@@ -1,0 +1,20 @@
+{
+    "summary": "The described feature enables the removal of docstrings from specified FunctionDef and ClassDef nodes, based on a provided list of nodes, resulting in a modified tree with docstrings removed.",
+    "details": [
+        {
+            "comment": "Removes docstrings from specified nodes in FunctionDef.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/docstring_remover.py\":0-28",
+            "content": "import libcst as cst\nfrom .utils import remove_docstring\nclass DocstringRemover(cst.CSTTransformer):\n    def __init__(self, nodes):\n        \"\"\"\n        Initializes the DocstringRemover object.\n        Args:\n          nodes (list): A list of nodes to remove docstrings from.\n        \"\"\"\n        self.nodes = nodes\n        self.current_class = None\n    def leave_FunctionDef(\n        self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef\n    ) -> cst.FunctionDef:\n        \"\"\"\n        Removes the docstring from a FunctionDef node if it is in the list of nodes.\n        Args:\n          original_node (cst.FunctionDef): The original FunctionDef node.\n          updated_node (cst.FunctionDef): The updated FunctionDef node.\n        Returns:\n          cst.FunctionDef: The updated FunctionDef node with the docstring removed if it is in the list of nodes.\n        \"\"\"\n        name = (\n            f\"{self.current_class}.{original_node.name.value}\"\n            if self.current_class\n            else original_node.name.value"
+        },
+        {
+            "comment": "Removes ClassDef node docstrings if in list of nodes.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/docstring_remover.py\":29-58",
+            "content": "        )\n        if name in self.nodes:\n            return remove_docstring(updated_node)\n        return updated_node\n    def visit_ClassDef(self, original_node: cst.ClassDef) -> None:\n        self.current_class = original_node.name.value\n    def leave_ClassDef(\n        self, original_node: cst.ClassDef, updated_node: cst.ClassDef\n    ) -> cst.ClassDef:\n        \"\"\"\n        Removes the docstring from a ClassDef node if it is in the list of nodes.\n        Args:\n          original_node (cst.ClassDef): The original ClassDef node.\n          updated_node (cst.ClassDef): The updated ClassDef node.\n        Returns:\n          cst.ClassDef: The updated ClassDef node with the docstring removed if it is in the list of nodes.\n        \"\"\"\n        self.current_class = None\n        if original_node.name.value in self.nodes:\n            return remove_docstring(updated_node)\n        return updated_node\ndef remove_docstrings(tree, nodes):\n    \"\"\"\n    Removes the docstrings from a tree of nodes.\n    Args:\n      tree (cst.CSTNode): The tree of nodes to remove the docstrings from."
+        },
+        {
+            "comment": "This function takes a list of nodes to remove docstrings from and returns the modified tree with docstrings removed.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/docstring_remover.py\":59-65",
+            "content": "      nodes (list): A list of nodes to remove docstrings from.\n    Returns:\n      cst.CSTNode: The tree of nodes with the docstrings removed.\n    \"\"\"\n    remover = DocstringRemover(nodes)\n    tree = tree.visit(remover)\n    return tree"
+        }
+    ]
+}

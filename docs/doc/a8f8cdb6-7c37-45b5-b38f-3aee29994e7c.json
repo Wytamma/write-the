@@ -1,0 +1,10 @@
+{
+    "summary": "Imports the function \"write_the_mkdocs\" from the \"mkdocs\" module in the same directory.",
+    "details": [
+        {
+            "comment": "Imports the function \"write_the_mkdocs\" from the \"mkdocs\" module in the same directory.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/mkdocs/__init__.py\":0-0",
+            "content": "from .mkdocs import write_the_mkdocs"
+        }
+    ]
+}

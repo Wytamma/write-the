@@ -1,0 +1,15 @@
+{
+    "summary": "The code tests FunctionAndClassCollector class for identifying functions and classes in a Python module, verifying if `get_node_names` returns expected names from the tree.",
+    "details": [
+        {
+            "comment": "The code under test defines various test cases for the FunctionAndClassCollector class. It checks if the collector can correctly identify functions and classes within a given Python module, regardless of whether they have docstrings or not. The test_get_node_names function also confirms that get_node_names returns the correct list of identified nodes from a provided tree.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_cst_function_and_class_collector.py\":0-43",
+            "content": "import pytest\nimport libcst as cst\nfrom write_the.cst.function_and_class_collector import (\n    FunctionAndClassCollector,\n    get_node_names,\n)\n@pytest.fixture\ndef tree():\n    return cst.parse_module(\"def foo(): pass\\nclass Bar: pass\")\n@pytest.fixture\ndef force():\n    return False\ndef test_visit_FunctionDef_with_no_docstring(tree):\n    collector = FunctionAndClassCollector(force=False)\n    tree.visit(collector)\n    assert collector.functions == [\"foo\"]\ndef test_visit_FunctionDef_with_docstring(tree):\n    collector = FunctionAndClassCollector(force=True)\n    tree.visit(collector)\n    assert collector.functions == [\"foo\"]\ndef test_visit_ClassDef_with_no_docstring(tree):\n    collector = FunctionAndClassCollector(force=False)\n    tree.visit(collector)\n    assert collector.classes == [\"Bar\"]\ndef test_visit_ClassDef_with_docstring(tree):\n    collector = FunctionAndClassCollector(force=True)\n    tree.visit(collector)\n    assert collector.classes == [\"Bar\"]\ndef test_get_node_names(tree, force):\n    assert get_node_names(tree, force) == [\"Bar\", \"foo\"]"
+        },
+        {
+            "comment": "Tests if `get_node_names` returns expected names for given tree and force=True.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_cst_function_and_class_collector.py\":46-47",
+            "content": "def test_get_node_names_with_force_true(tree, force):\n    assert get_node_names(tree, True) == [\"Bar\", \"foo\"]"
+        }
+    ]
+}

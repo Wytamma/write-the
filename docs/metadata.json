@@ -1,0 +1,200 @@
+{
+    "url": {
+        "full": "https://github.com/Wytamma/write-the",
+        "partial": "Wytamma/write-the"
+    },
+    "file_mapping": {
+        "0": {
+            "filepath": "/README.md",
+            "entry_id": 0,
+            "language_id": "markdown"
+        },
+        "1": {
+            "filepath": "/pyproject.toml",
+            "entry_id": 12,
+            "language_id": "toml"
+        },
+        "2": {
+            "filepath": "/tests/test_cli_main.py",
+            "entry_id": 18,
+            "language_id": "python"
+        },
+        "3": {
+            "filepath": "/tests/test_cst_docstring_adder.py",
+            "entry_id": 28,
+            "language_id": "python"
+        },
+        "4": {
+            "filepath": "/tests/test_cst_docstring_remover.py",
+            "entry_id": 40,
+            "language_id": "python"
+        },
+        "5": {
+            "filepath": "/tests/test_cst_function_and_class_collector.py",
+            "entry_id": 46,
+            "language_id": "python"
+        },
+        "6": {
+            "filepath": "/tests/test_cst_node_extractor.py",
+            "entry_id": 52,
+            "language_id": "python"
+        },
+        "7": {
+            "filepath": "/tests/test_cst_node_remover.py",
+            "entry_id": 58,
+            "language_id": "python"
+        },
+        "8": {
+            "filepath": "/tests/test_cst_utils.py",
+            "entry_id": 62,
+            "language_id": "python"
+        },
+        "9": {
+            "filepath": "/tests/test_utils.py",
+            "entry_id": 68,
+            "language_id": "python"
+        },
+        "10": {
+            "filepath": "/tests/data/calculate.py",
+            "entry_id": 72,
+            "language_id": "python"
+        },
+        "11": {
+            "filepath": "/tests/data/multiply.py",
+            "entry_id": 76,
+            "language_id": "python"
+        },
+        "12": {
+            "filepath": "/tests/data/multiply_docstring.py",
+            "entry_id": 80,
+            "language_id": "python"
+        },
+        "13": {
+            "filepath": "/write_the/__about__.py",
+            "entry_id": 84,
+            "language_id": "python"
+        },
+        "14": {
+            "filepath": "/write_the/__main__.py",
+            "entry_id": 88,
+            "language_id": "python"
+        },
+        "15": {
+            "filepath": "/write_the/llm.py",
+            "entry_id": 92,
+            "language_id": "python"
+        },
+        "16": {
+            "filepath": "/write_the/utils.py",
+            "entry_id": 98,
+            "language_id": "python"
+        },
+        "17": {
+            "filepath": "/write_the/cli/__init__.py",
+            "entry_id": 102,
+            "language_id": "python"
+        },
+        "18": {
+            "filepath": "/write_the/cli/main.py",
+            "entry_id": 106,
+            "language_id": "python"
+        },
+        "19": {
+            "filepath": "/write_the/cli/tasks.py",
+            "entry_id": 128,
+            "language_id": "python"
+        },
+        "20": {
+            "filepath": "/write_the/commands/__init__.py",
+            "entry_id": 136,
+            "language_id": "python"
+        },
+        "21": {
+            "filepath": "/write_the/commands/converters/__init__.py",
+            "entry_id": 140,
+            "language_id": "python"
+        },
+        "22": {
+            "filepath": "/write_the/commands/converters/converters.py",
+            "entry_id": 144,
+            "language_id": "python"
+        },
+        "23": {
+            "filepath": "/write_the/commands/converters/prompts.py",
+            "entry_id": 150,
+            "language_id": "python"
+        },
+        "24": {
+            "filepath": "/write_the/commands/mkdocs/__init__.py",
+            "entry_id": 154,
+            "language_id": "python"
+        },
+        "25": {
+            "filepath": "/write_the/commands/mkdocs/mkdocs.py",
+            "entry_id": 158,
+            "language_id": "python"
+        },
+        "26": {
+            "filepath": "/write_the/commands/mkdocs/templates.py",
+            "entry_id": 166,
+            "language_id": "python"
+        },
+        "27": {
+            "filepath": "/write_the/commands/tests/__init__.py",
+            "entry_id": 172,
+            "language_id": "python"
+        },
+        "28": {
+            "filepath": "/write_the/commands/tests/prompts.py",
+            "entry_id": 176,
+            "language_id": "python"
+        },
+        "29": {
+            "filepath": "/write_the/commands/tests/tests.py",
+            "entry_id": 180,
+            "language_id": "python"
+        },
+        "30": {
+            "filepath": "/write_the/cst/__init__.py",
+            "entry_id": 184,
+            "language_id": "python"
+        },
+        "31": {
+            "filepath": "/write_the/cst/docstring_adder.py",
+            "entry_id": 188,
+            "language_id": "python"
+        },
+        "32": {
+            "filepath": "/write_the/cst/docstring_remover.py",
+            "entry_id": 196,
+            "language_id": "python"
+        },
+        "33": {
+            "filepath": "/write_the/cst/function_and_class_collector.py",
+            "entry_id": 204,
+            "language_id": "python"
+        },
+        "34": {
+            "filepath": "/write_the/cst/node_batcher.py",
+            "entry_id": 210,
+            "language_id": "python"
+        },
+        "35": {
+            "filepath": "/write_the/cst/node_extractor.py",
+            "entry_id": 228,
+            "language_id": "python"
+        },
+        "36": {
+            "filepath": "/write_the/cst/node_remover.py",
+            "entry_id": 236,
+            "language_id": "python"
+        },
+        "37": {
+            "filepath": "/write_the/cst/utils.py",
+            "entry_id": 244,
+            "language_id": "python"
+        }
+    },
+    "project_name": "write-the",
+    "split_count": 3
+}

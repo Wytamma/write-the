@@ -1,0 +1,535 @@
+{
+    "0": {
+        "file_id": 0,
+        "content": "/README.md",
+        "type": "filepath"
+    },
+    "1": {
+        "file_id": 0,
+        "content": "The \"write-the\" tool is an AI-based documentation and test generation system for Python, with contributing guidelines and MIT license. The code includes commands for document generation, test case creation, and format conversion. A pending Project Timeline outlines planned features and milestones.",
+        "type": "summary"
+    },
+    "2": {
+        "file_id": 0,
+        "content": "![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/logo.png)\nAI-powered Documentation and Test Generation Tool\n[![PyPI - Version](https://img.shields.io/pypi/v/write-the.svg)](https://pypi.org/project/write-the)\n[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/write-the.svg)](https://pypi.org/project/write-the)\n[![write-the - docs](https://badgen.net/badge/write-the/docs/blue?icon=https://raw.githubusercontent.com/Wytamma/write-the/master/images/write-the-icon.svg)](https://write-the.wytamma.com/)\n[![write-the - test](https://badgen.net/badge/write-the/tests/green?icon=https://raw.githubusercontent.com/Wytamma/write-the/master/images/write-the-icon.svg)](https://github.com/Wytamma/write-the/actions/workflows/tests.yml)\n[![codecov](https://codecov.io/gh/Wytamma/write-the/branch/master/graph/badge.svg?token=yEDn56L76k)](https://app.codecov.io/gh/Wytamma/write-the/tree/master)\n[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithu",
+        "type": "code",
+        "location": "/README.md:1-10"
+    },
+    "3": {
+        "file_id": 0,
+        "content": "This code is a README for the \"write-the\" project, which is an AI-powered documentation and test generation tool. It shows the version number, supported Python versions, links to documentation and tests, and displays badges indicating coverage and hits.",
+        "type": "comment"
+    },
+    "4": {
+        "file_id": 0,
+        "content": "b.com%2FWytamma%2Fwrite-the&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://github.com/Wytamma/write-the)\nWrite-the is an AI-powered documentation and test generation tool that leverages GPTs to automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.\n![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/write-the-docs.gif)\n## Real-world examples\n- [`write-the docs` to write the docs for the `write-the docs` command 🤖](https://github.com/Wytamma/write-the/blob/5d7a5a22d082be6ee870c694ef2d24e6d1610758/write_the/commands/docs/docs.py#L26)\n- [`write-the mkdocs` to build the documentation site for `write-the` 🤖](https://write-the.wytamma.com/)\n- [`write-the tests` to write tests for `write-the docs` 🤖](https://github.com/Wytamma/write-the/commit/6b6c8a08d7991e07e4972281c471f7842c04dda0)\n- [`write-the docs` and `wr",
+        "type": "code",
+        "location": "/README.md:10-21"
+    },
+    "5": {
+        "file_id": 0,
+        "content": "Code is describing Write-the, an AI-powered tool for documentation and test generation using GPTs. It shows real-world examples like writing docs, building a documentation site, and generating tests.",
+        "type": "comment"
+    },
+    "6": {
+        "file_id": 0,
+        "content": "ite-the mkdocs` to build documenation for `autoresearcher` 🤖](https://github.com/eimenhmdt/autoresearcher/pull/17)\n- [`write-the docs` and `write-the mkdocs` to build documenation for `hyperspec` 🤖](https://github.com/smutch/hyperspec/pull/1)\n- [`write-the docs` and `write-the mkdocs` to build documenation for `CUPCAKEAGI` 🤖](https://github.com/AkshitIreddy/CUPCAKEAGI/pull/4)\n## Installation\n```console\npip install write-the\n```\n## Features\nWrite-the offers the following AI-driven features:\n- Write-the Docs: Automatically generate documentation for your codebase, including class and function descriptions, parameter explanations, and examples.\n- Write-the Tests: Create test cases for your code, ensuring thorough test coverage and better code quality.\n- Write-the Convert: Convert code and data from any format into another. \n- Write-the Refactor: Receive refactoring suggestions, reduce code complexity, optimize performance, and fix bugs (TBD).\n## Requirements\n- Python 3.9 or higher  \n- OpenAI API key\n## Usage",
+        "type": "code",
+        "location": "/README.md:21-42"
+    },
+    "7": {
+        "file_id": 0,
+        "content": "Code:\n```python\nimport write_the\n\n# Generate documentation for your codebase using Write-the Docs feature\ndocs = write_the.generate_docs(codebase)\n\n# Create test cases for your code using Write-the Tests feature\ntests = write_the.create_tests(codebase)\n\n# Convert code and data from one format to another using Write-the Convert feature\nconverted_data = write_the.convert(input_format, output_format, input_data)\n\n# Receive refactoring suggestions and improve code quality using Write-the Refactor feature (TBD)\nrefactor_suggestions = write_the.refactor(codebase)\n```\n\nBrief comments:\n1. Import the `write_the` module.\n2. Generate documentation for your codebase using the `generate_docs()` method.\n3. Create test cases for your code using the `create_tests()` method.\n4. Convert code and data from one format to another using the `convert()` method.\n5. Receive refactoring suggestions using the (TBD) `refactor()` method.",
+        "type": "comment"
+    },
+    "8": {
+        "file_id": 0,
+        "content": "To use `write-the` you must set an OPENAI_API_KEY environment variable (e.g. `export OPENAI_API_KEY=...`).\n### Docs:\n```bash\nwrite-the docs [OPTIONS] [PATH_TO_SOURCE_CODE]\n```\n![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/docs-help.png)\n### Mkdocs:\n```bash\nwrite-the mkdocs [OPTIONS] [PATH_TO_SOURCE_CODE]\n```\n![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/mkdocs-help.png)\n### Tests:\n```bash\nwrite-the tests [OPTIONS] [PATH_TO_SOURCE_CODE]\n```\n![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/tests-help.png)\n### Convert:\n```bash\nwrite-the convert [OPTIONS] IN_FILE [OUT_FILE]\n```\n![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/convert-help.png)\nFor detailed information on available options and parameters, refer to the official (`write-the` generated) [documentation](https://write-the.wytamma.com/).\n## Roadmap\nThe main goal for write-the is to develop a generic module system to document, test, and optimise code in any language in a reliable and repatable way.",
+        "type": "code",
+        "location": "/README.md:44-81"
+    },
+    "9": {
+        "file_id": 0,
+        "content": "To use `write-the`, set OPENAI_API_KEY environment variable. Commands: docs, mkdocs, tests, and convert with help images available. For more options and parameters, refer to the official documentation. The main goal is developing a generic module system for reliable and reproducible code documentation, testing, and optimization in any language.",
+        "type": "comment"
+    },
+    "10": {
+        "file_id": 0,
+        "content": "For a detailed project roadmap, including planned features, improvements, and milestones, please see our Project Timeline (TBD).\n## Contributing\nWe welcome contributions from the community. If you would like to contribute to Write-The, please follow these steps:\n- Fork the repository and create a new branch for your feature or bugfix.\n- Develop your changes and ensure that your code follows the project's coding standards.\n- Create a pull request with a clear description of your changes and any relevant documentation.\n- For more information on contributing, please see our Contributing Guide.\n## License\n`write-the` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.",
+        "type": "code",
+        "location": "/README.md:83-94"
+    },
+    "11": {
+        "file_id": 0,
+        "content": "This code provides information on the project's roadmap, contributing guidelines, and licensing. It also mentions a pending Project Timeline that will include planned features, improvements, and milestones. Contributors are welcomed to follow a specified process of forking the repository, making changes, creating pull requests, and adhering to coding standards before their code is merged. The project uses the MIT license as per the provided link.",
+        "type": "comment"
+    },
+    "12": {
+        "file_id": 1,
+        "content": "/pyproject.toml",
+        "type": "filepath"
+    },
+    "13": {
+        "file_id": 1,
+        "content": "This code sets up Hatch, a Python tool for managing dependencies and environment. It specifies version configuration file path, defines default environment dependencies and scripts, configures coverage reporting, testing matrix, and uses \"cov\" script to run pytest with coverage reports.",
+        "type": "summary"
+    },
+    "14": {
+        "file_id": 1,
+        "content": "[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n[project]\nname = \"write-the\"\ndescription = 'AI-powered Code Generation and Refactoring Tool'\nreadme = \"README.md\"\nrequires-python = \">=3.9\"\nlicense = \"MIT\"\nkeywords = []\nauthors = [\n  { name = \"wytamma\", email = \"wytamma.wirth@me.com\" },\n]\nclassifiers = [\n  \"Development Status :: 4 - Beta\",\n  \"Programming Language :: Python\",\n  \"Programming Language :: Python :: 3.9\",\n  \"Programming Language :: Python :: 3.10\",\n  \"Programming Language :: Python :: 3.11\",\n  \"Programming Language :: Python :: Implementation :: CPython\",\n  \"Programming Language :: Python :: Implementation :: PyPy\",\n]\ndependencies = [\n  \"typer[all]==0.9.0\",\n  \"langchain==0.0.333\",\n  \"openai==0.28.1\",\n  \"tiktoken==0.5.1\",\n  \"black==23.11.0\",\n  \"libcst==1.1.0\",\n]\ndynamic = [\"version\"]\n[project.urls]\nDocumentation = \"https://github.com/wytamma/write-the#readme\"\nIssues = \"https://github.com/wytamma/write-the/issues\"\nSource = \"https://github.com/wytamma/write-the\"\n[project.scripts]\nwrite-the = \"write_the.cli:app\"",
+        "type": "code",
+        "location": "/pyproject.toml:1-40"
+    },
+    "15": {
+        "file_id": 1,
+        "content": "This code is a setup file for the hatchling build system. It specifies the project's name, description, dependencies, classifiers, and scripts.",
+        "type": "comment"
+    },
+    "16": {
+        "file_id": 1,
+        "content": "[tool.hatch.version]\npath = \"write_the/__about__.py\"\n[tool.hatch.envs.default]\ndependencies = [\n  \"pytest\",\n  \"pytest-cov\",\n  \"mkdocs==1.4.3\",\n  \"mkdocs-autorefs==0.4.1\",\n  \"mkdocs-material==9.1.16\",\n  \"mkdocs-material-extensions==1.1.1\",\n  \"mkdocstrings==0.22.0\",\n  \"mkdocstrings-python==1.3.*\",\n]\n[tool.hatch.envs.default.scripts]\ncov = \"pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=write_the --cov=tests --cov-report xml\"\nno-cov = \"cov --no-cov\"\n[[tool.hatch.envs.test.matrix]]\npython = [\"39\", \"310\", \"311\"]\n[tool.coverage.run]\nbranch = true\nparallel = true\nomit = [\n  \"write_the/__about__.py\",\n]\n[tool.coverage.report]\nexclude_lines = [\n  \"no cov\",\n  \"if __name__ == .__main__.:\",\n  \"if TYPE_CHECKING:\",\n]",
+        "type": "code",
+        "location": "/pyproject.toml:42-75"
+    },
+    "17": {
+        "file_id": 1,
+        "content": "This code sets up Hatch, a Python tool for managing your project's dependencies and environment. It specifies the version configuration file path and defines default environment dependencies and scripts. The script \"cov\" runs pytest with coverage reports and excludes \"__about__.py\". Other settings include configuring coverage reporting and testing matrix for different Python versions.",
+        "type": "comment"
+    },
+    "18": {
+        "file_id": 2,
+        "content": "/tests/test_cli_main.py",
+        "type": "filepath"
+    },
+    "19": {
+        "file_id": 2,
+        "content": "The code tests a command-line application's functionality and output using Pytest markers, mocks, and checks for correct exit codes. It verifies the presence of test files and their expected contents in stdout or the file system.",
+        "type": "summary"
+    },
+    "20": {
+        "file_id": 2,
+        "content": "import pytest\nfrom write_the.__about__ import __version__\nfrom pathlib import Path\nfrom write_the.cli.main import app\nfrom write_the.llm import LLM\nfrom typer.testing import CliRunner\nimport unittest.mock as mock\n@pytest.fixture(scope=\"function\")\ndef file_path(tmp_path) -> Path:\n    temp_file = tmp_path / \"test_add.py\"\n    temp_file.write_text(\"def add(a, b):\\n  return a + b\")\n    return temp_file\n@pytest.fixture\ndef nodes():\n    return [\"add\"]\ndef test_callback_version():\n    runner = CliRunner()\n    result = runner.invoke(app, [\"--version\"])\n    assert __version__ in result.stdout\n    assert result.exit_code == 0\n@pytest.mark.parametrize(\n    \"save, context, pretty, force\",\n    [\n        (True, True, True, True),\n        (True, True, True, False),\n        (True, True, False, True),\n        (True, False, True, True),\n        (False, True, True, True),\n    ],\n)\n@mock.patch(\n    \"write_the.llm.LLM.run\",\n    return_value=\"\\n\\nadd:\\n  Sums 2 numbers.\\n  Args:\\n    a (int): The first number to add.\\n    b (int): The seco",
+        "type": "code",
+        "location": "/tests/test_cli_main.py:1-41"
+    },
+    "21": {
+        "file_id": 2,
+        "content": "This code is importing necessary modules and defining test cases for a command-line application. The functions are testing different scenarios with the application, including checking the version, and running LLM (Language Learning Model) with various parameters.",
+        "type": "comment"
+    },
+    "22": {
+        "file_id": 2,
+        "content": "nd number to add.\\n  Returns:\\n    int: The sum of `a` and `b`.\\n  Examples:\\n    >>> add(1, 2)\\n    3\\n\\n\",\n)\ndef test_docs_mocked(mocked_run, file_path: Path, nodes, save, context, pretty, force):\n    runner = CliRunner()\n    args = [\"docs\", str(file_path)]\n    if nodes:\n        for node in nodes:\n            args.append(\"--node\")\n            args.append(node)\n    if save:\n        args.append(\"--save\")\n    if context:\n        args.append(\"--context\")\n    if pretty:\n        args.append(\"--pretty\")\n    if force:\n        args.append(\"--force\")\n    result = runner.invoke(app, args)\n    assert result.exit_code == 0\n    mocked_run.assert_called_once()\n    if save:\n        assert \"Sums 2 numbers\" in file_path.read_text()\n        assert file_path.name in result.stdout\n    else:\n        assert \"Sums 2 numbers\" in result.stdout\ndef test_mkdocs(tmp_path: Path):\n    runner = CliRunner()\n    args = [\"mkdocs\", \"tests/data\", \"--readme\", \"README.md\", \"--out\", tmp_path]\n    result = runner.invoke(app, args)\n    print(result.stdout)",
+        "type": "code",
+        "location": "/tests/test_cli_main.py:41-78"
+    },
+    "23": {
+        "file_id": 2,
+        "content": "This code defines test functions for a CLI application. It ensures that the application can generate documentation or create a website using the MkDocs tool, and that it handles command line arguments correctly. The tests also verify that the generated output contains the expected content.",
+        "type": "comment"
+    },
+    "24": {
+        "file_id": 2,
+        "content": "    assert result.exit_code == 0\n    files = [f.name for f in tmp_path.glob(\"*\")]\n    assert \"mkdocs.yml\" in files\n    assert \".github\" in files\n    assert \"docs\" in files\n@pytest.mark.parametrize(\n    \"save, pretty, force\",\n    [\n        (True, True, True),\n        (True, True, True),\n        (True, True, False),\n        (True, False, True),\n        (False, True, True),\n    ],\n)\n@mock.patch(\n    \"write_the.llm.LLM.run\",\n    return_value=\"\"\"@pytest.mark.parametrize(\n    \"a, b, expected\", [(2, 3, 5), (0, 5, 5), (-2, -3, -5), (2.5, 3, 5.5), (2, -3, -1)]\n)\ndef test_add(a, b, expected):\n    assert add(a, b) == expected\"\"\",\n)\ndef test_tests_mocked(mocked_run, file_path: Path, save, pretty, force):\n    runner = CliRunner()\n    test_dir = file_path.parent / \"docs\"\n    args = [\"tests\", str(file_path), \"--out\", test_dir]\n    if save:\n        args.append(\"--save\")\n    if pretty:\n        args.append(\"--pretty\")\n    if force:\n        args.append(\"--force\")\n    result = runner.invoke(app, args)\n    assert result.exit_code == 0\n    mocked_run.assert_called_once()",
+        "type": "code",
+        "location": "/tests/test_cli_main.py:79-120"
+    },
+    "25": {
+        "file_id": 2,
+        "content": "The code is testing the behavior of a CLI application by creating various scenarios with different arguments and asserting the expected output. It uses Pytest markers for parametrization, mocks a function call for testing purposes, and checks that the exit code is 0 to indicate successful execution. The code also verifies certain file names exist in the generated test directory.",
+        "type": "comment"
+    },
+    "26": {
+        "file_id": 2,
+        "content": "    if save:\n        test_file = next(test_dir.glob(\"*test_add.py\"))\n        assert \"assert add(a, b) == expected\" in test_file.read_text()\n        assert str(file_path) in result.stdout\n    else:\n        assert \"assert add(a, b) == expected\" in result.stdout",
+        "type": "code",
+        "location": "/tests/test_cli_main.py:121-126"
+    },
+    "27": {
+        "file_id": 2,
+        "content": "Checks if 'test_add.py' file exists in the test directory and asserts it contains the expected code. If 'save' is false, it asserts the code is present in the stdout instead.",
+        "type": "comment"
+    },
+    "28": {
+        "file_id": 3,
+        "content": "/tests/test_cst_docstring_adder.py",
+        "type": "filepath"
+    },
+    "29": {
+        "file_id": 3,
+        "content": "The code tests the DocstringAdher class, verifying its functionality to add and remove docstrings from Python functions and classes, handle escape sequences for newlines, and maintain indentation; it also checks if function and method docstrings are added correctly.",
+        "type": "summary"
+    },
+    "30": {
+        "file_id": 3,
+        "content": "import pytest\nimport libcst as cst\nfrom write_the.cst.docstring_adder import DocstringAdder, add_docstrings_to_tree\nfrom write_the.cst.utils import has_docstring, get_docstring\n@pytest.fixture\ndef docstrings():\n    return {\n        \"function_name\": \"This is a docstring for a function.\",\n        \"ClassName.method_name\": \"This is a docstring for a method.\",\n    }\n@pytest.fixture\ndef force():\n    return False\n@pytest.fixture\ndef function_def_node():\n    return cst.FunctionDef(\n        name=cst.Name(\"function_name\"),\n        params=cst.Parameters(),\n        body=cst.IndentedBlock(body=[cst.SimpleStatementLine(body=[cst.Pass()])], indent=\"    \"),\n    )\n@pytest.fixture\ndef class_def_node():\n    return cst.ClassDef(\n        name=cst.Name(\"ClassName\"),\n        body=cst.IndentedBlock(body=[cst.SimpleStatementLine(body=[cst.Pass()])]),\n    )\n@pytest.fixture\ndef method_def_node():\n    method_def = cst.FunctionDef(\n        name=cst.Name(\"method_name\"),\n        params=cst.Parameters(params=[cst.Param(name=cst.Name(\"cls\"))]),\n        body=cst.IndentedBlock(body=[cst.SimpleStatementLine(body=[cst.Pass()])]),",
+        "type": "code",
+        "location": "/tests/test_cst_docstring_adder.py:1-42"
+    },
+    "31": {
+        "file_id": 3,
+        "content": "Defines fixtures for testing the docstring adder functionality, including function and class definitions.",
+        "type": "comment"
+    },
+    "32": {
+        "file_id": 3,
+        "content": "    )\n    return cst.ClassDef(\n        name=cst.Name(\"ClassName\"),\n        body=cst.IndentedBlock(body=[cst.SimpleStatementLine(body=[method_def])]),\n    )\ndef test_leave_function_def_with_docstring(docstrings, force, function_def_node):\n    docstring_adder = DocstringAdder(docstrings, force)\n    updated_node = docstring_adder.leave_FunctionDef(\n        function_def_node, function_def_node\n    )\n    assert has_docstring(updated_node)\ndef test_leave_function_def_without_docstring(docstrings, force, function_def_node):\n    docstrings.pop(\"function_name\")\n    docstring_adder = DocstringAdder(docstrings, force)\n    updated_node = docstring_adder.leave_FunctionDef(\n        function_def_node, function_def_node\n    )\n    assert not has_docstring(updated_node)\ndef test_leave_class_def_with_docstring(docstrings, force, class_def_node):\n    docstring_adder = DocstringAdder(docstrings, force)\n    updated_node = docstring_adder.leave_ClassDef(class_def_node, class_def_node)\n    assert has_docstring(updated_node) is False",
+        "type": "code",
+        "location": "/tests/test_cst_docstring_adder.py:43-70"
+    },
+    "33": {
+        "file_id": 3,
+        "content": "This code contains several test functions that check the functionality of DocstringAdder class. The tests ensure that when a FunctionDef or ClassDef node with a docstring is passed to leave_FunctionDef or leave_ClassDef methods, the updated node has the corresponding docstring added or removed as expected.",
+        "type": "comment"
+    },
+    "34": {
+        "file_id": 3,
+        "content": "def test_leave_class_def_without_docstring(docstrings, force, class_def_node):\n    docstrings.pop(\"ClassName.method_name\")\n    docstring_adder = DocstringAdder(docstrings, force)\n    updated_node = docstring_adder.leave_ClassDef(class_def_node, class_def_node)\n    assert not has_docstring(updated_node)\ndef test_leave_method_def_without_docstring(\n    docstrings, force, class_def_node, method_def_node\n):\n    docstrings.pop(\"ClassName.method_name\")\n    docstring_adder = DocstringAdder(docstrings, force)\n    updated_node = docstring_adder.leave_ClassDef(class_def_node, class_def_node)\n    updated_node = docstring_adder.leave_FunctionDef(method_def_node, method_def_node)\n    assert not has_docstring(updated_node)\ndef test_add_docstring_with_docstring(docstrings, force, function_def_node):\n    docstring_adder = DocstringAdder(docstrings, force)\n    updated_node = docstring_adder.add_docstring(function_def_node)\n    assert has_docstring(updated_node)\ndef test_add_docstring_without_docstring(docstrings, force, function_def_node):",
+        "type": "code",
+        "location": "/tests/test_cst_docstring_adder.py:73-96"
+    },
+    "35": {
+        "file_id": 3,
+        "content": "This code tests the functionality of a DocstringAdder class, which adds or removes docstrings from Python functions and classes. The code includes four test cases:\n1. \"test_leave_class_def_without_docstring\": Removes a docstring for a specific method in a class, then checks if the updated node does not have any docstring.\n2. \"test_leave_method_def_without_docstring\": Similarly to the first test case, but for an entire class definition and a specific method within that class.\n3. \"test_add_docstring_with_docstring\": Adds a docstring to a function or class if it doesn't already have one.\n4. \"test_add_docstring_without_docstring\": Removes a docstring from a function or class if it has one.\nThe code uses the DocstringAdder class and the has_docstring function to perform these tests.",
+        "type": "comment"
+    },
+    "36": {
+        "file_id": 3,
+        "content": "    docstrings.pop(\"function_name\")\n    docstring_adder = DocstringAdder(docstrings, force)\n    updated_node = docstring_adder.add_docstring(function_def_node)\n    assert not has_docstring(updated_node)\ndef test_add_docstring_with_force(docstrings, function_def_node):\n    force = True\n    docstring_adder = DocstringAdder(docstrings, force)\n    updated_node = docstring_adder.add_docstring(function_def_node)\n    assert has_docstring(updated_node)\ndef test_add_docstring_escape_newline(docstrings, function_def_node):\n    force = True\n    docstrings[\"function_name\"] = \"\"\"\\\\ntest\\ntest\\\\\\\\n\\\\n\"\"\"\n    docstring_adder = DocstringAdder(docstrings, force)\n    updated_node = docstring_adder.add_docstring(function_def_node)\n    assert has_docstring(updated_node)\n    assert (\n        get_docstring(updated_node).strip('\"\"\"').strip()\n        == \"\"\"\\\\\\\\ntest\\n    test\\\\\\\\n\\\\\\\\n\"\"\"\n    )\ndef tree():\n    return cst.parse_module(\n\"\"\"\ndef function_name():\n    pass\nclass ClassName:\n    def method_name():\n        pass\n\"\"\"\n    )\ndef test_add_docstring_indentation():",
+        "type": "code",
+        "location": "/tests/test_cst_docstring_adder.py:97-133"
+    },
+    "37": {
+        "file_id": 3,
+        "content": "This code is testing the functionality of a DocstringAdder class. It tests adding docstrings to functions and methods, handling escape sequences for newlines, and preserving indentation in the docstrings.",
+        "type": "comment"
+    },
+    "38": {
+        "file_id": 3,
+        "content": "    docstrings = {\n        \"function_name\": \"\"\"\n        This is a docstring for a function.\n        Args:\n            a (int): The first number to add.\n            b (int): The second number to add.\n        Returns:\n            int: The sum of `a` and `b`.\n        \"\"\",\n        \"ClassName.method_name\": \"\"\"\n        This is a docstring for a method.\n        Args:\n            a (int): The first number to add.\n            b (int): The second number to add.\n        Returns:\n            int: The sum of `a` and `b`.\n        \"\"\",\n    }\n    modified_tree = add_docstrings_to_tree(tree(), docstrings, force=True)\n    code = modified_tree.code\n    assert \"    This is a docstring for a function.\" in  code\n    assert \"        This is a docstring for a method.\" in  code",
+        "type": "code",
+        "location": "/tests/test_cst_docstring_adder.py:134-155"
+    },
+    "39": {
+        "file_id": 3,
+        "content": "Testing if function and method docstrings are added correctly.",
+        "type": "comment"
+    },
+    "40": {
+        "file_id": 4,
+        "content": "/tests/test_cst_docstring_remover.py",
+        "type": "filepath"
+    },
+    "41": {
+        "file_id": 4,
+        "content": "The DocstringRemover class tests ensure correct removal of function and class docstrings from specified nodes in the Abstract Syntax Tree (AST).",
+        "type": "summary"
+    },
+    "42": {
+        "file_id": 4,
+        "content": "import pytest\nimport libcst as cst\nfrom write_the.cst.docstring_remover import DocstringRemover, remove_docstrings\nfrom write_the.cst.utils import get_docstring\n@pytest.fixture\ndef tree():\n    return cst.parse_module(\n        \"\"\"\ndef foo():\n    '''This is a docstring.'''\n    pass\ndef bar():\n    '''This is another docstring.'''\n    pass\nclass Foo:\n    '''This is a class docstring.'''\n    pass\nclass Bar:\n    '''This is another class docstring.'''\n    pass\n\"\"\"\n    )\n@pytest.fixture\ndef nodes():\n    return [\"foo\", \"Bar\"]\ndef test_leave_FunctionDef(tree, nodes):\n    remover = DocstringRemover(nodes)\n    updated_tree = tree.visit(remover)\n    assert get_docstring(updated_tree.body[0]) is None\n    assert get_docstring(updated_tree.body[1]) == \"'''This is another docstring.'''\"\ndef test_leave_ClassDef(tree, nodes):\n    remover = DocstringRemover(nodes)\n    updated_tree = tree.visit(remover)\n    assert get_docstring(updated_tree.body[2]) == \"'''This is a class docstring.'''\"\n    assert get_docstring(updated_tree.body[3]) is None",
+        "type": "code",
+        "location": "/tests/test_cst_docstring_remover.py:1-46"
+    },
+    "43": {
+        "file_id": 4,
+        "content": "This code tests the DocstringRemover class, which removes docstrings from specified nodes in a given Abstract Syntax Tree (AST). The tests ensure that the function and class docstrings are removed as expected.",
+        "type": "comment"
+    },
+    "44": {
+        "file_id": 4,
+        "content": "def test_remove_docstrings(tree, nodes):\n    updated_tree = remove_docstrings(tree, nodes)\n    assert get_docstring(updated_tree.body[0]) is None\n    assert get_docstring(updated_tree.body[1]) == \"'''This is another docstring.'''\"\n    assert get_docstring(updated_tree.body[2]) == \"'''This is a class docstring.'''\"\n    assert get_docstring(updated_tree.body[3]) is None",
+        "type": "code",
+        "location": "/tests/test_cst_docstring_remover.py:49-54"
+    },
+    "45": {
+        "file_id": 4,
+        "content": "Testing if the docstrings are correctly removed from specified nodes.",
+        "type": "comment"
+    },
+    "46": {
+        "file_id": 5,
+        "content": "/tests/test_cst_function_and_class_collector.py",
+        "type": "filepath"
+    },
+    "47": {
+        "file_id": 5,
+        "content": "The code tests FunctionAndClassCollector class for identifying functions and classes in a Python module, verifying if `get_node_names` returns expected names from the tree.",
+        "type": "summary"
+    },
+    "48": {
+        "file_id": 5,
+        "content": "import pytest\nimport libcst as cst\nfrom write_the.cst.function_and_class_collector import (\n    FunctionAndClassCollector,\n    get_node_names,\n)\n@pytest.fixture\ndef tree():\n    return cst.parse_module(\"def foo(): pass\\nclass Bar: pass\")\n@pytest.fixture\ndef force():\n    return False\ndef test_visit_FunctionDef_with_no_docstring(tree):\n    collector = FunctionAndClassCollector(force=False)\n    tree.visit(collector)\n    assert collector.functions == [\"foo\"]\ndef test_visit_FunctionDef_with_docstring(tree):\n    collector = FunctionAndClassCollector(force=True)\n    tree.visit(collector)\n    assert collector.functions == [\"foo\"]\ndef test_visit_ClassDef_with_no_docstring(tree):\n    collector = FunctionAndClassCollector(force=False)\n    tree.visit(collector)\n    assert collector.classes == [\"Bar\"]\ndef test_visit_ClassDef_with_docstring(tree):\n    collector = FunctionAndClassCollector(force=True)\n    tree.visit(collector)\n    assert collector.classes == [\"Bar\"]\ndef test_get_node_names(tree, force):\n    assert get_node_names(tree, force) == [\"Bar\", \"foo\"]",
+        "type": "code",
+        "location": "/tests/test_cst_function_and_class_collector.py:1-44"
+    },
+    "49": {
+        "file_id": 5,
+        "content": "The code under test defines various test cases for the FunctionAndClassCollector class. It checks if the collector can correctly identify functions and classes within a given Python module, regardless of whether they have docstrings or not. The test_get_node_names function also confirms that get_node_names returns the correct list of identified nodes from a provided tree.",
+        "type": "comment"
+    },
+    "50": {
+        "file_id": 5,
+        "content": "def test_get_node_names_with_force_true(tree, force):\n    assert get_node_names(tree, True) == [\"Bar\", \"foo\"]",
+        "type": "code",
+        "location": "/tests/test_cst_function_and_class_collector.py:47-48"
+    },
+    "51": {
+        "file_id": 5,
+        "content": "Tests if `get_node_names` returns expected names for given tree and force=True.",
+        "type": "comment"
+    },
+    "52": {
+        "file_id": 6,
+        "content": "/tests/test_cst_node_extractor.py",
+        "type": "filepath"
+    },
+    "53": {
+        "file_id": 6,
+        "content": "The summaries test if NodeExtractor correctly extracts FunctionDef and ClassDef nodes from AST trees, visits all instances of these nodes in the tree, and only retrieves specified named nodes.",
+        "type": "summary"
+    },
+    "54": {
+        "file_id": 6,
+        "content": "import pytest\nimport libcst as cst\nfrom write_the.cst.node_extractor import NodeExtractor, extract_nodes_from_tree\n@pytest.fixture\ndef tree():\n    return cst.parse_module(\n        \"\"\"\ndef foo():\n    pass\nclass Bar:\n    pass\n\"\"\"\n    )\n@pytest.fixture\ndef nodes():\n    return [\"foo\", \"Bar\"]\ndef test_extract_nodes_from_tree(tree, nodes):\n    extracted_nodes = extract_nodes_from_tree(tree, nodes)\n    assert len(extracted_nodes) == 2\n    assert isinstance(extracted_nodes[0], cst.FunctionDef)\n    assert isinstance(extracted_nodes[1], cst.ClassDef)\ndef test_extract_nodes_from_tree_empty_nodes(tree):\n    extracted_nodes = extract_nodes_from_tree(tree, [])\n    assert len(extracted_nodes) == 0\ndef test_visit_FunctionDef(tree, nodes):\n    extractor = NodeExtractor(nodes)\n    tree.visit(extractor)\n    assert len(extractor.extracted_nodes) == 2\n    assert isinstance(extractor.extracted_nodes[0], cst.FunctionDef)\ndef test_visit_ClassDef(tree, nodes):\n    extractor = NodeExtractor(nodes)\n    tree.visit(extractor)\n    assert len(extractor.extracted_nodes) == 2",
+        "type": "code",
+        "location": "/tests/test_cst_node_extractor.py:1-46"
+    },
+    "55": {
+        "file_id": 6,
+        "content": "Testing if extract_nodes_from_tree correctly extracts FunctionDef and ClassDef nodes from a given AST tree. \n- test_extract_nodes_from_tree: Testing if correct number and types of extracted nodes are returned.\n- test_extract_nodes_from_tree_empty_nodes: Testing if no nodes are returned when an empty list is passed.\n- test_visit_FunctionDef: Testing if NodeExtractor visits all FunctionDef nodes in the AST tree.\n- test_visit_ClassDef: Testing if NodeExtractor visits all ClassDef nodes in the AST tree.",
+        "type": "comment"
+    },
+    "56": {
+        "file_id": 6,
+        "content": "    assert isinstance(extractor.extracted_nodes[1], cst.ClassDef)\ndef test_visit_FunctionDef_invalid_node(tree):\n    extractor = NodeExtractor([\"foo\"])\n    tree.visit(extractor)\n    assert len(extractor.extracted_nodes) == 1\ndef test_visit_ClassDef_invalid_node(tree):\n    extractor = NodeExtractor([\"Bar\"])\n    tree.visit(extractor)\n    assert len(extractor.extracted_nodes) == 1",
+        "type": "code",
+        "location": "/tests/test_cst_node_extractor.py:47-59"
+    },
+    "57": {
+        "file_id": 6,
+        "content": "Tests that NodeExtractor can visit FunctionDef and ClassDef nodes and extract only specified named nodes.",
+        "type": "comment"
+    },
+    "58": {
+        "file_id": 7,
+        "content": "/tests/test_cst_node_remover.py",
+        "type": "filepath"
+    },
+    "59": {
+        "file_id": 7,
+        "content": "This code defines tests for the `NodeRemover` class and `remove_nodes_from_tree` function. It first imports necessary modules, then defines fixtures for creating a sample tree and list of nodes to remove. The tests check if the `NodeRemover` instance holds the expected nodes and if removing those nodes from the tree leaves the expected structure with correct node types and names.",
+        "type": "summary"
+    },
+    "60": {
+        "file_id": 7,
+        "content": "import pytest\nimport libcst as cst\nfrom write_the.cst.node_remover import NodeRemover, remove_nodes_from_tree\n@pytest.fixture\ndef tree():\n    return cst.parse_module(\n        \"\"\"\ndef foo():\n    pass\ndef bar():\n    pass\nclass Foo:\n    pass\nclass Bar:\n    pass\n\"\"\"\n    )\n@pytest.fixture\ndef nodes():\n    return [\"foo\", \"Bar\"]\ndef test_node_remover_init(nodes):\n    remover = NodeRemover(nodes)\n    assert remover.nodes == nodes\ndef test_remove_nodes_from_tree(tree, nodes):\n    updated_tree = remove_nodes_from_tree(tree, nodes)\n    assert len(updated_tree.body) == 2\n    assert isinstance(updated_tree.body[0], cst.FunctionDef)\n    assert isinstance(updated_tree.body[1], cst.ClassDef)\n    assert updated_tree.body[0].name.value == \"bar\"\n    assert updated_tree.body[1].name.value == \"Foo\"",
+        "type": "code",
+        "location": "/tests/test_cst_node_remover.py:1-41"
+    },
+    "61": {
+        "file_id": 7,
+        "content": "This code defines tests for the `NodeRemover` class and `remove_nodes_from_tree` function. It first imports necessary modules, then defines fixtures for creating a sample tree and list of nodes to remove. The tests check if the `NodeRemover` instance holds the expected nodes and if removing those nodes from the tree leaves the expected structure with correct node types and names.",
+        "type": "comment"
+    },
+    "62": {
+        "file_id": 8,
+        "content": "/tests/test_cst_utils.py",
+        "type": "filepath"
+    },
+    "63": {
+        "file_id": 8,
+        "content": "Two fixtures are defined for testing the docstring handling functions, which create function and class definition nodes with docstrings. These nodes can be used to test the `has_docstring` and `nodes_to_tree` functions in the `write_the.cst.utils` module.",
+        "type": "summary"
+    },
+    "64": {
+        "file_id": 8,
+        "content": "import libcst as cst\nfrom write_the.cst.utils import has_docstring, nodes_to_tree\nimport pytest\n@pytest.fixture\ndef cst_function_def():\n    return cst.FunctionDef(\n        name=cst.Name(\"function_name\"),\n        params=cst.Parameters(),\n        body=cst.IndentedBlock(\n            body=[\n                cst.SimpleStatementLine(\n                    body=[\n                        cst.Expr(value=cst.SimpleString('\"\"\"This is a docstring.\"\"\"'))\n                    ]\n                ),\n                cst.SimpleStatementLine(body=[cst.Pass()]),\n            ]\n        ),\n    )\n@pytest.fixture\ndef cst_class_def():\n    return cst.ClassDef(\n        name=cst.Name(\"ClassName\"),\n        body=cst.IndentedBlock(\n            body=[\n                cst.SimpleStatementLine(\n                    body=[\n                        cst.Expr(\n                            value=cst.SimpleString('\"\"\"This is a class docstring.\"\"\"')\n                        )\n                    ]\n                ),\n                cst.SimpleStatementLine(body=[cst.Pass()]),",
+        "type": "code",
+        "location": "/tests/test_cst_utils.py:1-37"
+    },
+    "65": {
+        "file_id": 8,
+        "content": "This code defines two fixtures for testing the docstring handling functions of a library. The `cst_function_def` fixture creates a function definition node with a docstring, and the `cst_class_def` fixture creates a class definition node with a docstring. These nodes can be used to test the functionality of the `has_docstring` and `nodes_to_tree` functions in the `write_the.cst.utils` module.",
+        "type": "comment"
+    },
+    "66": {
+        "file_id": 8,
+        "content": "            ]\n        ),\n    )\ndef test_has_docstring_function_def(cst_function_def):\n    assert has_docstring(cst_function_def)\ndef test_has_docstring_class_def(cst_class_def):\n    assert has_docstring(cst_class_def)\ndef test_nodes_to_tree(cst_function_def, cst_class_def):\n    tree = nodes_to_tree([cst_function_def, cst_class_def])\n    assert isinstance(tree, cst.Module)\n    assert len(tree.body) == 2",
+        "type": "code",
+        "location": "/tests/test_cst_utils.py:38-54"
+    },
+    "67": {
+        "file_id": 8,
+        "content": "Test functions for checking if nodes have docstrings and converting nodes to a tree structure.",
+        "type": "comment"
+    },
+    "68": {
+        "file_id": 9,
+        "content": "/tests/test_utils.py",
+        "type": "filepath"
+    },
+    "69": {
+        "file_id": 9,
+        "content": "The code is testing the `list_python_files` function by passing different directory paths and checking if it returns an empty list for an empty directory or a directory with no .py files. The code also tests that it returns a list of 3 files when passed a directory containing 3 Python files.",
+        "type": "summary"
+    },
+    "70": {
+        "file_id": 9,
+        "content": "import pytest\nfrom pathlib import Path\nfrom write_the.utils import list_python_files\n@pytest.fixture\ndef directory():\n    return Path(\"tests/data\")\ndef test_list_python_files(directory):\n    python_files = list_python_files(directory)\n    assert isinstance(python_files, list)\n    assert len(python_files) == 3\n    assert Path(\"tests/data/multiply_docstring.py\") in python_files\n    assert Path(\"tests/data/multiply.py\") in python_files\n@pytest.mark.parametrize(\n    \"directory, expected\",\n    [\n        (Path(\"/home/user/code/empty_dir\"), []),\n        (Path(\"/home/user/code/no_py_files\"), []),\n    ],\n)\ndef test_list_python_files_edge_cases(directory, expected):\n    python_files = list_python_files(directory)\n    assert python_files == expected",
+        "type": "code",
+        "location": "/tests/test_utils.py:1-28"
+    },
+    "71": {
+        "file_id": 9,
+        "content": "The code is testing the `list_python_files` function by passing different directory paths and checking if it returns an empty list for an empty directory or a directory with no .py files. The code also tests that it returns a list of 3 files when passed a directory containing 3 Python files.",
+        "type": "comment"
+    },
+    "72": {
+        "file_id": 10,
+        "content": "/tests/data/calculate.py",
+        "type": "filepath"
+    },
+    "73": {
+        "file_id": 10,
+        "content": "Class Calculate contains two methods: multiply and add.",
+        "type": "summary"
+    },
+    "74": {
+        "file_id": 10,
+        "content": "class Calculate:\n    def multiply(a, b):\n        return a * b\n    def add(a, b):\n        return a + b",
+        "type": "code",
+        "location": "/tests/data/calculate.py:1-6"
+    },
+    "75": {
+        "file_id": 10,
+        "content": "Class Calculate contains two methods: multiply and add.",
+        "type": "comment"
+    },
+    "76": {
+        "file_id": 11,
+        "content": "/tests/data/multiply.py",
+        "type": "filepath"
+    },
+    "77": {
+        "file_id": 11,
+        "content": "Function takes two inputs, multiplies them, and returns the result.",
+        "type": "summary"
+    },
+    "78": {
+        "file_id": 11,
+        "content": "def multiply(a, b):\n    return a * b",
+        "type": "code",
+        "location": "/tests/data/multiply.py:1-2"
+    },
+    "79": {
+        "file_id": 11,
+        "content": "Function takes two inputs, multiplies them, and returns the result.",
+        "type": "comment"
+    },
+    "80": {
+        "file_id": 12,
+        "content": "/tests/data/multiply_docstring.py",
+        "type": "filepath"
+    },
+    "81": {
+        "file_id": 12,
+        "content": "This function takes two integer inputs and returns the product of those two numbers.",
+        "type": "summary"
+    },
+    "82": {
+        "file_id": 12,
+        "content": "def multiply(a, b):\n    \"\"\"\n    Multiplies 2 numbers.\n    Args:\n      a (int): The first number to multiply.\n      b (int): The second number to multiply.\n    Returns:\n      int: The product of `a` and `b`.\n    Examples:\n      >>> multiply(2, 3)\n      6\n    \"\"\"\n    return a * b",
+        "type": "code",
+        "location": "/tests/data/multiply_docstring.py:1-13"
+    },
+    "83": {
+        "file_id": 12,
+        "content": "This function takes two integer inputs and returns the product of those two numbers.",
+        "type": "comment"
+    },
+    "84": {
+        "file_id": 13,
+        "content": "/write_the/__about__.py",
+        "type": "filepath"
+    },
+    "85": {
+        "file_id": 13,
+        "content": "The code declares the version of the package as \"0.10.1\".",
+        "type": "summary"
+    },
+    "86": {
+        "file_id": 13,
+        "content": "__version__ = \"0.10.1\"",
+        "type": "code",
+        "location": "/write_the/__about__.py:1-1"
+    },
+    "87": {
+        "file_id": 13,
+        "content": "The code declares the version of the package as \"0.10.1\".",
+        "type": "comment"
+    },
+    "88": {
+        "file_id": 14,
+        "content": "/write_the/__main__.py",
+        "type": "filepath"
+    },
+    "89": {
+        "file_id": 14,
+        "content": "Executing the CLI application \"write-the\" with specified name.",
+        "type": "summary"
+    },
+    "90": {
+        "file_id": 14,
+        "content": "from .cli import app\napp(prog_name=\"write-the\")",
+        "type": "code",
+        "location": "/write_the/__main__.py:1-3"
+    },
+    "91": {
+        "file_id": 14,
+        "content": "Executing the CLI application \"write-the\" with specified name.",
+        "type": "comment"
+    },
+    "92": {
+        "file_id": 15,
+        "content": "/write_the/llm.py",
+        "type": "filepath"
+    },
+    "93": {
+        "file_id": 15,
+        "content": "The class runs a Language Model Chain, taking prompt template and temperature as arguments, while the function initializes an LLMChain with OpenAI model, user code, and keyword arguments, returning generated text. It also has a token counting function.",
+        "type": "summary"
+    },
+    "94": {
+        "file_id": 15,
+        "content": "from langchain.prompts import PromptTemplate\nfrom langchain.chains import LLMChain\nfrom langchain.llms import OpenAI\nimport tiktoken\nclass LLM:\n    \"\"\"\n    A class for running a Language Model Chain.\n    \"\"\"\n    def __init__(self, prompt: PromptTemplate, temperature=0, gpt_4=False):\n        \"\"\"\n        Initializes the LLM class.\n        Args:\n            prompt (PromptTemplate): The prompt template to use.\n            temperature (int): The temperature to use for the model.\n            gpt_4 (bool): Whether to use GPT-4 or Text-Davinci-003.\n        Side Effects:\n            Sets the class attributes.\n        \"\"\"\n        self.prompt = prompt\n        self.prompt_size = self.number_of_tokens(prompt.template)\n        self.temperature = temperature\n        self.gpt_4 = gpt_4\n        self.model_name = \"gpt-4\" if self.gpt_4 else \"text-davinci-003\"\n        self.max_tokens = 4097 * 2 if self.gpt_4 else 4097\n    async def run(self, code, **kwargs):\n        \"\"\"\n        Runs the Language Model Chain.\n        Args:\n            code (str): The code to use for the chain.",
+        "type": "code",
+        "location": "/write_the/llm.py:1-32"
+    },
+    "95": {
+        "file_id": 15,
+        "content": "Class for running a Language Model Chain, takes a prompt template and temperature as arguments. Initializes the class attributes. Runs the Language Model Chain with given code.",
+        "type": "comment"
+    },
+    "96": {
+        "file_id": 15,
+        "content": "            **kwargs (dict): Additional keyword arguments.\n        Returns:\n            str: The generated text.\n        \"\"\"\n        llm = OpenAI(\n            temperature=self.temperature, max_tokens=-1, model_name=self.model_name\n        )\n        chain = LLMChain(llm=llm, prompt=self.prompt)\n        return await chain.apredict(code=code, **kwargs)\n    def number_of_tokens(self, text):\n        \"\"\"\n        Counts the number of tokens in a given text.\n        Args:\n            text (str): The text to count tokens for.\n        Returns:\n            int: The number of tokens in the text.\n        \"\"\"\n        encoding = tiktoken.encoding_for_model(\"gpt-4\")\n        return len(encoding.encode(text))",
+        "type": "code",
+        "location": "/write_the/llm.py:33-52"
+    },
+    "97": {
+        "file_id": 15,
+        "content": "This function initializes an LLMChain with an OpenAI model, takes user code as input along with additional keywords arguments, and returns the generated text. It also has a separate function to count tokens in a given text.",
+        "type": "comment"
+    },
+    "98": {
+        "file_id": 16,
+        "content": "/write_the/utils.py",
+        "type": "filepath"
+    },
+    "99": {
+        "file_id": 16,
+        "content": "This code contains three functions: \"list_python_files\", \"load_source_code\", and \"create_tree\". The first function finds all Python files in a given directory, while the second and third functions read and parse the source code of a single Python file, respectively.",
+        "type": "summary"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "summary": "This code imports a PromptTemplate from langchain and defines a tests_template string for generating pytest unit tests. The write_tests_for_file_prompt is created using the PromptTemplate, with input variables \"code\" and \"path\".",
+    "details": [
+        {
+            "comment": "This code imports a PromptTemplate from langchain and defines a tests_template string for generating pytest unit tests. The write_tests_for_file_prompt is created using the PromptTemplate, with input variables \"code\" and \"path\".",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/tests/prompts.py\":0-16",
+            "content": "from langchain.prompts import PromptTemplate\ntests_template = \"\"\"\nGenerate pytest unit tests for the code below, covering all possible scenarios and edge cases. \nUse fixtures and parametrize when appropriate. \nImport the code from {path} and adjust any relative imports. \nReturn only the test code.\nCode:\n```python\n{code}\n```\n\"\"\"\nwrite_tests_for_file_prompt = PromptTemplate(\n    input_variables=[\"code\", \"path\"], template=tests_template\n)"
+        }
+    ]
+}

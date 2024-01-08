@@ -1,0 +1,10 @@
+{
+    "summary": "This code imports a PromptTemplate from langchain.prompts and defines a converters_template to convert Python code into TypeScript code. It then creates a write_converters_for_file_prompt using the PromptTemplate, with input variables of \"code\", \"input_format\", and \"output_format\".",
+    "details": [
+        {
+            "comment": "This code imports a PromptTemplate from langchain.prompts and defines a converters_template to convert Python code into TypeScript code. It then creates a write_converters_for_file_prompt using the PromptTemplate, with input variables of \"code\", \"input_format\", and \"output_format\".",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/converters/prompts.py\":0-24",
+            "content": "from langchain.prompts import PromptTemplate\nconverters_template = \"\"\"\nConvert the following to the desired output.\n```python\ndef add(a, b):\n    return a + b\n```\n```typescript\nfunction add(a: number, b: number): number {{\n  return a + b;\n}}\n```\n```{input_format}\n{code}\n```\n```{output_format}\n\"\"\"\nwrite_converters_for_file_prompt = PromptTemplate(\n    input_variables=[\"code\", \"input_format\", \"output_format\"], \n    template=converters_template\n)"
+        }
+    ]
+}

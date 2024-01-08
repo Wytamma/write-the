@@ -1,0 +1,15 @@
+{
+    "summary": "The DocstringRemover class tests ensure correct removal of function and class docstrings from specified nodes in the Abstract Syntax Tree (AST).",
+    "details": [
+        {
+            "comment": "This code tests the DocstringRemover class, which removes docstrings from specified nodes in a given Abstract Syntax Tree (AST). The tests ensure that the function and class docstrings are removed as expected.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_cst_docstring_remover.py\":0-45",
+            "content": "import pytest\nimport libcst as cst\nfrom write_the.cst.docstring_remover import DocstringRemover, remove_docstrings\nfrom write_the.cst.utils import get_docstring\n@pytest.fixture\ndef tree():\n    return cst.parse_module(\n        \"\"\"\ndef foo():\n    '''This is a docstring.'''\n    pass\ndef bar():\n    '''This is another docstring.'''\n    pass\nclass Foo:\n    '''This is a class docstring.'''\n    pass\nclass Bar:\n    '''This is another class docstring.'''\n    pass\n\"\"\"\n    )\n@pytest.fixture\ndef nodes():\n    return [\"foo\", \"Bar\"]\ndef test_leave_FunctionDef(tree, nodes):\n    remover = DocstringRemover(nodes)\n    updated_tree = tree.visit(remover)\n    assert get_docstring(updated_tree.body[0]) is None\n    assert get_docstring(updated_tree.body[1]) == \"'''This is another docstring.'''\"\ndef test_leave_ClassDef(tree, nodes):\n    remover = DocstringRemover(nodes)\n    updated_tree = tree.visit(remover)\n    assert get_docstring(updated_tree.body[2]) == \"'''This is a class docstring.'''\"\n    assert get_docstring(updated_tree.body[3]) is None"
+        },
+        {
+            "comment": "Testing if the docstrings are correctly removed from specified nodes.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_cst_docstring_remover.py\":48-53",
+            "content": "def test_remove_docstrings(tree, nodes):\n    updated_tree = remove_docstrings(tree, nodes)\n    assert get_docstring(updated_tree.body[0]) is None\n    assert get_docstring(updated_tree.body[1]) == \"'''This is another docstring.'''\"\n    assert get_docstring(updated_tree.body[2]) == \"'''This is a class docstring.'''\"\n    assert get_docstring(updated_tree.body[3]) is None"
+        }
+    ]
+}

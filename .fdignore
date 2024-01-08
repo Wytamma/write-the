@@ -1,0 +1,6 @@
+.*
+docs
+images
+*.dat
+LICENSE*
+mkdocs.yml

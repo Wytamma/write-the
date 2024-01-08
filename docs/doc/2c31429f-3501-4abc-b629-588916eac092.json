@@ -1,0 +1,15 @@
+{
+    "summary": "The summaries test if NodeExtractor correctly extracts FunctionDef and ClassDef nodes from AST trees, visits all instances of these nodes in the tree, and only retrieves specified named nodes.",
+    "details": [
+        {
+            "comment": "Testing if extract_nodes_from_tree correctly extracts FunctionDef and ClassDef nodes from a given AST tree. \n- test_extract_nodes_from_tree: Testing if correct number and types of extracted nodes are returned.\n- test_extract_nodes_from_tree_empty_nodes: Testing if no nodes are returned when an empty list is passed.\n- test_visit_FunctionDef: Testing if NodeExtractor visits all FunctionDef nodes in the AST tree.\n- test_visit_ClassDef: Testing if NodeExtractor visits all ClassDef nodes in the AST tree.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_cst_node_extractor.py\":0-45",
+            "content": "import pytest\nimport libcst as cst\nfrom write_the.cst.node_extractor import NodeExtractor, extract_nodes_from_tree\n@pytest.fixture\ndef tree():\n    return cst.parse_module(\n        \"\"\"\ndef foo():\n    pass\nclass Bar:\n    pass\n\"\"\"\n    )\n@pytest.fixture\ndef nodes():\n    return [\"foo\", \"Bar\"]\ndef test_extract_nodes_from_tree(tree, nodes):\n    extracted_nodes = extract_nodes_from_tree(tree, nodes)\n    assert len(extracted_nodes) == 2\n    assert isinstance(extracted_nodes[0], cst.FunctionDef)\n    assert isinstance(extracted_nodes[1], cst.ClassDef)\ndef test_extract_nodes_from_tree_empty_nodes(tree):\n    extracted_nodes = extract_nodes_from_tree(tree, [])\n    assert len(extracted_nodes) == 0\ndef test_visit_FunctionDef(tree, nodes):\n    extractor = NodeExtractor(nodes)\n    tree.visit(extractor)\n    assert len(extractor.extracted_nodes) == 2\n    assert isinstance(extractor.extracted_nodes[0], cst.FunctionDef)\ndef test_visit_ClassDef(tree, nodes):\n    extractor = NodeExtractor(nodes)\n    tree.visit(extractor)\n    assert len(extractor.extracted_nodes) == 2"
+        },
+        {
+            "comment": "Tests that NodeExtractor can visit FunctionDef and ClassDef nodes and extract only specified named nodes.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_cst_node_extractor.py\":46-58",
+            "content": "    assert isinstance(extractor.extracted_nodes[1], cst.ClassDef)\ndef test_visit_FunctionDef_invalid_node(tree):\n    extractor = NodeExtractor([\"foo\"])\n    tree.visit(extractor)\n    assert len(extractor.extracted_nodes) == 1\ndef test_visit_ClassDef_invalid_node(tree):\n    extractor = NodeExtractor([\"Bar\"])\n    tree.visit(extractor)\n    assert len(extractor.extracted_nodes) == 1"
+        }
+    ]
+}

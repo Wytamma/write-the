@@ -1,0 +1,15 @@
+{
+    "summary": "Two fixtures are defined for testing the docstring handling functions, which create function and class definition nodes with docstrings. These nodes can be used to test the `has_docstring` and `nodes_to_tree` functions in the `write_the.cst.utils` module.",
+    "details": [
+        {
+            "comment": "This code defines two fixtures for testing the docstring handling functions of a library. The `cst_function_def` fixture creates a function definition node with a docstring, and the `cst_class_def` fixture creates a class definition node with a docstring. These nodes can be used to test the functionality of the `has_docstring` and `nodes_to_tree` functions in the `write_the.cst.utils` module.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_cst_utils.py\":0-36",
+            "content": "import libcst as cst\nfrom write_the.cst.utils import has_docstring, nodes_to_tree\nimport pytest\n@pytest.fixture\ndef cst_function_def():\n    return cst.FunctionDef(\n        name=cst.Name(\"function_name\"),\n        params=cst.Parameters(),\n        body=cst.IndentedBlock(\n            body=[\n                cst.SimpleStatementLine(\n                    body=[\n                        cst.Expr(value=cst.SimpleString('\"\"\"This is a docstring.\"\"\"'))\n                    ]\n                ),\n                cst.SimpleStatementLine(body=[cst.Pass()]),\n            ]\n        ),\n    )\n@pytest.fixture\ndef cst_class_def():\n    return cst.ClassDef(\n        name=cst.Name(\"ClassName\"),\n        body=cst.IndentedBlock(\n            body=[\n                cst.SimpleStatementLine(\n                    body=[\n                        cst.Expr(\n                            value=cst.SimpleString('\"\"\"This is a class docstring.\"\"\"')\n                        )\n                    ]\n                ),\n                cst.SimpleStatementLine(body=[cst.Pass()]),"
+        },
+        {
+            "comment": "Test functions for checking if nodes have docstrings and converting nodes to a tree structure.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_cst_utils.py\":37-53",
+            "content": "            ]\n        ),\n    )\ndef test_has_docstring_function_def(cst_function_def):\n    assert has_docstring(cst_function_def)\ndef test_has_docstring_class_def(cst_class_def):\n    assert has_docstring(cst_class_def)\ndef test_nodes_to_tree(cst_function_def, cst_class_def):\n    tree = nodes_to_tree([cst_function_def, cst_class_def])\n    assert isinstance(tree, cst.Module)\n    assert len(tree.body) == 2"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "summary": "Class Calculate contains two methods: multiply and add.",
+    "details": [
+        {
+            "comment": "Class Calculate contains two methods: multiply and add.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/data/calculate.py\":0-5",
+            "content": "class Calculate:\n    def multiply(a, b):\n        return a * b\n    def add(a, b):\n        return a + b"
+        }
+    ]
+}

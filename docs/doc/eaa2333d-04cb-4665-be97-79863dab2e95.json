@@ -1,0 +1,20 @@
+{
+    "summary": "The NodeExtractor class is used to extract nodes from Python AST trees, considering the current_class and storing them in extracted_nodes. The functions extract_nodes_from_tree and extract_node_from_tree utilize this class for finding multiple or a single specified node type respectively.",
+    "details": [
+        {
+            "comment": "This code defines a NodeExtractor class that visits Python AST nodes and adds them to the extracted_nodes list if they match names in the given nodes list. The class also keeps track of the current_class and considers it while processing FunctionDef nodes.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/node_extractor.py\":0-30",
+            "content": "from typing import Optional\nimport libcst as cst\nclass NodeExtractor(cst.CSTVisitor):\n    def __init__(self, nodes):\n        self.nodes = nodes\n        self.extracted_nodes = []\n        self.current_class = None\n    def visit_FunctionDef(self, node: cst.FunctionDef):\n        \"\"\"\n        Visits a FunctionDef node and adds it to the extracted_nodes list if it is in the nodes list.\n        Args:\n          node (cst.FunctionDef): The FunctionDef node to visit.\n        Side Effects:\n          Adds the node to the extracted_nodes list if it is in the nodes list.\n        \"\"\"\n        name = (\n            f\"{self.current_class}.{node.name.value}\"\n            if self.current_class\n            else node.name.value\n        )\n        if name in self.nodes:\n            self.extracted_nodes.append(node)\n    def visit_ClassDef(self, node: cst.ClassDef):\n        \"\"\"\n        Visits a ClassDef node and adds it to the extracted_nodes list if it is in the nodes list.\n        Args:\n          node (cst.ClassDef): The ClassDef node to visit."
+        },
+        {
+            "comment": "Code snippet defines a function to extract nodes from a CST (Abstract Syntax Tree) tree. It uses the NodeExtractor class for this purpose, which visits each node in the tree and appends relevant ones to the extracted_nodes list. The extract_nodes_from_tree function takes a tree and a list of node types as input, then returns a list of nodes of those types found in the tree. On the other hand, extract_node_from_tree finds only one node type specified in its argument from the given CST tree and returns it if found, else throws ValueError.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/node_extractor.py\":31-63",
+            "content": "        Side Effects:\n          Adds the node to the extracted_nodes list if it is in the nodes list.\n        \"\"\"\n        self.current_class = node.name.value\n        if node.name.value in self.nodes:\n            self.extracted_nodes.append(node)\n    def leave_ClassDef(self, node: cst.ClassDef) -> None:\n        self.current_class = None\ndef extract_nodes_from_tree(tree, nodes):\n    \"\"\"\n    Extracts nodes from a CST tree.\n    Args:\n      tree (cst.CSTNode): The CST tree to extract nodes from.\n      nodes (list): A list of nodes to extract.\n    Returns:\n      list: A list of extracted nodes.\n    Examples:\n      >>> extract_nodes_from_tree(tree, nodes)\n      [cst.FunctionDef, cst.ClassDef]\n    \"\"\"\n    extractor = NodeExtractor(nodes)\n    tree.visit(extractor)\n    return extractor.extracted_nodes\ndef extract_node_from_tree(tree, node) -> Optional[cst.CSTNode]:\n    extractor = NodeExtractor([node])\n    tree.visit(extractor)\n    if not extractor.extracted_nodes:\n        raise ValueError(f\"Could not find node: {node}!\")"
+        },
+        {
+            "comment": "This line returns the first extracted node from the extractor.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/node_extractor.py\":64-64",
+            "content": "    return extractor.extracted_nodes[0]"
+        }
+    ]
+}

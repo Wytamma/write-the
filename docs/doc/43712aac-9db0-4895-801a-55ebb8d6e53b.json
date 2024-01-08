@@ -1,0 +1,10 @@
+{
+    "summary": "Imports various classes and functions from different modules for code reuse.",
+    "details": [
+        {
+            "comment": "Imports various classes and functions from different modules for code reuse.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cst/__init__.py\":0-5",
+            "content": "from .docstring_adder import DocstringAdder, has_docstring\nfrom .docstring_remover import DocstringRemover, remove_docstrings\nfrom .function_and_class_collector import FunctionAndClassCollector, get_node_names\nfrom .node_extractor import NodeExtractor, extract_nodes_from_tree\nfrom .node_remover import NodeRemover, remove_nodes_from_tree\nfrom .utils import nodes_to_tree"
+        }
+    ]
+}

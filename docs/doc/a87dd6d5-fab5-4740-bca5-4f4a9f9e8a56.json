@@ -1,0 +1,10 @@
+{
+    "summary": "This code contains three functions: \"list_python_files\", \"load_source_code\", and \"create_tree\". The first function finds all Python files in a given directory, while the second and third functions read and parse the source code of a single Python file, respectively.",
+    "details": [
+        {
+            "comment": "This code contains three functions: \"list_python_files\", \"load_source_code\", and \"create_tree\". The first function finds all Python files in a given directory, while the second and third functions read and parse the source code of a single Python file, respectively.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/utils.py\":0-32",
+            "content": "from pathlib import Path\nimport libcst as cst\nfrom black import FileMode, format_str\ndef list_python_files(directory):\n    \"\"\"\n    Finds all Python files in a given directory.\n    Args:\n      directory (Path): The directory to search for Python files.\n    Returns:\n      list: A list of Path objects for each Python file found.\n    Examples:\n      >>> list_python_files(Path('/home/user/code'))\n      [Path('/home/user/code/main.py'), Path('/home/user/code/utils.py')]\n    \"\"\"\n    python_files = []\n    for file in directory.glob(\"**/*.py\"):\n        python_files.append(file)\n    return python_files\ndef load_source_code(file: Path):\n    with open(file, \"r\") as file:\n        return file.read()\ndef format_source_code(source_code):\n    return format_str(source_code, mode=FileMode())\ndef create_tree(source_code):\n    return cst.parse_module(source_code)"
+        }
+    ]
+}

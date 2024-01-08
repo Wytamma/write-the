@@ -1,0 +1,15 @@
+{
+    "summary": "This code sets up Hatch, a Python tool for managing dependencies and environment. It specifies version configuration file path, defines default environment dependencies and scripts, configures coverage reporting, testing matrix, and uses \"cov\" script to run pytest with coverage reports.",
+    "details": [
+        {
+            "comment": "This code is a setup file for the hatchling build system. It specifies the project's name, description, dependencies, classifiers, and scripts.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/pyproject.toml\":0-39",
+            "content": "[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n[project]\nname = \"write-the\"\ndescription = 'AI-powered Code Generation and Refactoring Tool'\nreadme = \"README.md\"\nrequires-python = \">=3.9\"\nlicense = \"MIT\"\nkeywords = []\nauthors = [\n  { name = \"wytamma\", email = \"wytamma.wirth@me.com\" },\n]\nclassifiers = [\n  \"Development Status :: 4 - Beta\",\n  \"Programming Language :: Python\",\n  \"Programming Language :: Python :: 3.9\",\n  \"Programming Language :: Python :: 3.10\",\n  \"Programming Language :: Python :: 3.11\",\n  \"Programming Language :: Python :: Implementation :: CPython\",\n  \"Programming Language :: Python :: Implementation :: PyPy\",\n]\ndependencies = [\n  \"typer[all]==0.9.0\",\n  \"langchain==0.0.333\",\n  \"openai==0.28.1\",\n  \"tiktoken==0.5.1\",\n  \"black==23.11.0\",\n  \"libcst==1.1.0\",\n]\ndynamic = [\"version\"]\n[project.urls]\nDocumentation = \"https://github.com/wytamma/write-the#readme\"\nIssues = \"https://github.com/wytamma/write-the/issues\"\nSource = \"https://github.com/wytamma/write-the\"\n[project.scripts]\nwrite-the = \"write_the.cli:app\""
+        },
+        {
+            "comment": "This code sets up Hatch, a Python tool for managing your project's dependencies and environment. It specifies the version configuration file path and defines default environment dependencies and scripts. The script \"cov\" runs pytest with coverage reports and excludes \"__about__.py\". Other settings include configuring coverage reporting and testing matrix for different Python versions.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/pyproject.toml\":41-74",
+            "content": "[tool.hatch.version]\npath = \"write_the/__about__.py\"\n[tool.hatch.envs.default]\ndependencies = [\n  \"pytest\",\n  \"pytest-cov\",\n  \"mkdocs==1.4.3\",\n  \"mkdocs-autorefs==0.4.1\",\n  \"mkdocs-material==9.1.16\",\n  \"mkdocs-material-extensions==1.1.1\",\n  \"mkdocstrings==0.22.0\",\n  \"mkdocstrings-python==1.3.*\",\n]\n[tool.hatch.envs.default.scripts]\ncov = \"pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=write_the --cov=tests --cov-report xml\"\nno-cov = \"cov --no-cov\"\n[[tool.hatch.envs.test.matrix]]\npython = [\"39\", \"310\", \"311\"]\n[tool.coverage.run]\nbranch = true\nparallel = true\nomit = [\n  \"write_the/__about__.py\",\n]\n[tool.coverage.report]\nexclude_lines = [\n  \"no cov\",\n  \"if __name__ == .__main__.:\",\n  \"if TYPE_CHECKING:\",\n]"
+        }
+    ]
+}

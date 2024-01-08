@@ -1,0 +1,10 @@
+{
+    "summary": "This function takes two integer inputs and returns the product of those two numbers.",
+    "details": [
+        {
+            "comment": "This function takes two integer inputs and returns the product of those two numbers.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/data/multiply_docstring.py\":0-12",
+            "content": "def multiply(a, b):\n    \"\"\"\n    Multiplies 2 numbers.\n    Args:\n      a (int): The first number to multiply.\n      b (int): The second number to multiply.\n    Returns:\n      int: The product of `a` and `b`.\n    Examples:\n      >>> multiply(2, 3)\n      6\n    \"\"\"\n    return a * b"
+        }
+    ]
+}

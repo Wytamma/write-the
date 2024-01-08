@@ -1,0 +1,10 @@
+{
+    "summary": "Imports the 'app' object from the 'main' module in the same package.",
+    "details": [
+        {
+            "comment": "Imports the 'app' object from the 'main' module in the same package.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/cli/__init__.py\":0-0",
+            "content": "from .main import app"
+        }
+    ]
+}

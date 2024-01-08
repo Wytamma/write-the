@@ -1,0 +1,10 @@
+{
+    "summary": "Imports converters from the same directory.",
+    "details": [
+        {
+            "comment": "Imports converters from the same directory.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/converters/__init__.py\":0-0",
+            "content": "from .converters import write_the_converters"
+        }
+    ]
+}

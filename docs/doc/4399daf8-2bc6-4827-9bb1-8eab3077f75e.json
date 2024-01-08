@@ -1,0 +1,10 @@
+{
+    "summary": "This code defines tests for the `NodeRemover` class and `remove_nodes_from_tree` function. It first imports necessary modules, then defines fixtures for creating a sample tree and list of nodes to remove. The tests check if the `NodeRemover` instance holds the expected nodes and if removing those nodes from the tree leaves the expected structure with correct node types and names.",
+    "details": [
+        {
+            "comment": "This code defines tests for the `NodeRemover` class and `remove_nodes_from_tree` function. It first imports necessary modules, then defines fixtures for creating a sample tree and list of nodes to remove. The tests check if the `NodeRemover` instance holds the expected nodes and if removing those nodes from the tree leaves the expected structure with correct node types and names.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/tests/test_cst_node_remover.py\":0-40",
+            "content": "import pytest\nimport libcst as cst\nfrom write_the.cst.node_remover import NodeRemover, remove_nodes_from_tree\n@pytest.fixture\ndef tree():\n    return cst.parse_module(\n        \"\"\"\ndef foo():\n    pass\ndef bar():\n    pass\nclass Foo:\n    pass\nclass Bar:\n    pass\n\"\"\"\n    )\n@pytest.fixture\ndef nodes():\n    return [\"foo\", \"Bar\"]\ndef test_node_remover_init(nodes):\n    remover = NodeRemover(nodes)\n    assert remover.nodes == nodes\ndef test_remove_nodes_from_tree(tree, nodes):\n    updated_tree = remove_nodes_from_tree(tree, nodes)\n    assert len(updated_tree.body) == 2\n    assert isinstance(updated_tree.body[0], cst.FunctionDef)\n    assert isinstance(updated_tree.body[1], cst.ClassDef)\n    assert updated_tree.body[0].name.value == \"bar\"\n    assert updated_tree.body[1].name.value == \"Foo\""
+        }
+    ]
+}

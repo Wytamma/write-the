@@ -1,0 +1,10 @@
+{
+    "summary": "This code defines a function `write_the_tests` that formats and runs tests for a given file. It takes the filename as input, optionally allows using GPT-4 for testing, reads the source code, formats it, then passes the formatted code to an LLM (Language Model) object for testing. The result is returned after stripping unnecessary characters.",
+    "details": [
+        {
+            "comment": "This code defines a function `write_the_tests` that formats and runs tests for a given file. It takes the filename as input, optionally allows using GPT-4 for testing, reads the source code, formats it, then passes the formatted code to an LLM (Language Model) object for testing. The result is returned after stripping unnecessary characters.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/tests/tests.py\":0-30",
+            "content": "from pathlib import Path\nfrom black import format_str, FileMode\nfrom .prompts import write_tests_for_file_prompt\nfrom write_the.llm import LLM\nasync def write_the_tests(filename: Path, gpt_4: bool = False) -> str:\n    \"\"\"\n    Formats and runs the tests for a given file.\n    Args:\n      filename (Path): The path to the file to be tested.\n      gpt_4 (bool, optional): Whether to use GPT-4 for testing. Defaults to False.\n    Returns:\n      str: The formatted and tested code.\n    Examples:\n      >>> write_the_tests(Path(\"test.py\"), gpt_4=True)\n      \"Formatted and tested code\"\n    \"\"\"\n    with open(filename, \"r\") as file:\n        source_code = file.read()\n    source_code = format_str(source_code, mode=FileMode())\n    llm = LLM(write_tests_for_file_prompt, gpt_4=gpt_4)\n    result = await llm.run(code=source_code, path=filename)\n    code = (\n        result.strip()\n        .lstrip(\"Test Code:\\n```python\")\n        .lstrip(\"```python\")\n        .lstrip(\"```\")\n        .rstrip(\"```\")\n    )\n    return format_str(code, mode=FileMode())"
+        }
+    ]
+}

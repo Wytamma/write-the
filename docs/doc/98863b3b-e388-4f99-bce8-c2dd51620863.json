@@ -1,0 +1,10 @@
+{
+    "summary": "Executing the CLI application \"write-the\" with specified name.",
+    "details": [
+        {
+            "comment": "Executing the CLI application \"write-the\" with specified name.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/__main__.py\":0-2",
+            "content": "from .cli import app\napp(prog_name=\"write-the\")"
+        }
+    ]
+}

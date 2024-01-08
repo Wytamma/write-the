@@ -1,0 +1,20 @@
+{
+    "summary": "The function creates an MkDocs project from Python files, groups non-starting files, assigns a project name, writes references to a \"reference\" directory, and checks/creates necessary files including GitHub Actions configuration.",
+    "details": [
+        {
+            "comment": "Generates a mkdocs project from a directory of python files",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/mkdocs/mkdocs.py\":0-23",
+            "content": "from pathlib import Path\nfrom collections import defaultdict\nfrom write_the.utils import list_python_files\nfrom .templates import action_template, mkdocs_template\ndef write_the_mkdocs(\n    code_dir: Path, readme: Path = None, out_dir: Path = Path(\".\"), project_name=None\n):\n    \"\"\"\n    Generates a mkdocs project from a directory of python files.\n    Args:\n      code_dir (Path): The directory containing the python files.\n      readme (Path, optional): The readme file to include in the project. Defaults to None.\n      out_dir (Path, optional): The directory to write the project to. Defaults to the current directory.\n      project_name (str, optional): The name of the project. Defaults to the name of the code_dir.\n    Notes:\n      If readme is not provided, the project will not have a home page.\n      If project_name is not provided, the project will be named after the code_dir.\n    Side Effects:\n      Creates a mkdocs project in the out_dir.\n      Creates a .github/workflows/mkdocs.yml file in the out_dir.\n    Returns:"
+        },
+        {
+            "comment": "This function lists Python files in the code directory, groups them by non-starting files, and assigns a project name if not provided. Then, it creates an MkDocs template with the project name. The code then creates references for each file, based on their grouping, and writes these references to a \"reference\" directory within the output directory.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/mkdocs/mkdocs.py\":24-51",
+            "content": "      None\n    \"\"\"\n    files = list_python_files(code_dir)\n    groups = [path.stem for path in code_dir.glob(\"*\") if not path.stem.startswith(\"_\")]\n    if not project_name:\n        project_name = code_dir.name\n    mkdocs = mkdocs_template.format(project_name=project_name)\n    references = defaultdict(list)\n    for file in files:\n        if file.name.startswith(\"_\"):\n            continue\n        key = \"index\"\n        for group in groups:\n            if f\"{code_dir.name}/{group}/\" in str(\n                file\n            ) or f\"{code_dir.name}/{group}.\" in str(file):\n                key = group\n                break\n        module = str(file).rstrip(\".py\").replace(\"/\", \".\")  # breaks on windows?\n        references[key].append(f\"::: {module}\")\n    docs_dir = out_dir / \"docs\"\n    reference_path = docs_dir / \"reference\"\n    reference_path.mkdir(parents=True, exist_ok=True)\n    for doc in references:\n        with open(f\"{reference_path}/{doc}.md\", \"w\") as f:\n            for ref in references[doc]:\n                f.write(ref + \"\\n\\n\")"
+        },
+        {
+            "comment": "This code checks if certain files exist, and if not, it writes or creates them in the specified directory. It also handles GitHub Actions configuration.",
+            "location": "\"/media/root/Toshiba XG3/works/write-the/docs/src/write_the/commands/mkdocs/mkdocs.py\":52-60",
+            "content": "    if readme:\n        index_text = f\"---\\ntitle: Home\\n---\\n{readme.read_text()}\"\n        (docs_dir / \"index.md\").write_text(index_text)\n    if not (out_dir / \"mkdocs.yml\").exists():\n        (out_dir / \"mkdocs.yml\").write_text(mkdocs)\n    action_path = out_dir / \".github\" / \"workflows\" / \"mkdocs.yml\"\n    if not action_path.exists():\n        action_path.parent.mkdir(parents=True, exist_ok=True)\n        action_path.write_text(action_template)"
+        }
+    ]
+}
