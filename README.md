@@ -1,6 +1,6 @@
 ![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/logo.png)
 
-AI-powered Documentation and Test Generation Tool
+AI-powered python code documentation and test generation tool
 
 [![PyPI - Version](https://img.shields.io/pypi/v/write-the.svg)](https://pypi.org/project/write-the)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/write-the.svg)](https://pypi.org/project/write-the)
