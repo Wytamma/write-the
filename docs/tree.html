@@ -66,77 +66,80 @@
         ul {
             list-style: none;
         }
+        #feeling-lucky:hover{
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
     <article class="markdown-body">
-        <h2>Project Structure<span hierarchy="0" class="partial-repository-url"> of: Wytamma/write-the</span><div style="float: right;"><a href="index.html"><i class="bi bi-search"></i></a></div></h2>
+        <h2>Project structure<span hierarchy="0" class="partial-repository-url"> of: Wytamma/write-the</span><div style="float: right;"><a title="Document index" style="margin:3.5px;" href="index.html"><i class="bi bi-search"></i></a><a title="Feeling lucky" style="margin:3.5px;" id="feeling-lucky" href="#"><i class="bi bi-dice-3"></i></a><a title="Expand tree" style="margin:3.5px;" href="tree.html?full=true" id="expand-tree"><i class="bi bi-caret-down-square"></i></a></div></h2>
 <ul>
 <li><span hierarchy="0" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/"><code>write-the</code></strong> <em>Automated doc and test gen, Hatch setup, AI-driven code refactoring.</em></span><ul>
-<li><a href="index.html?q=/README.md" id="/README.md"><code>README&period;md</code></a> <em>Automated Python doc and test gen with roadmap.</em></li>
-<li><a href="index.html?q=/pyproject.toml" id="/pyproject.toml"><code>pyproject&period;toml</code></a> <em>Set up Hatch, manage dependencies and environment.</em></li>
+<li><a class="file_link" href="index.html?q=/pyproject.toml" id="/pyproject.toml"><code>pyproject&period;toml</code></a> <em>Set up Hatch, manage dependencies and environment.</em></li>
+<li><a class="file_link" href="index.html?q=/README.md" id="/README.md"><code>README&period;md</code></a> <em>Automated Python doc and test gen with roadmap.</em></li>
 <li><span hierarchy="1" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/tests/"><code>tests</code></strong> <em>Testing Python functions and docstrings</em></span><ul>
 <li><span hierarchy="2" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/tests/data/"><code>data</code></strong> <em>Test data storage directory</em></span><ul>
-<li><a href="index.html?q=/tests/data/calculate.py" id="/tests/data/calculate.py"><code>calculate&period;py</code></a> <em>Calculate class: Multiply, Add methods.</em></li>
-<li><a href="index.html?q=/tests/data/multiply.py" id="/tests/data/multiply.py"><code>multiply&period;py</code></a> <em>Multiplies inputs and returns result.</em></li>
-<li><a href="index.html?q=/tests/data/multiply_docstring.py" id="/tests/data/multiply_docstring.py"><code>multiply&UnderBar;docstring&period;py</code></a> <em>Multiply two integers, returns product.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/data/calculate.py" id="/tests/data/calculate.py"><code>calculate&period;py</code></a> <em>Calculate class: Multiply, Add methods.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/data/multiply.py" id="/tests/data/multiply.py"><code>multiply&period;py</code></a> <em>Multiplies inputs and returns result.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/data/multiply_docstring.py" id="/tests/data/multiply_docstring.py"><code>multiply&UnderBar;docstring&period;py</code></a> <em>Multiply two integers, returns product.</em></li>
 </ul>
 </li>
-<li><a href="index.html?q=/tests/test_cli_main.py" id="/tests/test_cli_main.py"><code>test&UnderBar;cli&UnderBar;main&period;py</code></a> <em>CLI app test using Pytest, mocks, and exit codes.</em></li>
-<li><a href="index.html?q=/tests/test_cst_docstring_adder.py" id="/tests/test_cst_docstring_adder.py"><code>test&UnderBar;cst&UnderBar;docstring&UnderBar;adder&period;py</code></a> <em>Test: DocstringAdher functionality and formatting.</em></li>
-<li><a href="index.html?q=/tests/test_cst_docstring_remover.py" id="/tests/test_cst_docstring_remover.py"><code>test&UnderBar;cst&UnderBar;docstring&UnderBar;remover&period;py</code></a> <em>Tests for DocstringRemover class.</em></li>
-<li><a href="index.html?q=/tests/test_cst_function_and_class_collector.py" id="/tests/test_cst_function_and_class_collector.py"><code>test&UnderBar;cst&UnderBar;function&UnderBar;and&UnderBar;class&UnderBar;collector&period;py</code></a> <em>Tests FunctionAndClassCollector class for function and class identification</em></li>
-<li><a href="index.html?q=/tests/test_cst_node_extractor.py" id="/tests/test_cst_node_extractor.py"><code>test&UnderBar;cst&UnderBar;node&UnderBar;extractor&period;py</code></a> <em>Tests correct NodeExtractor function for AST trees.</em></li>
-<li><a href="index.html?q=/tests/test_cst_node_remover.py" id="/tests/test_cst_node_remover.py"><code>test&UnderBar;cst&UnderBar;node&UnderBar;remover&period;py</code></a> <em>Test NodeRemover's tree node removal functionality.</em></li>
-<li><a href="index.html?q=/tests/test_cst_utils.py" id="/tests/test_cst_utils.py"><code>test&UnderBar;cst&UnderBar;utils&period;py</code></a> <em>Test docstring handling functions with defined nodes.</em></li>
-<li><a href="index.html?q=/tests/test_utils.py" id="/tests/test_utils.py"><code>test&UnderBar;utils&period;py</code></a> <em>Testing <code>list_python_files</code> with empty and populated directories.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/test_cli_main.py" id="/tests/test_cli_main.py"><code>test&UnderBar;cli&UnderBar;main&period;py</code></a> <em>CLI app test using Pytest, mocks, and exit codes.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/test_cst_docstring_adder.py" id="/tests/test_cst_docstring_adder.py"><code>test&UnderBar;cst&UnderBar;docstring&UnderBar;adder&period;py</code></a> <em>Test: DocstringAdher functionality and formatting.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/test_cst_docstring_remover.py" id="/tests/test_cst_docstring_remover.py"><code>test&UnderBar;cst&UnderBar;docstring&UnderBar;remover&period;py</code></a> <em>Tests for DocstringRemover class.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/test_cst_function_and_class_collector.py" id="/tests/test_cst_function_and_class_collector.py"><code>test&UnderBar;cst&UnderBar;function&UnderBar;and&UnderBar;class&UnderBar;collector&period;py</code></a> <em>Tests FunctionAndClassCollector class for function and class identification</em></li>
+<li><a class="file_link" href="index.html?q=/tests/test_cst_node_extractor.py" id="/tests/test_cst_node_extractor.py"><code>test&UnderBar;cst&UnderBar;node&UnderBar;extractor&period;py</code></a> <em>Tests correct NodeExtractor function for AST trees.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/test_cst_node_remover.py" id="/tests/test_cst_node_remover.py"><code>test&UnderBar;cst&UnderBar;node&UnderBar;remover&period;py</code></a> <em>Test NodeRemover's tree node removal functionality.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/test_cst_utils.py" id="/tests/test_cst_utils.py"><code>test&UnderBar;cst&UnderBar;utils&period;py</code></a> <em>Test docstring handling functions with defined nodes.</em></li>
+<li><a class="file_link" href="index.html?q=/tests/test_utils.py" id="/tests/test_utils.py"><code>test&UnderBar;utils&period;py</code></a> <em>Testing <code>list_python_files</code> with empty and populated directories.</em></li>
 </ul>
 </li>
 <li><span hierarchy="1" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/write_the/"><code>write&UnderBar;the</code></strong> <em>AI-driven code refactoring CLI app with parallel tasks.</em></span><ul>
-<li><a href="index.html?q=/write_the/__about__.py" id="/write_the/__about__.py"><code>&UnderBar;&UnderBar;about&UnderBar;&UnderBar;&period;py</code></a> <em>Python package versioned at 0.10.1</em></li>
-<li><a href="index.html?q=/write_the/__main__.py" id="/write_the/__main__.py"><code>&UnderBar;&UnderBar;main&UnderBar;&UnderBar;&period;py</code></a> <em>Execute "write-the" CLI with name.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/__about__.py" id="/write_the/__about__.py"><code>&UnderBar;&UnderBar;about&UnderBar;&UnderBar;&period;py</code></a> <em>Python package versioned at 0.10.1</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/__main__.py" id="/write_the/__main__.py"><code>&UnderBar;&UnderBar;main&UnderBar;&UnderBar;&period;py</code></a> <em>Execute "write-the" CLI with name.</em></li>
 <li><span hierarchy="2" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/write_the/cli/"><code>cli</code></strong> <em>Asynchronous AI-driven code refactoring CLI app with parallel task execution.</em></span><ul>
-<li><a href="index.html?q=/write_the/cli/__init__.py" id="/write_the/cli/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports 'app' from 'main' module in same package.</em></li>
-<li><a href="index.html?q=/write_the/cli/main.py" id="/write_the/cli/main.py"><code>main&period;py</code></a> <em>CLI app for AI-driven code refactoring with parallel task execution.</em></li>
-<li><a href="index.html?q=/write_the/cli/tasks.py" id="/write_the/cli/tasks.py"><code>tasks&period;py</code></a> <em>Asynchronously execute tasks with error handling and progress management.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cli/__init__.py" id="/write_the/cli/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports 'app' from 'main' module in same package.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cli/main.py" id="/write_the/cli/main.py"><code>main&period;py</code></a> <em>CLI app for AI-driven code refactoring with parallel task execution.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cli/tasks.py" id="/write_the/cli/tasks.py"><code>tasks&period;py</code></a> <em>Asynchronously execute tasks with error handling and progress management.</em></li>
 </ul>
 </li>
 <li><span hierarchy="2" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/write_the/commands/"><code>commands</code></strong> <em>Executes commands and manages command-line tasks.</em></span><ul>
-<li><a href="index.html?q=/write_the/commands/__init__.py" id="/write_the/commands/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports functions from various modules.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/__init__.py" id="/write_the/commands/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports functions from various modules.</em></li>
 <li><span hierarchy="3" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/write_the/commands/converters/"><code>converters</code></strong> <em>Converts formatted text to code.</em></span><ul>
-<li><a href="index.html?q=/write_the/commands/converters/__init__.py" id="/write_the/commands/converters/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports converters from same directory.</em></li>
-<li><a href="index.html?q=/write_the/commands/converters/converters.py" id="/write_the/commands/converters/converters.py"><code>converters&period;py</code></a> <em>Reads, converts, and trims formatted text.</em></li>
-<li><a href="index.html?q=/write_the/commands/converters/prompts.py" id="/write_the/commands/converters/prompts.py"><code>prompts&period;py</code></a> <em>Converts Python to TypeScript code.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/converters/__init__.py" id="/write_the/commands/converters/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports converters from same directory.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/converters/converters.py" id="/write_the/commands/converters/converters.py"><code>converters&period;py</code></a> <em>Reads, converts, and trims formatted text.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/converters/prompts.py" id="/write_the/commands/converters/prompts.py"><code>prompts&period;py</code></a> <em>Converts Python to TypeScript code.</em></li>
 </ul>
 </li>
 <li><span hierarchy="3" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/write_the/commands/mkdocs/"><code>mkdocs</code></strong> <em>Create MkDocs projects, CI/CD with GitHub Actions</em></span><ul>
-<li><a href="index.html?q=/write_the/commands/mkdocs/__init__.py" id="/write_the/commands/mkdocs/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports function "write_mkdocs" from local module.</em></li>
-<li><a href="index.html?q=/write_the/commands/mkdocs/mkdocs.py" id="/write_the/commands/mkdocs/mkdocs.py"><code>mkdocs&period;py</code></a> <em>Create MkDocs project from Python files with GitHub integration</em></li>
-<li><a href="index.html?q=/write_the/commands/mkdocs/templates.py" id="/write_the/commands/mkdocs/templates.py"><code>templates&period;py</code></a> <em>MkDocs template, CI/CD pipeline with GitHub Actions</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/mkdocs/__init__.py" id="/write_the/commands/mkdocs/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports function "write_mkdocs" from local module.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/mkdocs/mkdocs.py" id="/write_the/commands/mkdocs/mkdocs.py"><code>mkdocs&period;py</code></a> <em>Create MkDocs project from Python files with GitHub integration</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/mkdocs/templates.py" id="/write_the/commands/mkdocs/templates.py"><code>templates&period;py</code></a> <em>MkDocs template, CI/CD pipeline with GitHub Actions</em></li>
 </ul>
 </li>
 <li><span hierarchy="3" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/write_the/commands/tests/"><code>tests</code></strong> <em>Automate tests and generate pytest from code.</em></span><ul>
-<li><a href="index.html?q=/write_the/commands/tests/__init__.py" id="/write_the/commands/tests/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Import write_the_tests from tests module.</em></li>
-<li><a href="index.html?q=/write_the/commands/tests/prompts.py" id="/write_the/commands/tests/prompts.py"><code>prompts&period;py</code></a> <em>Generate pytest tests from code and filepath.</em></li>
-<li><a href="index.html?q=/write_the/commands/tests/tests.py" id="/write_the/commands/tests/tests.py"><code>tests&period;py</code></a> <em>Formats, tests, code with optional GPT-4.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/tests/__init__.py" id="/write_the/commands/tests/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Import write_the_tests from tests module.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/tests/prompts.py" id="/write_the/commands/tests/prompts.py"><code>prompts&period;py</code></a> <em>Generate pytest tests from code and filepath.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/commands/tests/tests.py" id="/write_the/commands/tests/tests.py"><code>tests&period;py</code></a> <em>Formats, tests, code with optional GPT-4.</em></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><span hierarchy="2" class="expanded" onclick="toggleVisibility(this)" ><strong class="directory" id="/write_the/cst/"><code>cst</code></strong> <em>Transforms Python AST</em></span><ul>
-<li><a href="index.html?q=/write_the/cst/__init__.py" id="/write_the/cst/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports for code reuse</em></li>
-<li><a href="index.html?q=/write_the/cst/docstring_adder.py" id="/write_the/cst/docstring_adder.py"><code>docstring&UnderBar;adder&period;py</code></a> <em>Adds or updates docstrings in Python AST.</em></li>
-<li><a href="index.html?q=/write_the/cst/docstring_remover.py" id="/write_the/cst/docstring_remover.py"><code>docstring&UnderBar;remover&period;py</code></a> <em>Removes docstrings from FunctionDef and ClassDef nodes.</em></li>
-<li><a href="index.html?q=/write_the/cst/function_and_class_collector.py" id="/write_the/cst/function_and_class_collector.py"><code>function&UnderBar;and&UnderBar;class&UnderBar;collector&period;py</code></a> <em>Extracts Python functions and classes for CST traversal</em></li>
-<li><a href="index.html?q=/write_the/cst/node_batcher.py" id="/write_the/cst/node_batcher.py"><code>node&UnderBar;batcher&period;py</code></a> <em>CST tree node batching Python script</em></li>
-<li><a href="index.html?q=/write_the/cst/node_extractor.py" id="/write_the/cst/node_extractor.py"><code>node&UnderBar;extractor&period;py</code></a> <em>Extract Python AST nodes with NodeExtractor class.</em></li>
-<li><a href="index.html?q=/write_the/cst/node_remover.py" id="/write_the/cst/node_remover.py"><code>node&UnderBar;remover&period;py</code></a> <em>Removes ClassDef nodes from CST tree via visitor pattern.</em></li>
-<li><a href="index.html?q=/write_the/cst/utils.py" id="/write_the/cst/utils.py"><code>utils&period;py</code></a> <em>Extracts docstrings, removes simple string expressions.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cst/__init__.py" id="/write_the/cst/__init__.py"><code>&UnderBar;&UnderBar;init&UnderBar;&UnderBar;&period;py</code></a> <em>Imports for code reuse</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cst/docstring_adder.py" id="/write_the/cst/docstring_adder.py"><code>docstring&UnderBar;adder&period;py</code></a> <em>Adds or updates docstrings in Python AST.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cst/docstring_remover.py" id="/write_the/cst/docstring_remover.py"><code>docstring&UnderBar;remover&period;py</code></a> <em>Removes docstrings from FunctionDef and ClassDef nodes.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cst/function_and_class_collector.py" id="/write_the/cst/function_and_class_collector.py"><code>function&UnderBar;and&UnderBar;class&UnderBar;collector&period;py</code></a> <em>Extracts Python functions and classes for CST traversal</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cst/node_batcher.py" id="/write_the/cst/node_batcher.py"><code>node&UnderBar;batcher&period;py</code></a> <em>CST tree node batching Python script</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cst/node_extractor.py" id="/write_the/cst/node_extractor.py"><code>node&UnderBar;extractor&period;py</code></a> <em>Extract Python AST nodes with NodeExtractor class.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cst/node_remover.py" id="/write_the/cst/node_remover.py"><code>node&UnderBar;remover&period;py</code></a> <em>Removes ClassDef nodes from CST tree via visitor pattern.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/cst/utils.py" id="/write_the/cst/utils.py"><code>utils&period;py</code></a> <em>Extracts docstrings, removes simple string expressions.</em></li>
 </ul>
 </li>
-<li><a href="index.html?q=/write_the/llm.py" id="/write_the/llm.py"><code>llm&period;py</code></a> <em>LLM Chain initializer with prompt template and temperature</em></li>
-<li><a href="index.html?q=/write_the/utils.py" id="/write_the/utils.py"><code>utils&period;py</code></a> <em>Python file utilities: list, load, parse.</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/llm.py" id="/write_the/llm.py"><code>llm&period;py</code></a> <em>LLM Chain initializer with prompt template and temperature</em></li>
+<li><a class="file_link" href="index.html?q=/write_the/utils.py" id="/write_the/utils.py"><code>utils&period;py</code></a> <em>Python file utilities: list, load, parse.</em></li>
 </ul>
 </li>
 </ul>
@@ -158,14 +161,27 @@
 
         const queryParams = getQueryParams(window.location.search);
         const show_full = queryParams.full == "true";
+        //const is_random = queryParams.random == 'true';
+        function feelingLucky() {
+            var elements = document.getElementsByClassName("file_link");
+            var randomIndex = Math.floor(Math.random() * elements.length);
+            window.location = elements[randomIndex].href;
+        }
+        //if (is_random) {feelingLucky();}
+        document.getElementById("feeling-lucky").onclick = feelingLucky;
         if (!show_full) {
             const spans = document.querySelectorAll('span');
             for (let span of spans) {
                 if (span.getAttribute("hierarchy") == '0') { continue }
-
                 toggleVisibility(span);
             }
+        } else {
+            const expand_elem = document.getElementById('expand-tree');
+            expand_elem.setAttribute("href", "tree.html");
+            expand_elem.setAttribute("title", "Undo expand");
+            expand_elem.innerHTML = '<i class="bi bi-caret-up-square"></i>'
         }
+
     </script>
 </body>
 

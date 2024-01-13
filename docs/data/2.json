@@ -1,283 +1,282 @@
 {
     "200": {
         "file_id": 32,
-        "content": "        )\n        if name in self.nodes:\n            return remove_docstring(updated_node)\n        return updated_node\n    def visit_ClassDef(self, original_node: cst.ClassDef) -> None:\n        self.current_class = original_node.name.value\n    def leave_ClassDef(\n        self, original_node: cst.ClassDef, updated_node: cst.ClassDef\n    ) -> cst.ClassDef:\n        \"\"\"\n        Removes the docstring from a ClassDef node if it is in the list of nodes.\n        Args:\n          original_node (cst.ClassDef): The original ClassDef node.\n          updated_node (cst.ClassDef): The updated ClassDef node.\n        Returns:\n          cst.ClassDef: The updated ClassDef node with the docstring removed if it is in the list of nodes.\n        \"\"\"\n        self.current_class = None\n        if original_node.name.value in self.nodes:\n            return remove_docstring(updated_node)\n        return updated_node\ndef remove_docstrings(tree, nodes):\n    \"\"\"\n    Removes the docstrings from a tree of nodes.\n    Args:\n      tree (cst.CSTNode): The tree of nodes to remove the docstrings from.",
-        "type": "code",
-        "location": "/write_the/cst/docstring_remover.py:30-59"
-    },
-    "201": {
-        "file_id": 32,
-        "content": "Removes ClassDef node docstrings if in list of nodes.",
-        "type": "comment"
-    },
-    "202": {
-        "file_id": 32,
-        "content": "      nodes (list): A list of nodes to remove docstrings from.\n    Returns:\n      cst.CSTNode: The tree of nodes with the docstrings removed.\n    \"\"\"\n    remover = DocstringRemover(nodes)\n    tree = tree.visit(remover)\n    return tree",
-        "type": "code",
-        "location": "/write_the/cst/docstring_remover.py:60-66"
-    },
-    "203": {
-        "file_id": 32,
-        "content": "This function takes a list of nodes to remove docstrings from and returns the modified tree with docstrings removed.",
-        "type": "comment"
-    },
-    "204": {
-        "file_id": 33,
-        "content": "/write_the/cst/function_and_class_collector.py",
-        "type": "filepath"
-    },
-    "205": {
-        "file_id": 33,
-        "content": "The \"FunctionAndClassCollector\" visits Python code nodes, collecting functions and classes with or without docstrings based on a force parameter. This data is used in traversing a CST tree to generate a list of class and function names.",
-        "type": "summary"
-    },
-    "206": {
-        "file_id": 33,
-        "content": "import libcst as cst\nfrom .utils import has_docstring\nclass FunctionAndClassCollector(cst.CSTVisitor):\n    def __init__(self, force):\n        \"\"\"\n        Initializes the FunctionAndClassCollector.\n        Args:\n          force (bool): Whether to force the collection of functions and classes even if they have docstrings.\n        \"\"\"\n        self.functions = []\n        self.classes = []\n        self.force = force\n        self.current_class = None\n    def visit_FunctionDef(self, node: cst.FunctionDef) -> None:\n        \"\"\"\n        Visits a FunctionDef node and adds it to the list of functions if it does not have a docstring or if `force` is `True`.\n        Args:\n          node (cst.FunctionDef): The FunctionDef node to visit.\n        \"\"\"\n        name = (\n            f\"{self.current_class}.{node.name.value}\"\n            if self.current_class\n            else node.name.value\n        )\n        if not has_docstring(node) or self.force:\n            self.functions.append(name)\n    def visit_ClassDef(self, node: cst.ClassDef) -> None:",
-        "type": "code",
-        "location": "/write_the/cst/function_and_class_collector.py:1-31"
-    },
-    "207": {
-        "file_id": 33,
-        "content": "Class \"FunctionAndClassCollector\" is a visitor for collecting functions and classes from Python code. It checks if the function or class has a docstring, and adds it to respective lists based on `force` parameter value.",
-        "type": "comment"
-    },
-    "208": {
-        "file_id": 33,
-        "content": "        \"\"\"\n        Visits a ClassDef node and adds it to the list of classes if it does not have a docstring or if `force` is `True`.\n        Args:\n          node (cst.ClassDef): The ClassDef node to visit.\n        \"\"\"\n        self.current_class = node.name.value\n        if not has_docstring(node) or self.force:\n            self.classes.append(node.name.value)\n        # self.visit_ClassDef(node)  # Call the superclass method to continue the visit\n    def leave_ClassDef(self, node: cst.ClassDef) -> None:\n        self.current_class = None\ndef get_node_names(tree, force):\n    \"\"\"\n    Gets the names of functions and classes from a CST tree.\n    Args:\n      tree (cst.CSTNode): The CST tree to traverse.\n      force (bool): Whether to force the collection of functions and classes even if they have docstrings.\n    Returns:\n      list[str]: A list of function and class names.\n    \"\"\"\n    collector = FunctionAndClassCollector(force)\n    tree.visit(collector)\n    return collector.classes + collector.functions",
-        "type": "code",
-        "location": "/write_the/cst/function_and_class_collector.py:32-57"
-    },
-    "209": {
-        "file_id": 33,
-        "content": "The function `FunctionAndClassCollector` visits a `ClassDef` node, adds its name to the list of classes if it doesn't have a docstring or force is True. It then calls the superclass method to continue visiting other nodes. The `get_node_names` function uses this collector to traverse a CST tree and return a list of class and function names.",
-        "type": "comment"
-    },
-    "210": {
-        "file_id": 34,
         "content": "/write_the/cst/node_batcher.py",
         "type": "filepath"
     },
-    "211": {
-        "file_id": 34,
+    "201": {
+        "file_id": 32,
         "content": "This code defines a \"Node\" class for CST tree representation and a batch handling class with properties like `tree`, `background`, `max_tokens`, and methods to handle batches, remove/process nodes, and create node batches from trees.",
         "type": "summary"
     },
-    "212": {
-        "file_id": 34,
+    "202": {
+        "file_id": 32,
         "content": "from dataclasses import dataclass, field\nfrom typing import List, Optional\nimport libcst as cst\nimport tiktoken\nfrom write_the.cst.docstring_remover import remove_docstrings\nfrom write_the.cst.node_extractor import extract_node_from_tree, extract_nodes_from_tree\nfrom write_the.cst.node_remover import remove_nodes_from_tree\nfrom write_the.cst.utils import get_code_from_node, nodes_to_tree\nfrom write_the.cst.function_and_class_collector import get_node_names\nclass Node:\n    \"\"\"\n    A class representing a node in a CST tree.\n    Args:\n      name (str): The name of the node.\n      node (cst.CSTNode): The CST node.\n      code (str): The code of the node.\n      tokens (int): The number of tokens in the node.\n    \"\"\"\n    name: str\n    node: cst.CSTNode\n    code: str\n    tokens: int\n    def __init__(self, *, tree, node_name, response_size=80) -> None:\n        \"\"\"\n        Initializes a Node object.\n        Args:\n          tree (cst.Module): The CST tree.\n          node_name (str): The name of the node.\n          response_size (int): The size of the response.",
         "type": "code",
         "location": "/write_the/cst/node_batcher.py:1-33"
     },
-    "213": {
-        "file_id": 34,
+    "203": {
+        "file_id": 32,
         "content": "This code defines a class called \"Node\" which represents a node in a CST tree. It takes arguments such as the name of the node, the corresponding CST node, code of the node, and the number of tokens in the node. The class also has an initializer method to initialize a Node object using a given CST tree, node name, and response size.",
         "type": "comment"
     },
-    "214": {
-        "file_id": 34,
+    "204": {
+        "file_id": 32,
         "content": "        \"\"\"\n        self.node = extract_node_from_tree(tree=tree, node=node_name)\n        self.name = node_name\n        self.code = get_code_from_node(self.node)\n        encoding = tiktoken.encoding_for_model(\"gpt-4\")\n        self.tokens = len(encoding.encode(self.code)) + response_size\nclass Background(Node):\n    \"\"\"\n    A class representing a background in a CST tree.\n    Args:\n      body (cst.CSTNode): The CST node of the background.\n    \"\"\"\n    def __init__(self, body) -> None:\n        \"\"\"\n        Initializes a Background object.\n        Args:\n          body (cst.CSTNode): The CST node of the background.\n        \"\"\"\n        self.node = body\n        self.name = \"background\"\n        self.code = self.node.code\n        encoding = tiktoken.encoding_for_model(\"gpt-4\")\n        self.tokens = len(encoding.encode(self.code))\n@dataclass\nclass NodeBatch:\n    \"\"\"\n    A class representing a batch of nodes in a CST tree.\n    Args:\n      tree (cst.Module): The CST tree.\n      background (Optional[Background]): The background of the tree.",
         "type": "code",
         "location": "/write_the/cst/node_batcher.py:34-68"
     },
-    "215": {
-        "file_id": 34,
+    "205": {
+        "file_id": 32,
         "content": "Class representing a Background node in CST tree.\nInitializes a Background object with a given CSTNode.\nEncodes the background code for tokenization and stores tokens count.",
         "type": "comment"
     },
-    "216": {
-        "file_id": 34,
+    "206": {
+        "file_id": 32,
         "content": "      max_tokens (int): The maximum number of tokens in the batch.\n      prompt_size (int): The size of the prompt.\n      nodes (List[Node]): The list of nodes in the batch.\n      max_batch_size (Optional[int]): The maximum size of the batch.\n      send_node_context (bool): Whether to send the context of the nodes.\n    \"\"\"\n    tree: cst.Module\n    background: Optional[Background]\n    max_tokens: int\n    prompt_size: int\n    nodes: List[Node] = field(default_factory=list)\n    max_batch_size: Optional[int] = None\n    send_node_context: bool = False\n    @property\n    def tokens(self) -> int:\n        \"\"\"\n        Gets the number of tokens in the batch.\n        Returns:\n          int: The number of tokens in the batch.\n        \"\"\"\n        tokens = self.prompt_size + sum(n.tokens for n in self.nodes)\n        if self.background:\n            tokens += self.background.tokens\n        return tokens\n    @property\n    def node_names(self) -> List[str]:\n        \"\"\"\n        Gets the names of the nodes in the batch.\n        Returns:",
         "type": "code",
         "location": "/write_the/cst/node_batcher.py:69-100"
     },
-    "217": {
-        "file_id": 34,
+    "207": {
+        "file_id": 32,
         "content": "This code defines a class with properties and methods related to batches of nodes. The class has properties like `tree`, `background`, `max_tokens`, `prompt_size`, `nodes`, `max_batch_size`, and `send_node_context`. It also provides getter methods for `tokens` and `node_names`, which return the number of tokens in the batch and the names of nodes in the batch, respectively.",
         "type": "comment"
     },
-    "218": {
-        "file_id": 34,
+    "208": {
+        "file_id": 32,
         "content": "          List[str]: The names of the nodes in the batch.\n        \"\"\"\n        return [n.name for n in self.nodes]\n    @property\n    def space_available(self) -> int:\n        \"\"\"\n        Gets the amount of space available in the batch.\n        Returns:\n          int: The amount of space available in the batch.\n        \"\"\"\n        return self.max_tokens - self.tokens\n    @property\n    def code(self):\n        \"\"\"\n        Gets the code of the batch.\n        Returns:\n          str: The code of the batch.\n        \"\"\"\n        if self.send_node_context:\n            # send everything\n            return self.tree.code\n        if self.background:\n            # remove all non batch nodes\n            all_nodes = get_node_names(self.tree, True)\n            classes_to_keep = [n.split(\".\")[0] for n in self.node_names if \".\" in n]\n            nodes_to_remove: List[str] = [\n                n for n in all_nodes if n not in self.node_names\n            ]\n            nodes_to_remove = [n for n in nodes_to_remove if n not in classes_to_keep]",
         "type": "code",
         "location": "/write_the/cst/node_batcher.py:101-131"
     },
-    "219": {
-        "file_id": 34,
+    "209": {
+        "file_id": 32,
         "content": "Returns a list of node names in the batch.\nCalculates available space in the batch.\nRetrieves code for the batch, depending on settings.",
         "type": "comment"
     },
-    "220": {
-        "file_id": 34,
+    "210": {
+        "file_id": 32,
         "content": "            processed_tree = remove_nodes_from_tree(self.tree, nodes_to_remove)\n        else:\n            # extract batch nodes\n            extracted_nodes = extract_nodes_from_tree(self.tree, self.node_names)\n            processed_tree = nodes_to_tree(extracted_nodes)\n        return processed_tree.code\n    def add(self, node: Node):\n        \"\"\"\n        Adds a node to the batch.\n        Args:\n          node (Node): The node to add.\n        Raises:\n          ValueError: If there is no space available in the batch.\n        \"\"\"\n        if self.space_available - node.tokens < 0 or (\n            self.max_batch_size and len(self.nodes) + 1 > self.max_batch_size\n        ):\n            raise ValueError(\"No space available in batch!\")\n        self.nodes.append(node)\ndef extract_background(tree):\n    \"\"\"\n    Extracts the background from a CST tree.\n    Args:\n      tree (cst.Module): The CST tree.\n    Returns:\n      Background: The background of the tree.\n    \"\"\"\n    all_node_names = get_node_names(tree, force=True)\n    background = remove_nodes_from_tree(tree, all_node_names)",
         "type": "code",
         "location": "/write_the/cst/node_batcher.py:132-163"
     },
-    "221": {
-        "file_id": 34,
+    "211": {
+        "file_id": 32,
         "content": "Code snippet 1: Removes specified nodes from the given tree and returns the processed tree.",
         "type": "comment"
     },
-    "222": {
-        "file_id": 34,
+    "212": {
+        "file_id": 32,
         "content": "    return Background(body=background)\ndef create_batches(\n    tree,\n    node_names,\n    max_tokens,\n    prompt_size,\n    response_size_per_node,\n    max_batch_size=None,\n    send_background_context=True,\n    send_node_context=True,\n) -> List[NodeBatch]:\n    \"\"\"\n    Creates batches of nodes from a tree.\n    Args:\n      tree (cst.Module): The tree to create batches from.\n      node_names (List[str]): The names of the nodes to create batches for.\n      max_tokens (int): The maximum number of tokens per batch.\n      prompt_size (int): The size of the prompt for each node.\n      response_size_per_node (int): The size of the response for each node.\n      max_batch_size (Optional[int]): The maximum number of nodes per batch.\n      send_background_context (bool): Whether to send background context.\n      send_node_context (bool): Whether to send node context.\n    Returns:\n      List[NodeBatch]: A list of batches of nodes.\n    Examples:\n      >>> create_batches(tree, node_names, max_tokens, prompt_size, response_size_per_node)",
         "type": "code",
         "location": "/write_the/cst/node_batcher.py:164-191"
     },
-    "223": {
-        "file_id": 34,
+    "213": {
+        "file_id": 32,
         "content": "Creates batches of nodes from a tree with specified parameters.",
         "type": "comment"
     },
-    "224": {
-        "file_id": 34,
+    "214": {
+        "file_id": 32,
         "content": "      [NodeBatch(...), NodeBatch(...)]\n    \"\"\"\n    tree = remove_docstrings(tree, node_names)  # TODO: fix to use Class.method syntax\n    batches = []\n    background = None\n    if send_background_context:\n        background = extract_background(tree)\n    def create_batch():\n        \"\"\"\n        Creates a batch of nodes from a tree.\n        Args:\n          tree (cst.Module): The tree to create batches from.\n          max_tokens (int): The maximum number of tokens per batch.\n          prompt_size (int): The size of the prompt for each node.\n          background (Optional[cst.Module]): The background context for the batch.\n          max_batch_size (Optional[int]): The maximum number of nodes per batch.\n          send_node_context (bool): Whether to send node context.\n        Returns:\n          NodeBatch: A batch of nodes.\n        Examples:\n          >>> create_batch(tree, max_tokens, prompt_size, background, max_batch_size, send_node_context)\n          NodeBatch(...)\n        \"\"\"\n        return NodeBatch(\n            tree=tree,",
         "type": "code",
         "location": "/write_the/cst/node_batcher.py:192-217"
     },
-    "225": {
-        "file_id": 34,
+    "215": {
+        "file_id": 32,
         "content": "This code defines a function create_batch that takes a tree, maximum number of tokens per batch (max_tokens), size of prompt for each node (prompt_size), optional background context, and other optional parameters. It then returns a NodeBatch object containing the specified data.",
         "type": "comment"
     },
-    "226": {
-        "file_id": 34,
+    "216": {
+        "file_id": 32,
         "content": "            max_tokens=max_tokens,\n            prompt_size=prompt_size,\n            background=background,\n            max_batch_size=max_batch_size,\n            send_node_context=send_node_context,\n        )\n    current_batch = create_batch()\n    for node_name in node_names:\n        node = Node(\n            tree=tree, node_name=node_name, response_size=response_size_per_node\n        )\n        try:\n            current_batch.add(node)\n        except ValueError:\n            # full\n            batches.append(current_batch)\n            current_batch = create_batch()\n            current_batch.add(node)\n    batches.append(current_batch)\n    return batches",
         "type": "code",
         "location": "/write_the/cst/node_batcher.py:218-238"
     },
-    "227": {
-        "file_id": 34,
+    "217": {
+        "file_id": 32,
         "content": "This code batches nodes into smaller groups based on a set size limit. It creates batches and appends them to the 'batches' list until it reaches the maximum batch size, then starts a new batch. If a node cannot fit in the current batch due to size limit, it creates a new batch and adds the node to that batch instead.",
         "type": "comment"
     },
-    "228": {
-        "file_id": 35,
+    "218": {
+        "file_id": 33,
         "content": "/write_the/cst/node_extractor.py",
         "type": "filepath"
     },
-    "229": {
-        "file_id": 35,
+    "219": {
+        "file_id": 33,
         "content": "The NodeExtractor class is used to extract nodes from Python AST trees, considering the current_class and storing them in extracted_nodes. The functions extract_nodes_from_tree and extract_node_from_tree utilize this class for finding multiple or a single specified node type respectively.",
         "type": "summary"
     },
-    "230": {
-        "file_id": 35,
+    "220": {
+        "file_id": 33,
         "content": "from typing import Optional\nimport libcst as cst\nclass NodeExtractor(cst.CSTVisitor):\n    def __init__(self, nodes):\n        self.nodes = nodes\n        self.extracted_nodes = []\n        self.current_class = None\n    def visit_FunctionDef(self, node: cst.FunctionDef):\n        \"\"\"\n        Visits a FunctionDef node and adds it to the extracted_nodes list if it is in the nodes list.\n        Args:\n          node (cst.FunctionDef): The FunctionDef node to visit.\n        Side Effects:\n          Adds the node to the extracted_nodes list if it is in the nodes list.\n        \"\"\"\n        name = (\n            f\"{self.current_class}.{node.name.value}\"\n            if self.current_class\n            else node.name.value\n        )\n        if name in self.nodes:\n            self.extracted_nodes.append(node)\n    def visit_ClassDef(self, node: cst.ClassDef):\n        \"\"\"\n        Visits a ClassDef node and adds it to the extracted_nodes list if it is in the nodes list.\n        Args:\n          node (cst.ClassDef): The ClassDef node to visit.",
         "type": "code",
         "location": "/write_the/cst/node_extractor.py:1-31"
     },
-    "231": {
-        "file_id": 35,
+    "221": {
+        "file_id": 33,
         "content": "This code defines a NodeExtractor class that visits Python AST nodes and adds them to the extracted_nodes list if they match names in the given nodes list. The class also keeps track of the current_class and considers it while processing FunctionDef nodes.",
         "type": "comment"
     },
-    "232": {
-        "file_id": 35,
+    "222": {
+        "file_id": 33,
         "content": "        Side Effects:\n          Adds the node to the extracted_nodes list if it is in the nodes list.\n        \"\"\"\n        self.current_class = node.name.value\n        if node.name.value in self.nodes:\n            self.extracted_nodes.append(node)\n    def leave_ClassDef(self, node: cst.ClassDef) -> None:\n        self.current_class = None\ndef extract_nodes_from_tree(tree, nodes):\n    \"\"\"\n    Extracts nodes from a CST tree.\n    Args:\n      tree (cst.CSTNode): The CST tree to extract nodes from.\n      nodes (list): A list of nodes to extract.\n    Returns:\n      list: A list of extracted nodes.\n    Examples:\n      >>> extract_nodes_from_tree(tree, nodes)\n      [cst.FunctionDef, cst.ClassDef]\n    \"\"\"\n    extractor = NodeExtractor(nodes)\n    tree.visit(extractor)\n    return extractor.extracted_nodes\ndef extract_node_from_tree(tree, node) -> Optional[cst.CSTNode]:\n    extractor = NodeExtractor([node])\n    tree.visit(extractor)\n    if not extractor.extracted_nodes:\n        raise ValueError(f\"Could not find node: {node}!\")",
         "type": "code",
         "location": "/write_the/cst/node_extractor.py:32-64"
     },
-    "233": {
-        "file_id": 35,
+    "223": {
+        "file_id": 33,
         "content": "Code snippet defines a function to extract nodes from a CST (Abstract Syntax Tree) tree. It uses the NodeExtractor class for this purpose, which visits each node in the tree and appends relevant ones to the extracted_nodes list. The extract_nodes_from_tree function takes a tree and a list of node types as input, then returns a list of nodes of those types found in the tree. On the other hand, extract_node_from_tree finds only one node type specified in its argument from the given CST tree and returns it if found, else throws ValueError.",
         "type": "comment"
     },
-    "234": {
-        "file_id": 35,
+    "224": {
+        "file_id": 33,
         "content": "    return extractor.extracted_nodes[0]",
         "type": "code",
         "location": "/write_the/cst/node_extractor.py:65-65"
     },
-    "235": {
-        "file_id": 35,
+    "225": {
+        "file_id": 33,
         "content": "This line returns the first extracted node from the extractor.",
         "type": "comment"
     },
-    "236": {
-        "file_id": 36,
+    "226": {
+        "file_id": 34,
         "content": "/write_the/cst/node_remover.py",
         "type": "filepath"
     },
-    "237": {
-        "file_id": 36,
+    "227": {
+        "file_id": 34,
         "content": "The `NodeRemover` class is initialized with a list of nodes to remove and removes specified ClassDef nodes from a CST tree using a visitor pattern, handling the removal process in `remove_nodes_from_tree()`.",
         "type": "summary"
     },
-    "238": {
-        "file_id": 36,
+    "228": {
+        "file_id": 34,
         "content": "import libcst as cst\nclass NodeRemover(cst.CSTTransformer):\n    def __init__(self, nodes):\n        \"\"\"\n        Initializes a NodeRemover instance.\n        Args:\n          nodes (list): A list of nodes to remove.\n        \"\"\"\n        self.nodes = nodes\n        self.current_class = None\n    def leave_FunctionDef(\n        self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef\n    ) -> cst.RemovalSentinel:\n        \"\"\"\n        Removes a FunctionDef node from the tree if it is in the list of nodes.\n        Args:\n          original_node (cst.FunctionDef): The original FunctionDef node.\n          updated_node (cst.FunctionDef): The updated FunctionDef node.\n        Returns:\n          cst.RemovalSentinel: A sentinel indicating whether the node should be removed.\n        \"\"\"\n        name = (\n            f\"{self.current_class}.{original_node.name.value}\"\n            if self.current_class\n            else original_node.name.value\n        )\n        if name in self.nodes:\n            return cst.RemoveFromParent()\n        return updated_node",
         "type": "code",
         "location": "/write_the/cst/node_remover.py:1-32"
     },
-    "239": {
-        "file_id": 36,
+    "229": {
+        "file_id": 34,
         "content": "Class NodeRemover initializes with a list of nodes to remove. Removes FunctionDef node from the tree if it is in the list of nodes, otherwise returns the updated node.",
         "type": "comment"
     },
-    "240": {
-        "file_id": 36,
+    "230": {
+        "file_id": 34,
         "content": "    def visit_ClassDef(self, original_node: cst.ClassDef) -> None:\n        self.current_class = original_node.name.value\n    def leave_ClassDef(\n        self, original_node: cst.ClassDef, updated_node: cst.ClassDef\n    ) -> cst.RemovalSentinel:\n        \"\"\"\n        Removes a ClassDef node from the tree if it is in the list of nodes.\n        Args:\n          original_node (cst.ClassDef): The original ClassDef node.\n          updated_node (cst.ClassDef): The updated ClassDef node.\n        Returns:\n          cst.RemovalSentinel: A sentinel indicating whether the node should be removed.\n        \"\"\"\n        self.current_class = None\n        if original_node.name.value in self.nodes:\n            return cst.RemoveFromParent()\n        return updated_node\ndef remove_nodes_from_tree(tree, nodes):\n    \"\"\"\n    Removes nodes from a CST tree.\n    Args:\n      tree (cst.CSTNode): The CST tree to remove nodes from.\n      nodes (list): A list of nodes to remove.\n    Returns:\n      cst.CSTNode: The updated CST tree.\n    \"\"\"\n    remover = NodeRemover(nodes)",
         "type": "code",
         "location": "/write_the/cst/node_remover.py:34-64"
     },
-    "241": {
-        "file_id": 36,
+    "231": {
+        "file_id": 34,
         "content": "The code defines a class `NodeRemover` that can remove specified ClassDef nodes from a CST tree. It utilizes two methods: `visit_ClassDef()` and `leave_ClassDef()`. If the ClassDef node's name value is in the list of nodes to be removed, it returns a RemoveFromParent sentinel indicating that the node should be removed. The function `remove_nodes_from_tree()` removes nodes from a given CST tree using instances of the NodeRemover class.",
         "type": "comment"
     },
-    "242": {
-        "file_id": 36,
+    "232": {
+        "file_id": 34,
         "content": "    tree = tree.visit(remover)\n    return tree",
         "type": "code",
         "location": "/write_the/cst/node_remover.py:65-66"
     },
-    "243": {
-        "file_id": 36,
+    "233": {
+        "file_id": 34,
         "content": "Removes nodes from the AST using a visitor pattern.",
         "type": "comment"
     },
-    "244": {
-        "file_id": 37,
+    "234": {
+        "file_id": 35,
         "content": "/write_the/cst/utils.py",
         "type": "filepath"
     },
-    "245": {
-        "file_id": 37,
+    "235": {
+        "file_id": 35,
         "content": "The function takes a CSTNode, checks for docstrings and removes them, converts list of nodes into a module, retrieves docstring for FunctionDef or ClassDef, and if the first statement is an expression with simple string value, it removes the statement and returns modified node.",
         "type": "summary"
     },
-    "246": {
-        "file_id": 37,
+    "236": {
+        "file_id": 35,
         "content": "import libcst as cst\nfrom typing import Optional\ndef has_docstring(node: cst.CSTNode) -> bool:\n    \"\"\"\n    Checks if a CSTNode has a docstring.\n    Args:\n      node (cst.CSTNode): The node to check.\n    Returns:\n      bool: Whether or not the node has a docstring.\n    Notes:\n      Only checks for docstrings on FunctionDef and ClassDef nodes.\n    \"\"\"\n    if isinstance(node, cst.FunctionDef) or isinstance(node, cst.ClassDef):\n        body = node.body.body\n        if body and isinstance(body[0], cst.SimpleStatementLine):\n            stmt = body[0].body[0]\n            if isinstance(stmt, cst.Expr) and isinstance(stmt.value, cst.SimpleString):\n                return True\n    return False\ndef remove_docstring(node):\n    \"\"\"\n    Removes the docstring from a node.\n    Args:\n      node (cst.CSTNode): The node to remove the docstring from.\n    Returns:\n      cst.CSTNode: The node with the docstring removed.\n    \"\"\"\n    if not node.body.body:\n        return node\n    first_stmt = node.body.body[0]\n    if isinstance(first_stmt, cst.SimpleStatementLine):",
         "type": "code",
         "location": "/write_the/cst/utils.py:1-35"
     },
-    "247": {
-        "file_id": 37,
+    "237": {
+        "file_id": 35,
         "content": "This code checks if a given CSTNode has a docstring and removes the docstring from a node. It only checks for docstrings on FunctionDef and ClassDef nodes, and returns True or False accordingly.",
         "type": "comment"
     },
-    "248": {
-        "file_id": 37,
+    "238": {
+        "file_id": 35,
         "content": "        stmt = first_stmt.body[0]\n        if isinstance(stmt, cst.Expr) and isinstance(stmt.value, cst.SimpleString):\n            new_body = node.body.with_changes(body=node.body.body[1:])\n            return node.with_changes(body=new_body)\n    return node\ndef get_docstring(node: cst.CSTNode) -> Optional[str]:\n    \"\"\"\n    Retrieves the docstring of a CSTNode if it has one.\n    Args:\n        node (cst.CSTNode): The node to check.\n    Returns:\n        Optional[str]: The docstring of the node if it exists, None otherwise.\n    Notes:\n        Only retrieves docstrings for FunctionDef and ClassDef nodes.\n    \"\"\"\n    if has_docstring(node):\n        body = node.body.body\n        stmt = body[0].body[0]\n        return stmt.value.value\n    return None\ndef nodes_to_tree(nodes):\n    \"\"\"\n    Converts a list of CSTNodes into a CSTModule.\n    Args:\n      nodes (list[cst.CSTNode]): The list of nodes to convert.\n    Returns:\n      cst.Module: The CSTModule containing the given nodes.\n    \"\"\"\n    module = cst.Module(body=nodes)\n    return module",
         "type": "code",
         "location": "/write_the/cst/utils.py:36-69"
     },
-    "249": {
-        "file_id": 37,
+    "239": {
+        "file_id": 35,
         "content": "1. Function `nodes_to_tree` accepts a list of CSTNodes and converts them into a CSTModule.\n2. Function `get_docstring` retrieves the docstring for FunctionDef or ClassDef nodes, if they exist.\n3. The code block checks if the first statement in a node's body is an expression with a simple string value; if so, it removes the first statement from the body and returns the modified node.",
         "type": "comment"
     },
-    "250": {
-        "file_id": 37,
+    "240": {
+        "file_id": 35,
         "content": "def get_code_from_node(node: cst.CSTNode):\n    return cst.Module(body=[node]).code",
         "type": "code",
         "location": "/write_the/cst/utils.py:72-73"
     },
+    "241": {
+        "file_id": 35,
+        "content": "Function takes a CSTNode and returns the code for it.",
+        "type": "comment"
+    },
+    "242": {
+        "file_id": 36,
+        "content": "/write_the/llm.py",
+        "type": "filepath"
+    },
+    "243": {
+        "file_id": 36,
+        "content": "The class runs a Language Model Chain, taking prompt template and temperature as arguments, while the function initializes an LLMChain with OpenAI model, user code, and keyword arguments, returning generated text. It also has a token counting function.",
+        "type": "summary"
+    },
+    "244": {
+        "file_id": 36,
+        "content": "from langchain.prompts import PromptTemplate\nfrom langchain.chains import LLMChain\nfrom langchain.llms import OpenAI\nimport tiktoken\nclass LLM:\n    \"\"\"\n    A class for running a Language Model Chain.\n    \"\"\"\n    def __init__(self, prompt: PromptTemplate, temperature=0, gpt_4=False):\n        \"\"\"\n        Initializes the LLM class.\n        Args:\n            prompt (PromptTemplate): The prompt template to use.\n            temperature (int): The temperature to use for the model.\n            gpt_4 (bool): Whether to use GPT-4 or Text-Davinci-003.\n        Side Effects:\n            Sets the class attributes.\n        \"\"\"\n        self.prompt = prompt\n        self.prompt_size = self.number_of_tokens(prompt.template)\n        self.temperature = temperature\n        self.gpt_4 = gpt_4\n        self.model_name = \"gpt-4\" if self.gpt_4 else \"text-davinci-003\"\n        self.max_tokens = 4097 * 2 if self.gpt_4 else 4097\n    async def run(self, code, **kwargs):\n        \"\"\"\n        Runs the Language Model Chain.\n        Args:\n            code (str): The code to use for the chain.",
+        "type": "code",
+        "location": "/write_the/llm.py:1-32"
+    },
+    "245": {
+        "file_id": 36,
+        "content": "Class for running a Language Model Chain, takes a prompt template and temperature as arguments. Initializes the class attributes. Runs the Language Model Chain with given code.",
+        "type": "comment"
+    },
+    "246": {
+        "file_id": 36,
+        "content": "            **kwargs (dict): Additional keyword arguments.\n        Returns:\n            str: The generated text.\n        \"\"\"\n        llm = OpenAI(\n            temperature=self.temperature, max_tokens=-1, model_name=self.model_name\n        )\n        chain = LLMChain(llm=llm, prompt=self.prompt)\n        return await chain.apredict(code=code, **kwargs)\n    def number_of_tokens(self, text):\n        \"\"\"\n        Counts the number of tokens in a given text.\n        Args:\n            text (str): The text to count tokens for.\n        Returns:\n            int: The number of tokens in the text.\n        \"\"\"\n        encoding = tiktoken.encoding_for_model(\"gpt-4\")\n        return len(encoding.encode(text))",
+        "type": "code",
+        "location": "/write_the/llm.py:33-52"
+    },
+    "247": {
+        "file_id": 36,
+        "content": "This function initializes an LLMChain with an OpenAI model, takes user code as input along with additional keywords arguments, and returns the generated text. It also has a separate function to count tokens in a given text.",
+        "type": "comment"
+    },
+    "248": {
+        "file_id": 37,
+        "content": "/write_the/utils.py",
+        "type": "filepath"
+    },
+    "249": {
+        "file_id": 37,
+        "content": "This code contains three functions: \"list_python_files\", \"load_source_code\", and \"create_tree\". The first function finds all Python files in a given directory, while the second and third functions read and parse the source code of a single Python file, respectively.",
+        "type": "summary"
+    },
+    "250": {
+        "file_id": 37,
+        "content": "from pathlib import Path\nimport libcst as cst\nfrom black import FileMode, format_str\ndef list_python_files(directory):\n    \"\"\"\n    Finds all Python files in a given directory.\n    Args:\n      directory (Path): The directory to search for Python files.\n    Returns:\n      list: A list of Path objects for each Python file found.\n    Examples:\n      >>> list_python_files(Path('/home/user/code'))\n      [Path('/home/user/code/main.py'), Path('/home/user/code/utils.py')]\n    \"\"\"\n    python_files = []\n    for file in directory.glob(\"**/*.py\"):\n        python_files.append(file)\n    return python_files\ndef load_source_code(file: Path):\n    with open(file, \"r\") as file:\n        return file.read()\ndef format_source_code(source_code):\n    return format_str(source_code, mode=FileMode())\ndef create_tree(source_code):\n    return cst.parse_module(source_code)",
+        "type": "code",
+        "location": "/write_the/utils.py:1-33"
+    },
     "251": {
         "file_id": 37,
-        "content": "Function takes a CSTNode and returns the code for it.",
+        "content": "This code contains three functions: \"list_python_files\", \"load_source_code\", and \"create_tree\". The first function finds all Python files in a given directory, while the second and third functions read and parse the source code of a single Python file, respectively.",
         "type": "comment"
     }
 }
