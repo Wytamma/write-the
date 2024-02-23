@@ -1,3 +1,5 @@
+import sys
+
 from pathlib import Path
 from collections import defaultdict
 from write_the.utils import list_python_files
@@ -41,7 +43,13 @@ def write_the_mkdocs(
             ) or f"{code_dir.name}/{group}." in str(file):
                 key = group
                 break
-        module = str(file).rstrip(".py").replace("/", ".")  # breaks on windows?
+
+        if sys.platform.startswith("win32") or sys.platform.startswith("cygwin"):
+            splitter = "\\"
+        else:
+            splitter = "/"
+        module = module.replace(splitter, ".")
+
         references[key].append(f"::: {module}")
     docs_dir = out_dir / "docs"
     reference_path = docs_dir / "reference"
