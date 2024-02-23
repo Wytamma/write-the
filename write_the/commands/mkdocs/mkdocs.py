@@ -44,6 +44,7 @@ def write_the_mkdocs(
                 key = group
                 break
 
+        module = str(file).rsplit(".py")[0]
         if sys.platform.startswith("win32") or sys.platform.startswith("cygwin"):
             splitter = "\\"
         else:
