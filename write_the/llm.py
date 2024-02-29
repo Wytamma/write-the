@@ -1,29 +1,29 @@
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
 import tiktoken
-
+from .models import models
 
 class LLM:
     """
     A class for running a Language Model Chain.
     """
-    def __init__(self, prompt: PromptTemplate, temperature=0, gpt_4=False):
+    def __init__(self, prompt: PromptTemplate, temperature=0, model_name="gpt-3.5-turbo-instruct"):
         """
         Initializes the LLM class.
         Args:
             prompt (PromptTemplate): The prompt template to use.
             temperature (int): The temperature to use for the model.
-            gpt_4 (bool): Whether to use GPT-4 or Text-Davinci-003.
+            name (str): The name of the model to use.
         Side Effects:
             Sets the class attributes.
         """
         self.prompt = prompt
         self.prompt_size = self.number_of_tokens(prompt.template)
         self.temperature = temperature
-        self.gpt_4 = gpt_4
-        self.model_name = "gpt-4" if self.gpt_4 else "text-davinci-003"
-        self.max_tokens = 4097 * 2 if self.gpt_4 else 4097
+        self.model_name = model_name
+        self.max_tokens = int(models[model_name]["context_window"])
 
     async def run(self, code, **kwargs):
         """
@@ -34,9 +34,14 @@ class LLM:
         Returns:
             str: The generated text.
         """
-        llm = OpenAI(
-            temperature=self.temperature, max_tokens=-1, model_name=self.model_name
-        )
+        if "-instruct" in self.model_name:
+            llm = OpenAI(
+                temperature=self.temperature, max_tokens=-1, model_name=self.model_name
+            )
+        else:
+            llm = ChatOpenAI(
+                temperature=self.temperature, model_name=self.model_name
+            )
         chain = LLMChain(llm=llm, prompt=self.prompt)
         return await chain.apredict(code=code, **kwargs)
 

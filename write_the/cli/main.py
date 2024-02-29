@@ -93,6 +93,12 @@ async def docs(
     batch: bool = typer.Option(
         False, "--batch/--no-batch", "-b", help="Send each node as a separate request."
     ),
+    model: str = typer.Option(
+        "gpt-3.5-turbo-instruct",
+        "--model",
+        "-m",
+        help="The model to use for generating the docstrings.",
+    ),
 ):
     """
     Document your code with AI.
@@ -125,6 +131,7 @@ async def docs(
                     batch=batch,
                     print_status=print_status,
                     progress=progress,
+                    model=model,
                 )
             )
         await gather(*tasks)
@@ -183,10 +190,11 @@ async def tests(
         "-e",
         help="Save empty files if a test creation fails. This will prevent write-the from regenerating failed test creations.",
     ),
-    gpt_4: bool = typer.Option(
-        False,
-        "--gpt-4",
-        help="Use GPT-4 to generate the tests (requires API will access).",
+    model: str = typer.Option(
+        "gpt-3.5-turbo-instruct",
+        "--model",
+        "-m",
+        help="The model to use for generating the tests.",
     ),
 ):
     """
@@ -222,7 +230,7 @@ async def tests(
             failed = False
             progress.add_task(description=f"{file}", total=None)
             try:
-                result = await write_the_tests(file, gpt_4=gpt_4)
+                result = await write_the_tests(file, model=model)
             except InvalidInput:
                 failed = True
                 result = ""
@@ -273,10 +281,11 @@ async def convert(
     pretty: bool = typer.Option(
         False, "--pretty/--plain", "-p", help="Syntax highlight the output."
     ),
-    gpt_4: bool = typer.Option(
-        False,
-        "--gpt-4",
-        help="Use GPT-4 to generate the tests (requires API will access).",
+    model: str = typer.Option(
+        "gpt-3.5-turbo-instruct",
+        "--model",
+        "-m",
+        help="The model to use for generating the tests.",
     ),
 ):
     """
@@ -304,7 +313,7 @@ async def convert(
                 in_file,
                 input_format=input_format,
                 output_format=output_format,
-                gpt_4=gpt_4
+                model=model
             )
         except InvalidInput:
             failed = True

@@ -18,6 +18,7 @@ async def async_cli_task(
     batch: bool,
     print_status: bool,
     progress: Progress,
+    model: str = "gpt-3.5-turbo-instruct",
 ) -> None:
     """
     Executes a task asynchronously.
@@ -61,6 +62,7 @@ async def async_cli_task(
             background=background,
             pretty=pretty,
             max_batch_size=max_batch_size,
+            model=model,
         )
     except ValueError as e:
         msg = f" - {e}"

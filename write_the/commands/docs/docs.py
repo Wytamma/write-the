@@ -21,6 +21,7 @@ async def write_the_docs(
     background=True,
     pretty=False,
     max_batch_size=False,
+    model="gpt-3.5-turbo-instruct",
 ) -> str:
     """
     Generates docstrings for a given tree of nodes.
@@ -32,6 +33,7 @@ async def write_the_docs(
       context (bool): Whether to include context nodes.
       pretty (bool): Whether to format the code.
       max_batch_size (bool): Max number of nodes in each batch.
+      model (str): The model to use for the generation.
     Returns:
       str: The source code with the generated docstrings.
     Notes:
@@ -57,7 +59,7 @@ async def write_the_docs(
     if not node_names:
         return tree.code
     # batch
-    llm = LLM(write_docstings_for_nodes_prompt)
+    llm = LLM(write_docstings_for_nodes_prompt, model_name=model)
     batches = create_batches(
         tree=tree,
         node_names=node_names,

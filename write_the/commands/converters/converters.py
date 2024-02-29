@@ -3,7 +3,7 @@ from .prompts import write_converters_for_file_prompt
 from write_the.llm import LLM
 
 
-async def write_the_converters(filename: Path, input_format: str, output_format: str, gpt_4: bool = False) -> str:
+async def write_the_converters(filename: Path, input_format: str, output_format: str, model: str = "gpt-3.5-turbo-instruct") -> str:
     """
     Formats and runs the tests for a given file.
     Args:
@@ -20,7 +20,7 @@ async def write_the_converters(filename: Path, input_format: str, output_format:
     with open(filename, "r") as file:
         source_text = file.read()
 
-    llm = LLM(write_converters_for_file_prompt, gpt_4=gpt_4)
+    llm = LLM(write_converters_for_file_prompt, model_name=model)
     result = await llm.run(code=source_text, input_format=input_format, output_format=output_format)
 
     formatted_text = (
