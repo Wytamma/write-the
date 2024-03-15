@@ -23,7 +23,14 @@ class LLM:
         self.prompt_size = self.number_of_tokens(prompt.template)
         self.temperature = temperature
         self.model_name = model_name
-        self.max_tokens = int(models[model_name]["context_window"])
+        try:
+            self.max_tokens = int(models[model_name]["context_window"])
+        except KeyError:
+            self.max_tokens = 4096
+            if model_name.startswith('gpt-4'):
+                self.max_tokens = 8192
+            elif model_name.startswith('gpt-3'):
+                self.max_tokens = 4096
 
     async def run(self, code, **kwargs):
         """
