@@ -8,13 +8,15 @@ from write_the.cst.function_and_class_collector import get_node_names
 from write_the.cst.node_extractor import extract_nodes_from_tree
 from write_the.cst.node_batcher import create_batches
 from write_the.commands.docs.utils import extract_block
+from write_the.errors import FileSkippedError
 from write_the.llm import LLM
-from .prompts import write_docstings_for_nodes_prompt
+from .prompts import write_docstrings_for_nodes_prompt, update_docstrings_for_nodes_prompt
 
 
 async def write_the_docs(
     tree: cst.Module,
     node_names=[],
+    update=False,
     force=False,
     save=False,
     context=False,
@@ -55,11 +57,16 @@ async def write_the_docs(
         extract_specific_nodes = True
         force = True
     else:
-        node_names = get_node_names(tree, force)
+        node_names = get_node_names(tree, force=force, update=update)
     if not node_names:
-        return tree.code
-    # batch
-    llm = LLM(write_docstings_for_nodes_prompt, model_name=model)
+        raise FileSkippedError("No nodes found, skipping file...")
+    if update:
+        remove_docstrings = False
+        llm = LLM(update_docstrings_for_nodes_prompt, model_name=model)
+    else:
+        remove_docstrings = True
+        llm = LLM(write_docstrings_for_nodes_prompt, model_name=model)
+
     batches = create_batches(
         tree=tree,
         node_names=node_names,
@@ -69,6 +76,7 @@ async def write_the_docs(
         max_batch_size=max_batch_size,
         send_background_context=background,
         send_node_context=context,
+        remove_docstrings=remove_docstrings
     )
     promises = []
     node_names_list = []
@@ -82,7 +90,7 @@ async def write_the_docs(
     docstring_dict = {}
     for node_names, result in zip(node_names_list, results):
         docstring_dict.update(extract_block(result, node_names))
-    modified_tree = add_docstrings_to_tree(tree, docstring_dict, force=force)
+    modified_tree = add_docstrings_to_tree(tree, docstring_dict, force=force or update)
     if not save and extract_specific_nodes:
         extracted_nodes = extract_nodes_from_tree(modified_tree, node_names)
         modified_tree = nodes_to_tree(extracted_nodes)

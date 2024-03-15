@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import List, Optional
 import libcst as cst
 import tiktoken
-from write_the.cst.docstring_remover import remove_docstrings
+from write_the.cst.docstring_remover import remove_docstrings_from_tree
 from write_the.cst.node_extractor import extract_node_from_tree, extract_nodes_from_tree
 from write_the.cst.node_remover import remove_nodes_from_tree
 from write_the.cst.utils import get_code_from_node, nodes_to_tree
@@ -173,6 +173,7 @@ def create_batches(
     max_batch_size=None,
     send_background_context=True,
     send_node_context=True,
+    remove_docstrings=True,
 ) -> List[NodeBatch]:
     """
     Creates batches of nodes from a tree.
@@ -191,7 +192,8 @@ def create_batches(
       >>> create_batches(tree, node_names, max_tokens, prompt_size, response_size_per_node)
       [NodeBatch(...), NodeBatch(...)]
     """
-    tree = remove_docstrings(tree, node_names)  # TODO: fix to use Class.method syntax
+    if remove_docstrings:
+      tree = remove_docstrings_from_tree(tree, node_names)  # TODO: fix to use Class.method syntax
     batches = []
     background = None
     if send_background_context:

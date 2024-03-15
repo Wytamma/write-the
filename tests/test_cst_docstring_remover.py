@@ -1,6 +1,6 @@
 import pytest
 import libcst as cst
-from write_the.cst.docstring_remover import DocstringRemover, remove_docstrings
+from write_the.cst.docstring_remover import DocstringRemover, remove_docstrings_from_tree
 from write_the.cst.utils import get_docstring
 
 
@@ -47,7 +47,7 @@ def test_leave_ClassDef(tree, nodes):
 
 
 def test_remove_docstrings(tree, nodes):
-    updated_tree = remove_docstrings(tree, nodes)
+    updated_tree = remove_docstrings_from_tree(tree, nodes)
     assert get_docstring(updated_tree.body[0]) is None
     assert get_docstring(updated_tree.body[1]) == "'''This is another docstring.'''"
     assert get_docstring(updated_tree.body[2]) == "'''This is a class docstring.'''"

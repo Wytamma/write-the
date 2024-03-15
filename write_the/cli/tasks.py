@@ -1,4 +1,5 @@
 from write_the.commands import write_the_docs
+from write_the.errors import FileSkippedError
 from write_the.utils import create_tree, format_source_code, load_source_code
 from rich.syntax import Syntax
 from rich.progress import Progress
@@ -10,6 +11,7 @@ from openai.error import InvalidRequestError
 async def async_cli_task(
     file: Path,
     nodes: List,
+    update: bool,
     force: bool,
     save: bool,
     context: bool,
@@ -44,6 +46,7 @@ async def async_cli_task(
     """
     task_id = progress.add_task(description=f"{file}", total=None)
     failed = False
+    skipped = False
     source_code = load_source_code(file=file)
     if pretty:
         source_code = format_source_code(source_code)
@@ -56,6 +59,7 @@ async def async_cli_task(
         result = await write_the_docs(
             tree,
             node_names=nodes,
+            update=update,
             force=force,
             save=save,
             context=context,
@@ -70,16 +74,27 @@ async def async_cli_task(
     except InvalidRequestError as e:
         msg = f" - {e}"
         failed = True
+    except FileSkippedError as e:
+        msg = f" - {e}"
+        skipped = True
+    
     progress.remove_task(task_id)
     progress.refresh()
-    if print_status or save or failed:
-        icon = "❌" if failed else "✅"
-        colour = "red" if failed else "green"
+    if print_status or save or failed or skipped:
+        if skipped:
+            icon = "⏭️"
+            colour = "yellow"
+        elif failed:
+            icon = "❌"
+            colour = "red" 
+        else:
+            icon = "✅"
+            colour = "green"
         progress.print(
-            f"[not underline]{icon} [/not underline]{file}{msg}",
-            style=f"bold {colour} underline",
+            f"[not underline]{icon} [/not underline][underline]{file}[/underline]{msg}",
+            style=f"bold {colour}",
         )
-    if failed:
+    if failed or skipped:
         return None
     if save:
         with open(file, "w") as f:

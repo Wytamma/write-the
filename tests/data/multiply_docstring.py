@@ -1,4 +1,4 @@
-def multiply(a, b):
+def multiply(a, c):
     """
     Multiplies 2 numbers.
     Args:
@@ -10,4 +10,4 @@ def multiply(a, b):
       >>> multiply(2, 3)
       6
     """
-    return a * b
+    return a * c
