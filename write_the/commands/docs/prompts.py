@@ -4,7 +4,7 @@ from langchain.prompts import PromptTemplate
 docs_template = """
 Provide Google style docstrings for the given code. 
 Include description, parameter types, exceptions, side effects, notes, and examples. 
-Return only the docstrings, with function/class names as keys. 
+Return only the docstrings, with function/class names as yaml keys. 
 Use the Class.method format for methods.
 
 Example:
