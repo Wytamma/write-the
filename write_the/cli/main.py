@@ -1,5 +1,6 @@
 import typer
 import os
+from write_the.models import models
 from write_the.__about__ import __version__
 from write_the.commands import write_the_tests, write_the_mkdocs, write_the_converters
 from write_the.utils import list_python_files
@@ -13,6 +14,7 @@ from asyncio import run, gather
 from functools import wraps
 
 from .tasks import async_cli_task
+from .model import get_default_model, set_default_model
 
 
 class AsyncTyper(typer.Typer):
@@ -30,6 +32,12 @@ class AsyncTyper(typer.Typer):
 
 app = AsyncTyper()
 
+def _get_model_callback(value: str):
+    if value is None:
+        return get_default_model()
+    if value not in models:
+        raise typer.BadParameter(f"Model '{value}' not found!")
+    return value
 
 def _print_version(ctx: typer.Context, value: bool):
     if value:
@@ -94,10 +102,11 @@ async def docs(
         False, "--batch/--no-batch", "-b", help="Send each node as a separate request."
     ),
     model: str = typer.Option(
-        "gpt-3.5-turbo-instruct",
+        None,
         "--model",
         "-m",
         help="The model to use for generating the docstrings.",
+        callback=_get_model_callback,
     ),
 ):
     """
@@ -191,10 +200,11 @@ async def tests(
         help="Save empty files if a test creation fails. This will prevent write-the from regenerating failed test creations.",
     ),
     model: str = typer.Option(
-        "gpt-3.5-turbo-instruct",
+        None,
         "--model",
         "-m",
         help="The model to use for generating the tests.",
+        callback=_get_model_callback,
     ),
 ):
     """
@@ -282,10 +292,11 @@ async def convert(
         False, "--pretty/--plain", "-p", help="Syntax highlight the output."
     ),
     model: str = typer.Option(
-        "gpt-3.5-turbo-instruct",
+        None,
         "--model",
         "-m",
         help="The model to use for generating the tests.",
+        callback=_get_model_callback,
     ),
 ):
     """
@@ -337,8 +348,45 @@ async def convert(
 
 
 @app.command()
-def models():
-    raise NotImplementedError()
+def model(
+     desired_model: Optional[str] = typer.Argument(
+        None,
+        help="Set the default model.",
+    ),
+    list: bool = typer.Option(
+        False,
+        "--list",
+        "-l",
+        help="List all available models.",
+    ),
+):
+    """
+    View or set the default model.
+    """
+    default_model = get_default_model()
+    if list:
+        from rich import table, print
+        table_ = table.Table()
+        table_.add_column("Name", justify="left", style="cyan")
+        table_.add_column("Context", justify="left", style="magenta")
+        table_.add_column("Default", justify="left", style="green")
+        for name, model in models.items():
+            if name == default_model:
+                table_.add_row(name, f"{model['context_window']}", "✅")
+            else:
+                table_.add_row(name, f"{model['context_window']}", "")
+        print(table_)
+        return typer.Exit(0)
+    if desired_model:
+        if desired_model not in models:
+            typer.secho(f"Model '{desired_model}' not found!", fg="red")
+            return typer.Exit(1)
+        set_default_model(desired_model)
+        typer.echo(f"Default model: {desired_model}")
+        return typer.Exit(0)
+    typer.echo(default_model)
+
+
 
 
 @app.command()
