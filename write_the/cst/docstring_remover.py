@@ -6,6 +6,7 @@ class DocstringRemover(cst.CSTTransformer):
     def __init__(self, nodes):
         """
         Initializes the DocstringRemover object.
+
         Args:
           nodes (list): A list of nodes to remove docstrings from.
         """
@@ -17,9 +18,11 @@ class DocstringRemover(cst.CSTTransformer):
     ) -> cst.FunctionDef:
         """
         Removes the docstring from a FunctionDef node if it is in the list of nodes.
+
         Args:
           original_node (cst.FunctionDef): The original FunctionDef node.
           updated_node (cst.FunctionDef): The updated FunctionDef node.
+
         Returns:
           cst.FunctionDef: The updated FunctionDef node with the docstring removed if it is in the list of nodes.
         """
@@ -39,10 +42,12 @@ class DocstringRemover(cst.CSTTransformer):
         self, original_node: cst.ClassDef, updated_node: cst.ClassDef
     ) -> cst.ClassDef:
         """
-        Removes the docstring from a ClassDef node if it is in the list of nodes.
+        Removes the docstring from a ClassDef node if it is in the list of nodes and resets the current_class attribute to None.
+
         Args:
           original_node (cst.ClassDef): The original ClassDef node.
           updated_node (cst.ClassDef): The updated ClassDef node.
+
         Returns:
           cst.ClassDef: The updated ClassDef node with the docstring removed if it is in the list of nodes.
         """
@@ -55,9 +60,11 @@ class DocstringRemover(cst.CSTTransformer):
 def remove_docstrings_from_tree(tree, nodes):
     """
     Removes the docstrings from a tree of nodes.
+
     Args:
       tree (cst.CSTNode): The tree of nodes to remove the docstrings from.
       nodes (list): A list of nodes to remove docstrings from.
+
     Returns:
       cst.CSTNode: The tree of nodes with the docstrings removed.
     """

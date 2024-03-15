@@ -26,22 +26,31 @@ async def write_the_docs(
     model="gpt-3.5-turbo-instruct",
 ) -> str:
     """
-    Generates docstrings for a given tree of nodes.
+    Generates docstrings for a given tree of nodes using a specified model.
+
     Args:
       tree (cst.Module): The tree of nodes to write docs for.
-      node_names (list): The list of nodes names to write docs for.
-      force (bool): Whether to force writing of docs.
-      save (bool): Whether to save the docs.
-      context (bool): Whether to include context nodes.
-      pretty (bool): Whether to format the code.
-      max_batch_size (bool): Max number of nodes in each batch.
-      model (str): The model to use for the generation.
+      node_names (list, optional): The list of nodes names to write docs for. Defaults to an empty list.
+      update (bool, optional): Whether to update existing docstrings. Defaults to False.
+      force (bool, optional): Whether to force writing of docs. Defaults to False.
+      save (bool, optional): Whether to save the docs. Defaults to False.
+      context (bool, optional): Whether to include context nodes. Defaults to False.
+      background (bool, optional): Whether to run the process in the background. Defaults to True.
+      pretty (bool, optional): Whether to format the code. Defaults to False.
+      max_batch_size (bool, optional): Max number of nodes in each batch. Defaults to False.
+      model (str, optional): The model to use for the generation. Defaults to "gpt-3.5-turbo-instruct".
+
     Returns:
       str: The source code with the generated docstrings.
+
+    Raises:
+      FileSkippedError: If no nodes are found.
+
     Notes:
-      If `nodes` is provided, `force` is set to `True` and `context` is set to `False`.
+      If `node_names` is provided, `force` is set to `True` and `context` is set to `False`.
+
     Examples:
-      >>> write_the_docs("example.py")
+      >>> write_the_docs(tree, model="gpt-3.5-turbo-instruct")
       "def add(a, b):
           \"\"\"Sums 2 numbers.
           Args:

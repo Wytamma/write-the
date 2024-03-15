@@ -5,10 +5,13 @@ from typing import Optional
 def has_docstring(node: cst.CSTNode) -> bool:
     """
     Checks if a CSTNode has a docstring.
+
     Args:
       node (cst.CSTNode): The node to check.
+
     Returns:
       bool: Whether or not the node has a docstring.
+
     Notes:
       Only checks for docstrings on FunctionDef and ClassDef nodes.
     """
@@ -23,9 +26,11 @@ def has_docstring(node: cst.CSTNode) -> bool:
 
 def remove_docstring(node):
     """
-    Removes the docstring from a node.
+    Removes the docstring from a CSTNode.
+
     Args:
       node (cst.CSTNode): The node to remove the docstring from.
+
     Returns:
       cst.CSTNode: The node with the docstring removed.
     """
@@ -43,12 +48,15 @@ def remove_docstring(node):
 def get_docstring(node: cst.CSTNode) -> Optional[str]:
     """
     Retrieves the docstring of a CSTNode if it has one.
+
     Args:
-        node (cst.CSTNode): The node to check.
+      node (cst.CSTNode): The node to check.
+
     Returns:
-        Optional[str]: The docstring of the node if it exists, None otherwise.
+      Optional[str]: The docstring of the node if it exists, None otherwise.
+
     Notes:
-        Only retrieves docstrings for FunctionDef and ClassDef nodes.
+      Only retrieves docstrings for FunctionDef and ClassDef nodes.
     """
     if has_docstring(node):
         body = node.body.body
@@ -60,8 +68,10 @@ def get_docstring(node: cst.CSTNode) -> Optional[str]:
 def nodes_to_tree(nodes):
     """
     Converts a list of CSTNodes into a CSTModule.
+
     Args:
       nodes (list[cst.CSTNode]): The list of nodes to convert.
+
     Returns:
       cst.Module: The CSTModule containing the given nodes.
     """

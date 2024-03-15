@@ -12,17 +12,21 @@ def write_the_mkdocs(
 ):
     """
     Generates a mkdocs project from a directory of python files.
+
     Args:
       code_dir (Path): The directory containing the python files.
       readme (Path, optional): The readme file to include in the project. Defaults to None.
       out_dir (Path, optional): The directory to write the project to. Defaults to the current directory.
       project_name (str, optional): The name of the project. Defaults to the name of the code_dir.
+
     Notes:
       If readme is not provided, the project will not have a home page.
       If project_name is not provided, the project will be named after the code_dir.
+
     Side Effects:
       Creates a mkdocs project in the out_dir.
       Creates a .github/workflows/mkdocs.yml file in the out_dir.
+
     Returns:
       None
     """

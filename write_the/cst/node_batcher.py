@@ -12,6 +12,7 @@ from write_the.cst.function_and_class_collector import get_node_names
 class Node:
     """
     A class representing a node in a CST tree.
+
     Args:
       name (str): The name of the node.
       node (cst.CSTNode): The CST node.
@@ -27,6 +28,7 @@ class Node:
     def __init__(self, *, tree, node_name, response_size=80) -> None:
         """
         Initializes a Node object.
+
         Args:
           tree (cst.Module): The CST tree.
           node_name (str): The name of the node.
@@ -42,6 +44,7 @@ class Node:
 class Background(Node):
     """
     A class representing a background in a CST tree.
+
     Args:
       body (cst.CSTNode): The CST node of the background.
     """
@@ -49,6 +52,7 @@ class Background(Node):
     def __init__(self, body) -> None:
         """
         Initializes a Background object.
+
         Args:
           body (cst.CSTNode): The CST node of the background.
         """
@@ -63,6 +67,7 @@ class Background(Node):
 class NodeBatch:
     """
     A class representing a batch of nodes in a CST tree.
+
     Args:
       tree (cst.Module): The CST tree.
       background (Optional[Background]): The background of the tree.
@@ -85,6 +90,7 @@ class NodeBatch:
     def tokens(self) -> int:
         """
         Gets the number of tokens in the batch.
+
         Returns:
           int: The number of tokens in the batch.
         """
@@ -97,6 +103,7 @@ class NodeBatch:
     def node_names(self) -> List[str]:
         """
         Gets the names of the nodes in the batch.
+
         Returns:
           List[str]: The names of the nodes in the batch.
         """
@@ -106,6 +113,7 @@ class NodeBatch:
     def space_available(self) -> int:
         """
         Gets the amount of space available in the batch.
+
         Returns:
           int: The amount of space available in the batch.
         """
@@ -115,6 +123,7 @@ class NodeBatch:
     def code(self):
         """
         Gets the code of the batch.
+
         Returns:
           str: The code of the batch.
         """
@@ -139,8 +148,10 @@ class NodeBatch:
     def add(self, node: Node):
         """
         Adds a node to the batch.
+
         Args:
           node (Node): The node to add.
+
         Raises:
           ValueError: If there is no space available in the batch.
         """
@@ -154,8 +165,10 @@ class NodeBatch:
 def extract_background(tree):
     """
     Extracts the background from a CST tree.
+
     Args:
       tree (cst.Module): The CST tree.
+
     Returns:
       Background: The background of the tree.
     """
@@ -177,6 +190,7 @@ def create_batches(
 ) -> List[NodeBatch]:
     """
     Creates batches of nodes from a tree.
+
     Args:
       tree (cst.Module): The tree to create batches from.
       node_names (List[str]): The names of the nodes to create batches for.
@@ -186,11 +200,10 @@ def create_batches(
       max_batch_size (Optional[int]): The maximum number of nodes per batch.
       send_background_context (bool): Whether to send background context.
       send_node_context (bool): Whether to send node context.
+      remove_docstrings (bool): Whether to remove docstrings from the tree.
+
     Returns:
       List[NodeBatch]: A list of batches of nodes.
-    Examples:
-      >>> create_batches(tree, node_names, max_tokens, prompt_size, response_size_per_node)
-      [NodeBatch(...), NodeBatch(...)]
     """
     if remove_docstrings:
       tree = remove_docstrings_from_tree(tree, node_names)  # TODO: fix to use Class.method syntax
@@ -201,20 +214,19 @@ def create_batches(
 
     def create_batch():
         """
-        Creates a batch of nodes from a tree.
-        Args:
-          tree (cst.Module): The tree to create batches from.
-          max_tokens (int): The maximum number of tokens per batch.
-          prompt_size (int): The size of the prompt for each node.
-          background (Optional[cst.Module]): The background context for the batch.
-          max_batch_size (Optional[int]): The maximum number of nodes per batch.
-          send_node_context (bool): Whether to send node context.
-        Returns:
-          NodeBatch: A batch of nodes.
-        Examples:
-          >>> create_batch(tree, max_tokens, prompt_size, background, max_batch_size, send_node_context)
-          NodeBatch(...)
-        """
+    Creates a batch of nodes from a tree.
+
+    Args:
+      tree (cst.Module): The tree to create batches from.
+      max_tokens (int): The maximum number of tokens per batch.
+      prompt_size (int): The size of the prompt for each node.
+      background (Optional[cst.Module]): The background context for the batch.
+      max_batch_size (Optional[int]): The maximum number of nodes per batch.
+      send_node_context (bool): Whether to send node context.
+
+    Returns:
+      NodeBatch: A batch of nodes.
+    """
         return NodeBatch(
             tree=tree,
             max_tokens=max_tokens,

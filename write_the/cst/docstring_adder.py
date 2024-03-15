@@ -15,12 +15,14 @@ class DocstringAdder(cst.CSTTransformer):
         self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef
     ) -> cst.FunctionDef:
         """
-        Adds a docstring to a function definition.
+        Adds a docstring to a function definition if it doesn't have one.
+
         Args:
-          original_node (cst.FunctionDef): The original CST node.
-          updated_node (cst.FunctionDef): The updated CST node.
+          original_node (cst.FunctionDef): The original CST node representing the function definition.
+          updated_node (cst.FunctionDef): The updated CST node representing the function definition.
+
         Returns:
-          cst.FunctionDef: The updated CST node with a docstring added.
+          cst.FunctionDef: The updated CST node with a docstring added if it didn't have one.
         """
         return self.add_docstring(updated_node)
 
@@ -31,12 +33,14 @@ class DocstringAdder(cst.CSTTransformer):
         self, original_node: cst.ClassDef, updated_node: cst.ClassDef
     ) -> cst.ClassDef:
         """
-        Adds a docstring to a class definition.
+        Adds a docstring to a class definition if it doesn't have one.
+
         Args:
-          original_node (cst.ClassDef): The original CST node.
-          updated_node (cst.ClassDef): The updated CST node.
+          original_node (cst.ClassDef): The original CST node representing the class definition.
+          updated_node (cst.ClassDef): The updated CST node representing the class definition.
+
         Returns:
-          cst.ClassDef: The updated CST node with a docstring added.
+          cst.ClassDef: The updated CST node with a docstring added if it didn't have one.
         """
         self.current_class = None
         updated_node = self.add_docstring(updated_node)
@@ -44,11 +48,16 @@ class DocstringAdder(cst.CSTTransformer):
 
     def add_docstring(self, node):
         """
-        Adds a docstring to a CST node.
+        Adds a docstring to a CST node if it doesn't have one.
+
         Args:
-            node (cst.CSTNode): The CST node to add a docstring to.
+          node (cst.CSTNode): The CST node to add a docstring to.
+
         Returns:
-            cst.CSTNode: The updated CST node with a docstring added.
+          cst.CSTNode: The updated CST node with a docstring added if it didn't have one.
+
+        Note:
+          If the node already has a docstring and the force flag is set, the existing docstring is removed before adding the new one.
         """
         key = (
             f"{self.current_class}.{node.name.value}"

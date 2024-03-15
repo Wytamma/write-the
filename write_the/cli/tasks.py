@@ -24,24 +24,31 @@ async def async_cli_task(
 ) -> None:
     """
     Executes a task asynchronously.
+
     Args:
       file (Path): The file to process.
       nodes (List): The nodes to process.
+      update (bool): Whether to update the task.
       force (bool): Whether to force the task.
       save (bool): Whether to save the task.
       context (bool): Whether to include context.
+      background (bool): Whether to run the task in the background.
       pretty (bool): Whether to format the output.
       batch (bool): Whether to run in batch mode.
       print_status (bool): Whether to print the status.
       progress (Progress): The progress object.
+      model (str, optional): The model to use for the task. Defaults to "gpt-3.5-turbo-instruct".
+
     Returns:
       None
+
     Side Effects:
       Writes to the file if save is True.
       Prints the pass/fail status if print_status is True.
       Pretty prints the result if pretty is True.
+
     Examples:
-      >>> await async_cli_task(file, nodes, force, save, context, pretty, batch, print_status, progress)
+      >>> await async_cli_task(file, nodes, update, force, save, context, background, pretty, batch, print_status, progress)
       None
     """
     task_id = progress.add_task(description=f"{file}", total=None)

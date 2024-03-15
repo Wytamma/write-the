@@ -10,11 +10,13 @@ class NodeExtractor(cst.CSTVisitor):
 
     def visit_FunctionDef(self, node: cst.FunctionDef):
         """
-        Visits a FunctionDef node and adds it to the extracted_nodes list if it is in the nodes list.
+        Visits a FunctionDef node and adds it to the extracted_nodes list if its name is in the nodes list.
+
         Args:
           node (cst.FunctionDef): The FunctionDef node to visit.
+
         Side Effects:
-          Adds the node to the extracted_nodes list if it is in the nodes list.
+          Modifies the extracted_nodes list of the NodeExtractor instance, adding the node if its name is in the nodes list.
         """
         name = (
             f"{self.current_class}.{node.name.value}"
@@ -26,11 +28,13 @@ class NodeExtractor(cst.CSTVisitor):
 
     def visit_ClassDef(self, node: cst.ClassDef):
         """
-        Visits a ClassDef node and adds it to the extracted_nodes list if it is in the nodes list.
+        Visits a ClassDef node and sets the current_class attribute. If the class name is in the nodes list, it also adds the node to the extracted_nodes list.
+
         Args:
           node (cst.ClassDef): The ClassDef node to visit.
+
         Side Effects:
-          Adds the node to the extracted_nodes list if it is in the nodes list.
+          Modifies the current_class attribute of the NodeExtractor instance, setting it to the name of the visited node. If the class name is in the nodes list, it also modifies the extracted_nodes list, adding the node.
         """
         self.current_class = node.name.value
         if node.name.value in self.nodes:
@@ -42,14 +46,17 @@ class NodeExtractor(cst.CSTVisitor):
 
 def extract_nodes_from_tree(tree, nodes):
     """
-    Extracts nodes from a CST tree.
+    Extracts specified nodes from a CST tree.
+
     Args:
       tree (cst.CSTNode): The CST tree to extract nodes from.
-      nodes (list): A list of nodes to extract.
+      nodes (list of str): A list of node names to extract.
+
     Returns:
-      list: A list of extracted nodes.
+      list of cst.CSTNode: A list of extracted nodes.
+
     Examples:
-      >>> extract_nodes_from_tree(tree, nodes)
+      >>> extract_nodes_from_tree(tree, ['FunctionDef', 'ClassDef'])
       [cst.FunctionDef, cst.ClassDef]
     """
     extractor = NodeExtractor(nodes)

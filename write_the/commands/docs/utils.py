@@ -29,13 +29,16 @@ def extract_block(text, class_function_names):
 def process_nodes(tree: cst.Module, nodes, context, extract_specific_nodes) -> str:
     """
     Processes a tree of nodes.
+
     Args:
       tree (cst.Module): The tree of nodes to process.
       nodes (list): The list of nodes to process.
       context (bool): Whether to include context nodes.
       extract_specific_nodes (bool): Whether to extract specific nodes.
+
     Returns:
       str: The processed tree as a string.
+
     Examples:
       >>> process_nodes(tree, nodes, context, extract_specific_nodes)
       "Processed tree as a string"
