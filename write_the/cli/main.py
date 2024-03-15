@@ -98,6 +98,12 @@ async def docs(
         "-f",
         help="Generate docstings even if they already exist.",
     ),
+    update: bool = typer.Option(
+        False,
+        "--update/--no-update",
+        "-u",
+        help="Update the existing docstrings.",
+    ),
     batch: bool = typer.Option(
         False, "--batch/--no-batch", "-b", help="Send each node as a separate request."
     ),
@@ -133,6 +139,7 @@ async def docs(
                     file,
                     nodes=nodes,
                     force=force,
+                    update=update,
                     save=save,
                     context=context,
                     background=background,

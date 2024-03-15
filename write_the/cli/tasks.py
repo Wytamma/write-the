@@ -10,6 +10,7 @@ from openai.error import InvalidRequestError
 async def async_cli_task(
     file: Path,
     nodes: List,
+    update: bool,
     force: bool,
     save: bool,
     context: bool,
@@ -56,6 +57,7 @@ async def async_cli_task(
         result = await write_the_docs(
             tree,
             node_names=nodes,
+            update=update,
             force=force,
             save=save,
             context=context,

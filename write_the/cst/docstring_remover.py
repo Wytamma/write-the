@@ -52,7 +52,7 @@ class DocstringRemover(cst.CSTTransformer):
         return updated_node
 
 
-def remove_docstrings(tree, nodes):
+def remove_docstrings_from_tree(tree, nodes):
     """
     Removes the docstrings from a tree of nodes.
     Args:
