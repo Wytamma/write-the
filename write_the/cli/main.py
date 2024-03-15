@@ -123,7 +123,8 @@ async def docs(
         if f.is_dir():
             files.extend(list_python_files(f))
         else:
-            assert f.suffix == ".py"
+            if f.suffix != ".py":
+                raise typer.BadParameter("File must be a .py file or a directory.")
             files.append(f)
     with Progress(
         SpinnerColumn(),
@@ -221,7 +222,8 @@ async def tests(
     if file.is_dir():
         files = list_python_files(file)
     else:
-        assert file.suffix == ".py"
+        if file.suffix != ".py":
+            raise typer.BadParameter("File must be a .py file or a directory.")
         files = [file]
     for file in files:
         if file.stem.startswith("_"):
