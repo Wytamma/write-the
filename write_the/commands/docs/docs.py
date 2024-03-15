@@ -8,6 +8,7 @@ from write_the.cst.function_and_class_collector import get_node_names
 from write_the.cst.node_extractor import extract_nodes_from_tree
 from write_the.cst.node_batcher import create_batches
 from write_the.commands.docs.utils import extract_block
+from write_the.errors import FileSkippedError
 from write_the.llm import LLM
 from .prompts import write_docstrings_for_nodes_prompt, update_docstrings_for_nodes_prompt
 
@@ -55,12 +56,10 @@ async def write_the_docs(
     if node_names:
         extract_specific_nodes = True
         force = True
-    elif update:
-        node_names = get_node_names(tree, force=True)
     else:
-        node_names = get_node_names(tree, force=force)
+        node_names = get_node_names(tree, force=force, update=update)
     if not node_names:
-        return tree.code
+        raise FileSkippedError("No nodes found, skipping file...")
     if update:
         remove_docstrings = False
         llm = LLM(update_docstrings_for_nodes_prompt, model_name=model)
