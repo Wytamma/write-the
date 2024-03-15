@@ -6,12 +6,13 @@ class FunctionAndClassCollector(cst.CSTVisitor):
     """
     A CSTVisitor that collects the names of functions and classes from a CST tree.
     """
-    def __init__(self, force, update):
+    def __init__(self, force, update=False):
         """
         Initializes the FunctionAndClassCollector.
 
         Args:
           force (bool): Whether to force the collection of functions and classes even if they have docstrings.
+          update (bool): Whether to update the collection of functions and classes if they have docstrings.
         """
         self.functions = []
         self.classes = []
@@ -21,7 +22,7 @@ class FunctionAndClassCollector(cst.CSTVisitor):
 
     def visit_FunctionDef(self, node: cst.FunctionDef) -> None:
         """
-        Visits a FunctionDef node and adds its name to the list of functions if it does not have a docstring or if `force` is `True`.
+        Visits a FunctionDef node and adds its name to the list of functions if it does not have a docstring or if `force` or `update` is `True`.
 
         Args:
           node (cst.FunctionDef): The FunctionDef node to visit.
@@ -40,7 +41,7 @@ class FunctionAndClassCollector(cst.CSTVisitor):
 
     def visit_ClassDef(self, node: cst.ClassDef) -> None:
         """
-        Visits a ClassDef node and adds its name to the list of classes if it does not have a docstring or if `force` is `True`. Also sets the current class name for nested function collection.
+        Visits a ClassDef node and adds its name to the list of classes if it does not have a docstring or if `force` or `update` is `True`. Also sets the current class name for nested function collection.
 
         Args:
           node (cst.ClassDef): The ClassDef node to visit.
@@ -61,13 +62,14 @@ class FunctionAndClassCollector(cst.CSTVisitor):
         self.current_class = None
 
 
-def get_node_names(tree, force, update):
+def get_node_names(tree, force, update=False):
     """
     Gets the names of functions and classes from a CST tree.
 
     Args:
       tree (cst.CSTNode): The CST tree to traverse.
       force (bool): Whether to force the collection of functions and classes even if they have docstrings.
+      update (bool, optional): Whether to update the collection of functions and classes if they have docstrings. Defaults to False.
 
     Returns:
       list[str]: A list of function and class names.
