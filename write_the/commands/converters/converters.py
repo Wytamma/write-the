@@ -26,7 +26,12 @@ async def write_the_converters(filename: Path, input_format: str, output_format:
     llm = LLM(write_converters_for_file_prompt, model_name=model)
     result = await llm.run(code=source_text, input_format=input_format, output_format=output_format)
 
-    formatted_text = (
-        result.strip().rstrip('```')
-    )
+    formatted_text = result.strip()
+
+    if formatted_text.endswith('```') and not source_text.endswith('```'):
+        # strip the last line of the code block if the source text didn't end with a code block
+        formatted_text = formatted_text[: formatted_text.rfind("\n")]
+    if formatted_text.startswith('```') and not source_text.startswith('```'):
+        # strip the first line of the code block if the source text didn't start with a code block
+        formatted_text = formatted_text[formatted_text.find("\n") + 1 :]
     return formatted_text.strip()
