@@ -35,7 +35,7 @@ def multiply(a, b):
     return a * b
 ```
 
-The ✅ indicates that the docstrings were added created. If there is an error (❌) adding the docstrings, the error message will be printed to the console. Any nodes that already have docstrings will be skipped (⏭️).
+The ✅ indicates that the docstrings were created. If there is an error (❌) adding the docstrings, the error message will be printed to the console. Any nodes that already have docstrings will be skipped (⏭️).
 
 ## Save 
 
