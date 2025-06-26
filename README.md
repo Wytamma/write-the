@@ -8,7 +8,7 @@ AI-powered python code documentation and test generation tool
 [![write-the - test](https://badgen.net/badge/write-the/tests/green?icon=https://raw.githubusercontent.com/Wytamma/write-the/master/images/write-the-icon.svg)](https://github.com/Wytamma/write-the/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/Wytamma/write-the/branch/master/graph/badge.svg?token=yEDn56L76k)](https://app.codecov.io/gh/Wytamma/write-the/tree/master)
 
-Write-the is an AI-powered documentation and test generation tool that leverages GPTs to automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
+Write-the is an AI-powered documentation and test generation tool that leverages Generative Pre-trained Transformers (GPTs) / Large Language Models (LLMs) to automatically write tests, generate documentation, and refactor code. It is designed to streamline the development process, improve code quality, and increase productivity.
 
 ![](https://raw.githubusercontent.com/Wytamma/write-the/master/images/write-the-docs.gif)
 
@@ -25,6 +25,13 @@ Write-the is an AI-powered documentation and test generation tool that leverages
 ```console
 pip install write-the
 ```
+
+`write-the` should ideally be installed in an isolated enviroment with a tool like [`pipx`](https://github.com/pypa/pipx).
+
+```console
+pipx install write-the
+```
+
 ## Features
 
 Write-the offers the following AI-driven features:
