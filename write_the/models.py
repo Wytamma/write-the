@@ -1,82 +1,158 @@
 models = {
-    "gpt-4-0125-preview": {
-        "description": "New GPT-4 Turbo intended to reduce cases of 'laziness'. Returns a maximum of 4,096 output tokens.",
-        "context_window": 128000,
-        "training_data": "Up to Dec 2023"
+    # ───────────────────────────── GPT-4o family ───────────────────────────── #
+    "gpt-4o": {
+        "description": "Flagship multimodal GPT-4-level model (text, vision, audio).",
+        "context_window": 128_000,
+        "training_data": "Up to Jun 2024"
     },
-    "gpt-4-turbo-preview": {
-        "description": "Currently points to gpt-4-0125-preview.",
-        "context_window": 128000,
-        "training_data": "Up to Dec 2023"
+    "chatgpt-4o-latest": {
+        "description": "ChatGPT alias that always points to the latest gpt-4o.",
+        "context_window": 128_000,
+        "training_data": "Up to Jun 2024"
     },
-    "gpt-4-1106-preview": {
-        "description": "GPT-4 Turbo model featuring improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens. This is a preview model.",
-        "context_window": 128000,
-        "training_data": "Up to Apr 2023"
+    "gpt-4o-mini": {
+        "description": "Smaller, lower-latency, lower-cost 4o variant (text & vision).",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
     },
-    "gpt-4-vision-preview": {
-        "description": "GPT-4 with the ability to understand images, in addition to all other GPT-4 Turbo capabilities. Currently points to gpt-4-1106-vision-preview.",
-        "context_window": 128000,
-        "training_data": "Up to Apr 2023"
+    "gpt-4o-audio-preview": {
+        "description": "4o preview that accepts/returns audio as well as text.",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
     },
-    "gpt-4-1106-vision-preview": {
-        "description": "GPT-4 with the ability to understand images, in addition to all other GPT-4 Turbo capabilities. Returns a maximum of 4,096 output tokens. This is a preview model version.",
-        "context_window": 128000,
-        "training_data": "Up to Apr 2023"
+    "gpt-4o-audio-preview-2024-12-17": {
+        "description": "Dated audio-preview snapshot of gpt-4o.",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
     },
+    "gpt-4o-audio-preview-2024-10-01": {
+        "description": "Earlier audio-preview snapshot of gpt-4o.",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
+    },
+    "gpt-4o-mini-audio-preview": {
+        "description": "Audio-enabled version of gpt-4o-mini.",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
+    },
+    "gpt-4o-mini-audio-preview-2024-12-17": {
+        "description": "Dated snapshot of gpt-4o-mini-audio-preview.",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
+    },
+
+    # ───────────────────────────── GPT-4.1 family ──────────────────────────── #
+    "gpt-4.1": {
+        "description": "Long-context successor to 4o; up to 32 768 output tokens.",
+        "context_window": 1_000_000,
+        "training_data": "Up to Jun 2024"
+    },
+    "gpt-4.1-mini": {
+        "description": "Cost-efficient small 4.1 model; matches or beats 4o.",
+        "context_window": 1_000_000,
+        "training_data": "Up to Jun 2024"
+    },
+    "gpt-4.1-nano": {
+        "description": "Fastest, cheapest 4.1 variant; ideal for classification/autocomplete.",
+        "context_window": 1_000_000,
+        "training_data": "Up to Jun 2024"
+    },
+
+    # ───────────────────────────── GPT-4 / 4-Turbo / 4-preview ─────────────── #
     "gpt-4": {
-        "description": "Currently points to gpt-4-0613. See continuous model upgrades.",
-        "context_window": 8192,
-        "training_data": "Up to Sep 2021"
-    },
-    "gpt-4-0613": {
-        "description": "Snapshot of gpt-4 from June 13th 2023 with improved function calling support.",
-        "context_window": 8192,
+        "description": "Stable GPT-4 alias (currently points to gpt-4-0613).",
+        "context_window": 8_192,
         "training_data": "Up to Sep 2021"
     },
     "gpt-4-32k": {
-        "description": "Currently points to gpt-4-32k-0613. This model was never rolled out widely in favor of GPT-4 Turbo.",
-        "context_window": 32768,
+        "description": "Legacy GPT-4 with 32 k context (points to gpt-4-32k-0613).",
+        "context_window": 32_768,
         "training_data": "Up to Sep 2021"
     },
-    "gpt-4-32k-0613": {
-        "description": "Snapshot of gpt-4-32k from June 13th 2023 with improved function calling support. This model was never rolled out widely in favor of GPT-4 Turbo.",
-        "context_window": 32768,
-        "training_data": "Up to Sep 2021"
+    "gpt-4-1106-preview": {
+        "description": "First GPT-4 Turbo preview (JSON mode, reproducible outputs, etc.).",
+        "context_window": 128_000,
+        "training_data": "Up to Apr 2023"
     },
-    "gpt-3.5-turbo-0125": {
-        "description": "New Updated GPT 3.5 Turbo with higher accuracy at responding in requested formats and a fix for a bug which caused a text encoding issue for non-English language function calls. Returns a maximum of 4,096 output tokens.",
-        "context_window": 16385,
-        "training_data": "Up to Sep 2021"
+    "gpt-4-0125-preview": {
+        "description": "Second GPT-4 Turbo preview; improved ‘laziness’ fix.",
+        "context_window": 128_000,
+        "training_data": "Up to Dec 2023"
     },
+    "gpt-4-turbo-2024-04-09": {
+        "description": "Production GPT-4 Turbo snapshot (cheaper, faster).",
+        "context_window": 128_000,
+        "training_data": "Up to Dec 2023"
+    },
+    "gpt-4-turbo": {
+        "description": "Alias (gpt-4-turbo-preview / 4-turbo / 4t) → gpt-4-turbo-2024-04-09.",
+        "context_window": 128_000,
+        "training_data": "Up to Dec 2023"
+    },
+
+    # ───────────────────────────── GPT-4.5 preview ─────────────────────────── #
+    "gpt-4.5-preview-2025-02-27": {
+        "description": "Research preview of GPT-4.5 (128 k ctx, larger parameter count).",
+        "context_window": 128_000,
+        "training_data": "Up to Apr 2024"
+    },
+    "gpt-4.5-preview": {
+        "description": "Alias to gpt-4.5-preview-2025-02-27.",
+        "context_window": 128_000,
+        "training_data": "Up to Apr 2024"
+    },
+
+    # ───────────────────────────── GPT-3.5 family ──────────────────────────── #
     "gpt-3.5-turbo": {
-        "description": "Currently points to gpt-3.5-turbo-0613. The gpt-3.5-turbo model alias will be automatically upgraded from gpt-3.5-turbo-0613 to gpt-3.5-turbo-0125 on February 16th.",
-        "context_window": 4096,
-        "training_data": "Up to Sep 2021"
-    },
-    "gpt-3.5-turbo-1106": {
-        "description": "GPT-3.5 Turbo model with improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens.",
-        "context_window": 16385,
-        "training_data": "Up to Sep 2021"
-    },
-    "gpt-3.5-turbo-instruct": {
-        "description": "Similar capabilities as GPT-3 era models. Compatible with legacy Completions endpoint and not Chat Completions.",
-        "context_window": 4096,
+        "description": "Default GPT-3.5 Turbo (16 k ctx) alias → gpt-3.5-turbo-0125.",
+        "context_window": 16_385,
         "training_data": "Up to Sep 2021"
     },
     "gpt-3.5-turbo-16k": {
-        "description": "Legacy Currently points to gpt-3.5-turbo-16k-0613.",
-        "context_window": 16385,
+        "description": "Explicit 16 k-context variant (legacy alias chatgpt-16k).",
+        "context_window": 16_385,
         "training_data": "Up to Sep 2021"
     },
-    "gpt-3.5-turbo-0613": {
-        "description": "Legacy Snapshot of gpt-3.5-turbo from June 13th 2023. Will be deprecated on June 13, 2024.",
-        "context_window": 4096,
+    "gpt-3.5-turbo-instruct": {
+        "description": "Completions-endpoint version of 3.5; GPT-3-era capabilities.",
+        "context_window": 4_096,
         "training_data": "Up to Sep 2021"
     },
-    "gpt-3.5-turbo-16k-0613": {
-        "description": "Legacy Snapshot of gpt-3.5-16k-turbo from June 13th 2023. Will be deprecated on June 13, 2024.",
-        "context_window": 16385,
-        "training_data": "Up to Sep 2021"
+
+    # ───────────────────────────── OpenAI o-series reasoning models ────────── #
+    "o1": {
+        "description": "First-generation reasoning model (agentic tool use).",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
     },
+    "o1-2024-12-17": {
+        "description": "Dated snapshot of o1 (same capabilities).",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
+    },
+    "o1-preview": {
+        "description": "Early preview alias for o1.",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
+    },
+    "o1-mini": {
+        "description": "Smaller, cheaper o1 variant.",
+        "context_window": 128_000,
+        "training_data": "Up to Oct 2023"
+    },
+    "o3": {
+        "description": "Second-generation reasoning model (best overall reasoning; full tool access).",
+        "context_window": 128_000,
+        "training_data": "Up to Jun 2024"
+    },
+    "o3-mini": {
+        "description": "Compact o3 variant for high-throughput reasoning.",
+        "context_window": 128_000,
+        "training_data": "Up to Jun 2024"
+    },
+    "o4-mini": {
+        "description": "Newest small reasoning model; faster & cheaper than o3-mini.",
+        "context_window": 128_000,
+        "training_data": "Up to Jun 2024"
+    }
 }
