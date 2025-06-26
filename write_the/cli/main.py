@@ -400,9 +400,11 @@ def model(
 
 @app.command()
 def refactor():
+    """Refactor your code with AI (not implemented yet)."""
     raise NotImplementedError()
 
 
 @app.command()
 def optimise():
+    """Optimise your code with AI (not implemented yet)."""
     raise NotImplementedError()
