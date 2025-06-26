@@ -41,6 +41,8 @@ In addition write-the can also [manage OpenAI models](https://write-the.wytamma.
 
 To use `write-the` you must set an `OPENAI_API_KEY` environment variable (e.g. `export OPENAI_API_KEY=...`).
 
+See [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys) for details.
+
 ## Documentation
 
 For detailed information on available options and parameters, refer to the official (`write-the` generated) [documentation](https://write-the.wytamma.com/).
