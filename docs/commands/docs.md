@@ -1,6 +1,6 @@
 ---
-title: Docstrings
-description: Automatically generate Python docstrings with the write-the docs command.
+title: "Docstrings"
+description: "Automatically generate Python docstrings with the write-the docs command."
 ---
 
 # Automatically Generate Docstrings for yor Python Code With AI
