@@ -43,9 +43,9 @@ In addition write-the can also [manage OpenAI models](https://write-the.wytamma.
 
 ## Requirements
 - Python 3.9 or higher  
-- OpenAI API key
+- OpenAI API key or OpenRouter key
 
-To use `write-the` you must set an `OPENAI_API_KEY` environment variable (e.g. `export OPENAI_API_KEY=...`).
+To use `write-the` you must set an `OPENAI_API_KEY` or `OPENROUTER_API_KEY` environment variable (e.g. `export OPENAI_API_KEY=...`).
 
 See [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys) for details.
 

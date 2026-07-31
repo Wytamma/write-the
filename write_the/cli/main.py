@@ -1,20 +1,27 @@
-import typer
 import os
-from write_the.models import models
-from write_the.__about__ import __version__
-from write_the.commands import write_the_tests, write_the_mkdocs, write_the_converters
-from write_the.utils import list_python_files
-from pathlib import Path
-from rich.console import Console
-from rich.syntax import Syntax
-from rich.progress import Progress, SpinnerColumn, TextColumn
-from typing import List, Optional
-from black import InvalidInput
-from asyncio import run, gather
+from asyncio import gather, run
 from functools import wraps
+from pathlib import Path
+from typing import List, Optional
 
+import typer
+from black import InvalidInput
+from rich.console import Console
+from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.syntax import Syntax
+
+from write_the.__about__ import __version__
+from write_the.commands import write_the_converters, write_the_mkdocs, write_the_tests
+from write_the.models import models
+from write_the.utils import list_python_files
+
+from .model import (
+    display_models_table,
+    fetch_openrouter_models,
+    get_default_model,
+    set_default_model,
+)
 from .tasks import async_cli_task
-from .model import get_default_model, set_default_model
 
 
 class AsyncTyper(typer.Typer):
@@ -30,7 +37,7 @@ class AsyncTyper(typer.Typer):
         return decorator
 
 
-app = AsyncTyper()
+app = AsyncTyper(no_args_is_help=True)
 
 def _get_model_callback(value: str):
     if value is None:
@@ -366,15 +373,43 @@ def model(
         False,
         "--list",
         "-l",
-        help="List all available models.",
+        help="List supported OpenAI models.",
+    ),
+    list_open_router: bool = typer.Option(
+        False,
+        "--list-open-router",
+        "-p",
+        help="List OpenRouter models.",
+    ),
+    company: Optional[str] = typer.Option(
+        None,
+        "--company",
+        "-c",
+        help="Filter OpenRouter list by company (e.g. -c openai -c anthropic).",
+    ),
+    free: Optional[bool] = typer.Option(
+        None,
+        "--free",
+        "-f",
+        help="Show only free models.",
     ),
 ):
     """
     View or set the default model.
     """
     default_model = get_default_model()
+    ormodels = fetch_openrouter_models()
+
+    if desired_model:
+        if desired_model not in models and desired_model not in ormodels:
+            typer.secho(f"Model '{desired_model}' not found!", fg="red")
+            return typer.Exit(1)
+        set_default_model(desired_model)
+        typer.echo(f"Default model: {desired_model}")
+        return typer.Exit(0)
+
     if list:
-        from rich import table, print
+        from rich import table, rprint
         table_ = table.Table()
         table_.add_column("Name", justify="left", style="cyan")
         table_.add_column("Context", justify="left", style="magenta")
@@ -384,18 +419,15 @@ def model(
                 table_.add_row(name, f"{model['context_window']}", "✅")
             else:
                 table_.add_row(name, f"{model['context_window']}", "")
-        print(table_)
+        rprint(table_)
         return typer.Exit(0)
-    if desired_model:
-        if desired_model not in models:
-            typer.secho(f"Model '{desired_model}' not found!", fg="red")
-            return typer.Exit(1)
-        set_default_model(desired_model)
-        typer.echo(f"Default model: {desired_model}")
+
+    if list_open_router:
+        display_models_table(ormodels, default_model, company, free)
         return typer.Exit(0)
+
+
     typer.echo(default_model)
-
-
 
 
 @app.command()

@@ -23,3 +23,13 @@ Use the `--list` flag to view all available models.
 ```bash
 write-the model --list
 ```
+
+### OpenRouter
+
+Use the `--list-open-router` flag to list all the OpenRouter models available. Search for specific company offerings by using the additional `--company` flag. 
+
+```bash
+write-the model --list-open-router --company google
+```
+
+Add the `--free` flag to show models without any cost.

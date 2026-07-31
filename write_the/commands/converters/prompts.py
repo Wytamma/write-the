@@ -1,5 +1,4 @@
-from langchain.prompts import PromptTemplate
-
+from langchain_core.prompts import PromptTemplate
 
 converters_template = """
 Convert the following to the desired output.

@@ -1,9 +1,20 @@
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
-from langchain.llms import OpenAI
-from langchain.chat_models import ChatOpenAI
+import os
+
 import tiktoken
+import typer
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import ChatOpenAI, OpenAI
+from langchain_openrouter import ChatOpenRouter
+
 from .models import models
+
+def _get_api_key(model_name) -> str:
+    """Check env vars and prompt if missing."""
+    api_key = os.getenv("OPENAI_API_KEY") or os.getenv("OPENROUTER_API_KEY")
+    if not api_key:
+        api_key = typer.prompt("API key not set. Enter API key: ")
+    return api_key
 
 class LLM:
     """
@@ -28,6 +39,8 @@ class LLM:
         self.prompt_size = self.number_of_tokens(prompt.template)
         self.temperature = temperature
         self.model_name = model_name
+        self.api_key = _get_api_key(model_name)
+
         try:
             self.max_tokens = int(models[model_name]["context_window"])
         except KeyError:
@@ -48,16 +61,23 @@ class LLM:
         Returns:
           str: The generated text.
         """
-        if "-instruct" in self.model_name:
-            llm = OpenAI(
-                temperature=self.temperature, max_tokens=-1, model_name=self.model_name
-            )
+        # openAI API
+        if self.model_name in models:
+          if "-instruct" in self.model_name:
+              llm = OpenAI(
+                  temperature=self.temperature, max_tokens=-1, model_name=self.model_name, api_key=self.api_key
+              )
+          else:
+              llm = ChatOpenAI(
+                  temperature=self.temperature, model_name=self.model_name, api_key=self.api_key
+              )
+        # openrouter API
         else:
-            llm = ChatOpenAI(
-                temperature=self.temperature, model_name=self.model_name
-            )
-        chain = LLMChain(llm=llm, prompt=self.prompt)
-        return await chain.apredict(code=code, **kwargs)
+          llm = ChatOpenRouter(temperature=self.temperature, model_name=self.model_name, api_key=self.api_key)
+
+        # LCEL: compose prompt → llm → output parser instead of LLMChain
+        chain = self.prompt | llm | StrOutputParser()
+        return await chain.ainvoke({"code": code, **kwargs})
 
     def number_of_tokens(self, text):
         """

@@ -3,14 +3,13 @@ from write_the.errors import FileSkippedError
 from write_the.utils import create_tree, format_source_code, load_source_code
 from rich.syntax import Syntax
 from rich.progress import Progress
-from typing import List
 from pathlib import Path
-from openai.error import InvalidRequestError
+from openai import BadRequestError
 
 
 async def async_cli_task(
     file: Path,
-    nodes: List,
+    nodes: list,
     update: bool,
     force: bool,
     save: bool,
@@ -78,7 +77,7 @@ async def async_cli_task(
     except ValueError as e:
         msg = f" - {e}"
         failed = True
-    except InvalidRequestError as e:
+    except BadRequestError as e:
         msg = f" - {e}"
         failed = True
     except FileSkippedError as e:
